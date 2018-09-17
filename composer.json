@@ -1,0 +1,21 @@
+{
+    "name": "hammermaps/tsic",
+    "description": "Sendet API-Anfragen an das Teamspeak Interface und wertet diese aus",
+    "keywords": ["tsi", "client", "api"],
+    "homepage": "https://teamspeak-interface.de/thread/525-tsi-php-client/",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucas Brucksch",
+            "email": "lbrucksch@hammermaps.de",
+            "homepage": "https://hammermaps.de"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {"Monolog\\": "src/Monolog"}
+    }
+}
