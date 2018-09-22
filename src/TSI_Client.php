@@ -25,10 +25,7 @@
 
 namespace TSI_Client;
 
-//Include base files
-require_once("TSI_Client_Base_Interface.php");
-require_once("TSI_Client_Base.php");
-require_once("TSI_Client_Interface.php");
+use TSI_Client\Models;
 
 class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
@@ -46,17 +43,21 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $data = [
-            'name' => $this->version['tsi_main']['name'],
-            'version' => $this->version['tsi_main']['version'],
-            'last_update' => $this->version['tsi_main']['last_update']['date']
-        ];
+        if(array_key_exists('tsi_main',$this->version)) {
+            $data = [
+                'name' => strval($this->version['tsi_main']['name']),
+                'version' => strval($this->version['tsi_main']['version']),
+                'last_update' => strval($this->version['tsi_main']['last_update']['date'])
+            ];
 
-        if($cache >= 1) {
-            $this->setCache('getTSIVersion',$data,$cache);
+            if ($cache >= 1) {
+                $this->setCache('getTSIVersion', $data, $cache);
+            }
+
+            return $data;
         }
 
-        return $data;
+        return false;
     }
 
     /**
@@ -74,17 +75,22 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $data = [
-            'name' => $this->version['modul_ai']['name'],
-            'version' => $this->version['modul_ai']['version'],
-            'last_update' => $this->version['modul_ai']['last_update']['date']
-        ];
+        if(array_key_exists('modul_ai',$this->version)) {
+            $data = [
+                'name' => strval($this->version['modul_ai']['name']),
+                'version' => strval($this->version['modul_ai']['version']),
+                'last_update' => strval($this->version['modul_ai']['last_update']['date'])
+            ];
 
-        if($cache >= 1) {
-            $this->setCache('getAPIVersion',$data,$cache);
+
+            if ($cache >= 1) {
+                $this->setCache('getAPIVersion', $data, $cache);
+            }
+
+            return $data;
         }
 
-        return $data;
+        return false;
     }
 
     /**
@@ -106,9 +112,9 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
         if(array_key_exists($addon_name,$this->version)) {
             $data = [
-                'name' => $this->version[$addon_name]['name'],
-                'version' => $this->version[$addon_name]['version'],
-                'last_update' => $this->version[$addon_name]['last_update']['date']
+                'name' => strval($this->version[$addon_name]['name']),
+                'version' => strval($this->version[$addon_name]['version']),
+                'last_update' => strval($this->version[$addon_name]['last_update']['date'])
             ];
 
             if($cache >= 1) {
@@ -136,7 +142,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $addons = $this->version;
+        $addons = (array)$this->version;
         unset($addons['tsi_main']); //Remove TSI
 
         if($cache >= 1) {
@@ -178,7 +184,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
                 return false;
             }
 
-            $user = new TSI_User();
+            $user = new Models\TSI_User();
             $user->setUserID((int)$data['id']);
             $user->setResellerID((int)$data['reseller_id']);
             $user->setRoleID((int)$data['group_id']);
@@ -204,7 +210,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Give a TSI User Profile
      * @param int $user_id
-     * @return TSI_User|bool
+     * @return Models\TSI_User|bool
      * @throws \Exception
      */
     public function getTSIUser(int $user_id) {
@@ -236,7 +242,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $user = new TSI_User();
+        $user = new Models\TSI_User();
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);
@@ -259,7 +265,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Find a TSI user by username
      * @param string $username
-     * @return TSI_User|bool
+     * @return Models\TSI_User|bool
      * @throws \Exception
      */
     public function getTSIUserByUsername(string $username) {
@@ -287,7 +293,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $user = new TSI_User();
+        $user = new Models\TSI_User();
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);
@@ -310,7 +316,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Find TSI users based on the email address
      * @param string $email
-     * @return TSI_User|bool
+     * @return Models\TSI_User|bool
      * @throws \Exception
      */
     public function getTSIUserByEMail(string $email) {
@@ -343,7 +349,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $user = new TSI_User();
+        $user = new Models\TSI_User();
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);
@@ -364,11 +370,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     }
 
     /**
-     * @param TSI_User $user
+     * @param Models\TSI_User $user
      * @return array|bool
      * @throws \Exception
      */
-    public function addTSIUser(TSI_User $user) {
+    public function addTSIUser(Models\TSI_User $user) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -432,11 +438,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Edit a TSI user
-     * @param TSI_User $user
+     * @param Models\TSI_User $user
      * @return array|bool
      * @throws \Exception
      */
-    public function editTSIUser(TSI_User $user) {
+    public function editTSIUser(Models\TSI_User $user) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -500,11 +506,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Delete TSI users based on user-id
-     * @param TSI_User $user
+     * @param Models\TSI_User $user
      * @return array|bool
      * @throws \Exception
      */
-    public function deleteTSIUser(TSI_User $user) {
+    public function deleteTSIUser(Models\TSI_User $user) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -557,7 +563,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
         $roles = [];
         foreach ($data as $key => $perm) {
-            $role = new TSI_Role();
+            $role = new Models\TSI_Role();
             $role->setID((int)$perm['id']);
             $role->setName(html_entity_decode($perm['name']));
             $role->setLevel((int)$perm['level']);
@@ -575,7 +581,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Get TSI role by id
      * @param int $role_id
-     * @return TSI_Role|bool
+     * @return Models\TSI_Role|bool
      * @throws \Exception
      */
     public function getTSIRole(int $role_id) {
@@ -602,7 +608,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $role = new TSI_Role();
+        $role = new Models\TSI_Role();
         $role->setID((int)$data['id']);
         $role->setName(html_entity_decode($data['name']));
         $role->setLevel((int)$data['level']);
@@ -618,7 +624,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Find TSI role by name
      * @param string $name
-     * @return TSI_Role|bool
+     * @return Models\TSI_Role|bool
      * @throws \Exception
      */
     public function getTSIRoleByName(string $name) {
@@ -645,7 +651,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $role = new TSI_Role();
+        $role = new Models\TSI_Role();
         $role->setID((int)$data['id']);
         $role->setName(html_entity_decode($data['name']));
         $role->setLevel((int)$data['level']);
@@ -660,11 +666,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Delete TSI role
-     * @param TSI_Role $role
+     * @param Models\TSI_Role $role
      * @return array|bool
      * @throws \Exception
      */
-    public function deleteTSIRole(TSI_Role $role) {
+    public function deleteTSIRole(Models\TSI_Role $role) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -718,7 +724,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
         $instances = [];
         foreach ($data as $key => $instance_data) {
-            $instance = new TSI_Instance();
+            $instance = new Models\TSI_Instance();
             $instance->setID((int)$instance_data['id']);
             $instance->setIP(strval($instance_data['server_ip']));
             $instance->setLastPermImport(strval($instance_data['last_perm_import']));
@@ -733,7 +739,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Get TS instance data
      * @param int $instance_id
-     * @return TSI_Instance|bool
+     * @return Models\TSI_Instance|bool
      * @throws \Exception
      */
     public function getTSInstance(int $instance_id) {
@@ -760,7 +766,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $instance = new TSI_Instance();
+        $instance = new Models\TSI_Instance();
         $instance->setID((int)$data['id']);
         $instance->setIP(strval($data['server_ip']));
         $instance->setLastPermImport(strval($data['last_perm_import']));
@@ -772,7 +778,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
     /**
      * Get TS instance data by IP
      * @param string $ip
-     * @return TSI_Instance|bool
+     * @return Models\TSI_Instance|bool
      * @throws \Exception
      */
     public function getTSInstanceByIP(string $ip) {
@@ -799,7 +805,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $instance = new TSI_Instance();
+        $instance = new Models\TSI_Instance();
         $instance->setID((int)$data['id']);
         $instance->setIP(strval($data['server_ip']));
         $instance->setLastPermImport(strval($data['last_perm_import']));
@@ -810,11 +816,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Delete TS instance
-     * @param TSI_Instance $instance
+     * @param Models\TSI_Instance $instance
      * @return array|bool
      * @throws \Exception
      */
-    public function deleteTSInstance(TSI_Instance $instance) {
+    public function deleteTSInstance(Models\TSI_Instance $instance) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -873,11 +879,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
         $servers = [];
         foreach ($data as $id => $srv) {
-            $properties = new TSI_Properties();
+            $properties = new Models\TSI_Properties();
             $properties->setName(html_entity_decode($srv['name']));
             $properties->setMaxClients((int)$srv['maxclients']);
 
-            $vserver = new TSI_VServer();
+            $vserver = new Models\TSI_VServer();
             $vserver->setProperties($properties);
             $vserver->setServerID($id);
             $vserver->setInstanceID($instance_id);
@@ -899,7 +905,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
      * Retrieve data from a virtual server
      * @param int $instance_id
      * @param int $vserver_id
-     * @return TSI_VServer|bool
+     * @return Models\TSI_VServer|bool
      * @throws \Exception
      */
     public function getTSVServer(int $instance_id, int $vserver_id) {
@@ -933,11 +939,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $properties = new TSI_Properties();
+        $properties = new Models\TSI_Properties();
         $properties->setName(html_entity_decode($data['name']));
         $properties->setMaxClients((int)$data['maxclients']);
 
-        $vserver = new TSI_VServer();
+        $vserver = new Models\TSI_VServer();
         $vserver->setProperties($properties);
         $vserver->setServerID($vserver_id);
         $vserver->setInstanceID($instance_id);
@@ -954,11 +960,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Create a virtual server
-     * @param TSI_VServer $vserver
+     * @param Models\TSI_VServer $vserver
      * @return array|bool
      * @throws \Exception
      */
-    public function addTSVServer(TSI_VServer $vserver) {
+    public function addTSVServer(Models\TSI_VServer $vserver) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -1001,11 +1007,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Change virtual server
-     * @param TSI_VServer $vserver
+     * @param Models\TSI_VServer $vserver
      * @return array|bool
      * @throws \Exception
      */
-    public function editTSVServer(TSI_VServer $vserver) {
+    public function editTSVServer(Models\TSI_VServer $vserver) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -1054,11 +1060,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Delete virtual server
-     * @param TSI_VServer $vserver
+     * @param Models\TSI_VServer $vserver
      * @return array|bool
      * @throws \Exception
      */
-    public function deleteTSVServer(TSI_VServer $vserver) {
+    public function deleteTSVServer(Models\TSI_VServer $vserver) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -1092,11 +1098,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Start virtual server
-     * @param TSI_VServer $vserver
+     * @param Models\TSI_VServer $vserver
      * @return array|bool
      * @throws \Exception
      */
-    public function startTSVServer(TSI_VServer $vserver) {
+    public function startTSVServer(Models\TSI_VServer $vserver) {
         if(!$this->checkAPI()) {
             return false;
         }
@@ -1130,11 +1136,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**
      * Stop virtual server
-     * @param TSI_VServer $vserver
+     * @param Models\TSI_VServer $vserver
      * @return array|bool
      * @throws \Exception
      */
-    public function stopTSVServer(TSI_VServer $vserver) {
+    public function stopTSVServer(Models\TSI_VServer $vserver) {
         if(!$this->checkAPI()) {
             return false;
         }

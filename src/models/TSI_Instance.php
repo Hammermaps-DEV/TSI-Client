@@ -23,33 +23,58 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
 
 class TSI_Instance implements TSI_Instance_Interface {
+    /**
+     * @var int
+     * @internal
+     */
     private $id = 0;
+
+    /**
+     * @var string
+     * @internal
+     */
     private $server_ip = '';
+
+    /**
+     * @var int
+     * @internal
+     */
     private $query_port = 10011;
+
+    /**
+     * @var string
+     * @internal
+     */
     private $serveradmin = '';
+
+    /**
+     * @var string
+     * @internal
+     */
     private $last_perm_import = '';
 
     /**
      * @param int $user_id
      */
-    public function setID(int $user_id) {
+    public function setID(int $user_id): void {
         $this->id = $user_id;
     }
 
     /**
      * @return int
      */
-    public function getID() {
+    public function getID(): int {
         return (int)$this->id;
     }
 
     /**
      * @param string $server_ip
      */
-    public function setIP(string $server_ip) {
+    public function setIP(string $server_ip): void {
+        $server_ip = trim($server_ip);
         if(!filter_var($server_ip, FILTER_VALIDATE_IP)) {
             trigger_error(__CLASS__.' => TSI_Instance::setIP(): No valid IP-Adress!', E_USER_WARNING);
             return;
@@ -61,42 +86,42 @@ class TSI_Instance implements TSI_Instance_Interface {
     /**
      * @return string
      */
-    public function getIP() {
-        return $this->server_ip;
+    public function getIP(): string {
+        return strval($this->server_ip);
     }
 
     /**
      * @param int $query_port
      */
-    public function setQueryPort(int $query_port) {
+    public function setQueryPort(int $query_port): void {
         $this->query_port = $query_port;
     }
 
     /**
      * @return int
      */
-    public function getQueryPort() {
+    public function getQueryPort(): int {
         return (int)$this->query_port;
     }
 
     /**
- * @param string $serveradmin
- */
-    public function setServerAdmin(string $serveradmin) {
-        $this->serveradmin = $serveradmin;
+    * @param string $serveradmin
+    */
+    public function setServerAdmin(string $serveradmin): void {
+        $this->serveradmin = trim($serveradmin);
     }
 
     /**
      * @return string
      */
-    public function getServerAdmin() {
-        return $this->serveradmin;
+    public function getServerAdmin(): string {
+        return strval($this->serveradmin);
     }
 
     /**
-     * @param string|int $last_perm_import
+     * @param mixed $last_perm_import
      */
-    public function setLastPermImport($last_perm_import) {
+    public function setLastPermImport(mixed $last_perm_import): void {
         $this->last_perm_import = $last_perm_import;
     }
 

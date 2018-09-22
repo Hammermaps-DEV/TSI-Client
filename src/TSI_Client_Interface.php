@@ -46,22 +46,22 @@ interface TSI_Client_Interface extends TSI_Client_Base_Interface {
     public function getTSViewer(int $instance_id, int $vserver_id, bool $show_flags, string $style, int $cache);
 
     //ADD
-    public function addTSIUser(TSI_User $user);
-    public function addTSVServer(TSI_VServer $vserver);
+    public function addTSIUser(Models\TSI_User $user);
+    public function addTSVServer(Models\TSI_VServer $vserver);
 
     //EDIT
-    public function editTSIUser(TSI_User $user);
-    public function editTSVServer(TSI_VServer $vserver);
+    public function editTSIUser(Models\TSI_User $user);
+    public function editTSVServer(Models\TSI_VServer $vserver);
 
     //DELETE
-    public function deleteTSIUser(TSI_User $user);
-    public function deleteTSIRole(TSI_Role $role);
-    public function deleteTSInstance(TSI_Instance $instance);
-    public function deleteTSVServer(TSI_VServer $vserver);
+    public function deleteTSIUser(Models\TSI_User $user);
+    public function deleteTSIRole(Models\TSI_Role $role);
+    public function deleteTSInstance(Models\TSI_Instance $instance);
+    public function deleteTSVServer(Models\TSI_VServer $vserver);
 
     //START / STOP
-    public function startTSVServer(TSI_VServer $vserver);
-    public function stopTSVServer(TSI_VServer $vserver);
+    public function startTSVServer(Models\TSI_VServer $vserver);
+    public function stopTSVServer(Models\TSI_VServer $vserver);
     public function startTSIBot(int $instance_id, int $vserver_id, string $language);
     public function stopTSIBot(int $instance_id, int $vserver_id);
 

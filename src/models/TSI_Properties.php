@@ -23,16 +23,19 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
 
 class TSI_Properties implements TSI_Properties_Interface {
-    public $virtualserver_options = array();
+    /**
+     * @var array
+     */
+    public $virtualserver_options = [];
 
     /**
      * Set server name
      * @param string $name
      */
-    public function setName(string $name) {
+    public function setName(string $name): void {
         $this->virtualserver_options['virtualserver_name'] = trim($name);
     }
 
@@ -40,15 +43,15 @@ class TSI_Properties implements TSI_Properties_Interface {
      * Get server name
      * @return string
      */
-    public function getName() {
-        return $this->virtualserver_options['virtualserver_name'];
+    public function getName(): string {
+        return strval($this->virtualserver_options['virtualserver_name']);
     }
 
     /**
      * Set voice server port
      * @param int $port
      */
-    public function setPort(int $port) {
+    public function setPort(int $port): void {
         $this->virtualserver_options['virtualserver_port'] = $port;
     }
 
@@ -56,7 +59,7 @@ class TSI_Properties implements TSI_Properties_Interface {
      * Get voice server port
      * @return int
      */
-    public function getPort() {
+    public function getPort(): int {
         return (int)$this->virtualserver_options['virtualserver_port'];
     }
 
@@ -64,7 +67,7 @@ class TSI_Properties implements TSI_Properties_Interface {
      * Set server password
      * @param string $password
      */
-    public function setPassword(string $password) {
+    public function setPassword(string $password): void {
         $this->virtualserver_options['virtualserver_password'] = trim($password);
     }
 
@@ -72,7 +75,7 @@ class TSI_Properties implements TSI_Properties_Interface {
      * Set number of max server slots
      * @param int $clients
      */
-    public function setMaxClients(int $clients) {
+    public function setMaxClients(int $clients): void {
         $this->virtualserver_options['virtualserver_maxclients'] = $clients;
     }
 
@@ -80,7 +83,7 @@ class TSI_Properties implements TSI_Properties_Interface {
      * Get number of max server slots
      * @return int
      */
-    public function getMaxClients() {
+    public function getMaxClients(): int {
         return (int)$this->virtualserver_options['virtualserver_maxclients'];
     }
 }

@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
 
 /**
  * TSI-Virtual-Server: v1.0.61
@@ -47,7 +47,7 @@ class TSI_VServer implements TSI_VServer_Interface {
      * @return int
      */
     public function getServerID() {
-        return $this->server_id;
+        return (int)$this->server_id;
     }
 
     /**
@@ -61,7 +61,7 @@ class TSI_VServer implements TSI_VServer_Interface {
      * @return int
      */
     public function getInstanceID() {
-        return $this->instance_id;
+        return (int)$this->instance_id;
     }
 
     /**
@@ -75,7 +75,7 @@ class TSI_VServer implements TSI_VServer_Interface {
      * @return string
      */
     public function getUID() {
-        return $this->unique_id;
+        return strval($this->unique_id);
     }
 
     /**
@@ -89,7 +89,7 @@ class TSI_VServer implements TSI_VServer_Interface {
      * @return string
      */
     public function getServerName() {
-        return $this->properties->getName();
+        return strval($this->properties->getName());
     }
 
     /**
@@ -122,7 +122,7 @@ class TSI_VServer implements TSI_VServer_Interface {
      * @return string
      */
     public function getPlatform() {
-        return $this->platform;
+        return strval($this->platform);
     }
 
     /**
@@ -136,7 +136,7 @@ class TSI_VServer implements TSI_VServer_Interface {
      * @return string
      */
     public function getVersion() {
-        return $this->version;
+        return strval($this->version);
     }
 
     /**

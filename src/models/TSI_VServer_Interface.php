@@ -23,20 +23,39 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
 
-interface TSI_Instance_Interface {
+interface TSI_VServer_Interface {
     //SETTER
-    public function setID(int $user_id);
-    public function setIP(string $server_ip);
-    public function setQueryPort(int $query_port);
-    public function setServerAdmin(string $serveradmin);
-    public function setLastPermImport($last_perm_import);
+    public function setInstanceID(int $instance_id);
+    public function setServerID(int $server_id);
+    public function setUID(string $unique_id);
+    public function setServerName(string $name);
+    public function setOnline($status);
+    public function setPlatform(string $platform);
+    public function setVersion(string $version);
+    public function setMaxClients(int $maxclients);
+    public function setClientsOnline(int $clientsonline);
+    public function setChannelOnline(int $channelsonline);
+    public function setCreatedTime(int $createdtime);
+    public function setUptime(int $uptime);
+    public function setProperties(TSI_Properties $properties);
 
     //GETTER
-    public function getID();
-    public function getIP();
-    public function getQueryPort();
-    public function getServerAdmin();
-    public function getLastPermImport();
+    public function getInstanceID();
+    public function getServerID();
+    public function getUID();
+    public function getServerName();
+    public function getOnline();
+    public function getPlatform();
+    public function getVersion();
+    public function getMaxClients();
+    public function getClientsOnline();
+    public function getChannelOnline();
+    public function getCreatedTime();
+    public function getUptime();
+    public function getProperties();
+
+    //ANY
+    public function isTeaSpeak();
 }

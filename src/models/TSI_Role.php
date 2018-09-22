@@ -23,22 +23,63 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
+
+use TSI_Client;
 
 class TSI_Role implements TSI_Role_Interface {
+    /**
+     * @var int
+     * @internal
+     */
     private $id = 0;
+
+    /**
+     * @var string
+     * @internal
+     */
     private $name = '';
+
+    /**
+     * @var int
+     * @internal
+     */
     private $level = 0;
+
+    /**
+     * @var string
+     * @internal
+     */
     private $icon = '';
+
+    /**
+     * @var array
+     * @internal
+     */
     private $virtualserver_permissions = [];
+
+    /**
+     * @var array
+     * @internal
+     */
     private $virtualserver_modify = [];
+
+    /**
+     * @var array
+     * @internal
+     */
     private $virtualserver_channel_modify = [];
+
+    /**
+     * @var array
+     * @internal
+     */
     private $tsi_permissions = [];
 
     /**
      * @param int $id
      */
-    public function setID(int $id) {
+    public function setID(int $id): void {
         if(!$id) {
             trigger_error(__CLASS__.' => setID(): ID must be set!', E_USER_WARNING);
             return;
@@ -50,14 +91,15 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @return int
      */
-    public function getID() {
+    public function getID(): int {
         return $this->id;
     }
 
     /**
      * @param string $name
      */
-    public function setName(string $name) {
+    public function setName(string $name): void {
+        $name = trim($name);
         if(empty($name)) {
             trigger_error(__CLASS__.' => setName(): Name must be set!', E_USER_WARNING);
             return;
@@ -69,14 +111,14 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @return string
      */
-    public function getName() {
-        return $this->name;
+    public function getName(): string {
+        return strval($this->name);
     }
 
     /**
      * @param int $level
      */
-    public function setLevel(int $level) {
+    public function setLevel(int $level): void {
         if($level > 100) {
             trigger_error(__CLASS__.' => setLevel(): The level must be less than 100!', E_USER_WARNING);
             return;
@@ -89,28 +131,28 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @return int
      */
-    public function getLevel() {
-        return $this->level;
+    public function getLevel(): int {
+        return (int)$this->level;
     }
 
     /**
      * @param string $icon
      */
-    public function setIcon(string $icon) {
-        $this->icon = $icon;
+    public function setIcon(string $icon): void {
+        $this->icon = trim($icon);
     }
 
     /**
      * @return string
      */
-    public function getIcon() {
-        return $this->icon;
+    public function getIcon(): string {
+        return strval($this->icon);
     }
 
     /**
      * @param array $permissions
      */
-    public function setPermissions(array $permissions) {
+    public function setPermissions(array $permissions): void {
         $this->virtualserver_permissions = $permissions;
     }
 
@@ -118,7 +160,8 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @param bool $granted
      */
-    public function setPermission(string $permission,bool $granted = false) {
+    public function setPermission(string $permission,bool $granted = false): void {
+        $permission = trim($permission);
         if(empty($permission)) {
             trigger_error(__CLASS__.' => getPermission(): Permission must be set!', E_USER_WARNING);
             return;
@@ -141,7 +184,7 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @return bool
      */
-    public function getPermission(string $permission) {
+    public function getPermission(string $permission): bool {
         if(empty($permission)) {
             trigger_error(__CLASS__.' => getPermission(): Permission must be set!', E_USER_WARNING);
             return false;
@@ -170,14 +213,14 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @return array
      */
-    public function getPermissions() {
+    public function getPermissions(): array {
         return $this->virtualserver_permissions;
     }
 
     /**
      * @return array
      */
-    public function getPermissionsList() {
+    public function getPermissionsList(): array {
         $groups = [];
         foreach (TSI_Role_Interface::virtualserver_permissions as $group => $permissionsList) {
             $permissions = [];
@@ -194,7 +237,7 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @param array $modify
      */
-    public function setModifys(array $modify) {
+    public function setModifys(array $modify): void {
         $this->virtualserver_modify = $modify;
     }
 
@@ -202,13 +245,13 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @param bool $granted
      */
-    public function setModify(string $permission,bool $granted = false) {
+    public function setModify(string $permission,bool $granted = false): void {
         if(empty($permission)) {
             trigger_error(__CLASS__.' => setModify(): Permission must be set!', E_USER_WARNING);
             return;
         }
 
-        if(in_array($permission,TSI_Client_Base_Interface::virtualserver_modify)) {
+        if(in_array($permission,TSI_Client\TSI_Client_Base_Interface::virtualserver_modify)) {
             $this->virtualserver_modify[$permission] = ($granted ? 1 : 0);
             return;
         }
@@ -221,13 +264,13 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @return bool
      */
-    public function getModify(string $permission) {
+    public function getModify(string $permission): bool {
         if(empty($permission)) {
             trigger_error(__CLASS__.' => getModify(): Permission must be set!', E_USER_WARNING);
             return false;
         }
 
-        if(in_array($permission,TSI_Client_Base_Interface::virtualserver_modify)) {
+        if(in_array($permission,TSI_Client\TSI_Client_Base_Interface::virtualserver_modify)) {
             if($this->getLevel() === 100)
                 return true;
 
@@ -246,26 +289,26 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @return array
      */
-    public function getModifys() {
-        return $this->virtualserver_modify;
+    public function getModifys(): array {
+        return (array)$this->virtualserver_modify;
     }
 
     /**
      * @return array
      */
-    public function getModifyList() {
+    public function getModifyList(): array {
         $permissions = [];
-        foreach (TSI_Client_Base_Interface::virtualserver_modify as $permission) {
+        foreach (TSI_Client\TSI_Client_Base_Interface::virtualserver_modify as $permission) {
             $permissions[$permission] = TSI_Role_Interface::virtualserver_modify_desc[$permission];
         }
 
-        return $permissions;
+        return (array)$permissions;
     }
 
     /**
      * @param array $channel_modify
      */
-    public function setChannelModifys(array $channel_modify) {
+    public function setChannelModifys(array $channel_modify): void {
         $this->virtualserver_channel_modify = $channel_modify;
     }
 
@@ -273,7 +316,7 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @param bool $granted
      */
-    public function setChannelModify(string $permission,bool $granted = false) {
+    public function setChannelModify(string $permission,bool $granted = false): void {
         if(empty($permission)) {
             trigger_error(__CLASS__.' => getChannelModify(): Permission must be set!', E_USER_WARNING);
             return;
@@ -292,7 +335,7 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @return bool
      */
-    public function getChannelModify(string $permission) {
+    public function getChannelModify(string $permission): bool {
         if(empty($permission)) {
             trigger_error(__CLASS__.' => getChannelModify(): Permission must be set!', E_USER_WARNING);
             return false;
@@ -317,14 +360,14 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @return array
      */
-    public function getChannelModifys() {
+    public function getChannelModifys(): array {
         return $this->virtualserver_channel_modify;
     }
 
     /**
      * @return array
      */
-    public function getChannelModifyList() {
+    public function getChannelModifyList(): array {
         $permissions = [];
         foreach (TSI_Role_Interface::virtualserver_channel_modify as $permission) {
             $permissions[$permission] = TSI_Role_Interface::virtualserver_channel_modify_desc[$permission];
@@ -337,7 +380,8 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @param bool $granted
      */
-    public function setTSIPermission(string $permission,bool $granted = false) {
+    public function setTSIPermission(string $permission,bool $granted = false): void {
+        $permission = trim();
         if(empty($permission)) {
             trigger_error(__CLASS__.' => setTSIPermission(): Permission must be set!', E_USER_WARNING);
             return;
@@ -356,7 +400,7 @@ class TSI_Role implements TSI_Role_Interface {
      * @param string $permission
      * @return bool
      */
-    public function getTSIPermission(string $permission) {
+    public function getTSIPermission(string $permission): bool {
         if(empty($permission)) {
             trigger_error(__CLASS__.' => getTSIPermission(): Permission must be set!', E_USER_WARNING);
             return false;
@@ -382,26 +426,26 @@ class TSI_Role implements TSI_Role_Interface {
     /**
      * @param array $tsi_permissions
      */
-    public function setTSIPermissions(array $tsi_permissions) {
+    public function setTSIPermissions(array $tsi_permissions): void {
         $this->tsi_permissions = $tsi_permissions;
     }
 
     /**
      * @return array
      */
-    public function getTSIPermissions() {
-        return $this->tsi_permissions;
+    public function getTSIPermissions(): array {
+        return (array)$this->tsi_permissions;
     }
 
     /**
      * @return array
      */
-    public function getTSIPermissionsList() {
+    public function getTSIPermissionsList(): array {
         $permissions = [];
         foreach (TSI_Role_Interface::tsi_permissions as $permission) {
             $permissions[$permission] = TSI_Role_Interface::tsi_permissions_desc[$permission];
         }
 
-        return $permissions;
+        return (array)$permissions;
     }
 }

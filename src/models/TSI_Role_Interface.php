@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
 
 interface TSI_Role_Interface {
     const tsi_permissions = [

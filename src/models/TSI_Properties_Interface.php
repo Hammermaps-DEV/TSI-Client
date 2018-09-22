@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_Client\Models;
 
 interface TSI_Properties_Interface {
     //SETTER
