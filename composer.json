@@ -9,13 +9,15 @@
         {
             "name": "Lucas Brucksch",
             "email": "lbrucksch@hammermaps.de",
-            "homepage": "https://hammermaps.de"
+            "homepage": "https://www.hammermaps.de"
         }
     ],
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "ext-json": "*",
+        "ext-curl": "*"
     },
     "autoload": {
-        "psr-4": {"TSIC\\": "src"}
+        "psr-4": {"TSI_Client\\": "src/"}
     }
 }
