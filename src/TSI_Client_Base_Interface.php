@@ -59,7 +59,7 @@ interface TSI_Client_Base_Interface {
     public function setServerUrl(string $url);
     public function setGZIPSupport(bool $gzip);
     public function setSSLOptions(bool $ssl_verifyhost,bool $ssl_verifypeer);
-    public function setCache(string $key,mixed $var,int $ttl);
+    public function setCache(string $key,$var,int $ttl);
     public function setClientCache(bool $cache);
     public function setCacheDir(string $dir);
 
