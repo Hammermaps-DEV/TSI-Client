@@ -94,10 +94,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     /**
      * @var array
      */
-    public $version = [
-        'tsi_main' => [],
-        'modul_ai' => []
-    ];
+    public $version = [];
 
     /**
      * @var string
@@ -110,9 +107,14 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     public $cache_dir = 'cache/';
 
     /**
+     * @var array
+     */
+    private $cache_functions = [];
+
+    /**
      * PHP TSI-Client Version
      */
-    const TSI_CLIENT_VERSION = '1.0.0';
+    const TSI_CLIENT_VERSION = '1.1.0';
 
     /**
      * CURL Agent
@@ -170,8 +172,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
 
         $class = str_replace([__NAMESPACE__,'\\'],'',$class);
         if (file_exists("models/".$class.'.php') &&
-            file_exists("interfaces/".$class."_Interface.php")) {
-            require_once("interfaces/".$class."_Interface.php");
+            file_exists("models/".$class."_Interface.php")) {
+            require_once("models/".$class."_Interface.php");
             require_once("models/".$class.".php");
         }
     }
@@ -211,7 +213,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
      * @return string
      */
     public function getServerUrl() {
-        return $this->server_url;
+        return strval($this->server_url);
     }
 
     /**
@@ -227,7 +229,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
      * @return bool
      */
     public function getGZIPSupport() {
-        return $this->server_gzip;
+        return (bool)$this->server_gzip;
     }
 
     /**
@@ -259,7 +261,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
      * @return bool
      */
     public function getCacheDir() {
-        return $this->cache_dir;
+        return strval($this->cache_dir);
     }
 
     /**
@@ -285,16 +287,16 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
 
     /**
      * @param string $call
-     * @return mixed
+     * @return bool|array
      */
     public function getResponse(string $call = '') {
         if(empty($call)) {
-            $call = $this->lastcall;
+            $call = strval($this->lastcall);
         }
 
         if(!empty($this->server_data['data'][$call]) &&
             array_key_exists($call,$this->server_data['data'])) {
-            return $this->server_data['data'][$call]['response'];
+            return (array)$this->server_data['data'][$call]['response'];
         }
 
         return false;
@@ -304,6 +306,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
      * Processing the response
      * @param string $call
      * @return bool|array
+     * @internal
      */
     public function responseProcessing(string $call = '') {
         if (!extension_loaded('curl')) { return false; }
@@ -474,6 +477,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
             http_build_query($this->http_query));
         curl_setopt($curl,CURLOPT_HEADER, $this->server_gzip);
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 0);
         curl_setopt($curl,CURLOPT_USERAGENT,
             str_replace('{version}',self::TSI_CLIENT_VERSION,self::USER_AGENT));
 
@@ -549,15 +553,30 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
         if(!$this->client_cache)
             return false;
 
-        $hash = md5($key); $data_store = ['data'=>null,'ttl'=>0];
-        if(file_exists($this->cache_dir.$hash.'.cache')) {
-            $gzstream = file_get_contents($this->cache_dir.$hash.'.cache');
-            $serialize_data = gzuncompress($gzstream); unset($gzstream);
-            $data_store = unserialize($serialize_data); unset($serialize_data);
-        }
+        if(!array_key_exists('exist',$this->cache_functions) ||
+            !array_key_exists('read',$this->cache_functions))
+            return false;
 
-        if(!empty($data_store['data']) && $data_store['ttl'] >= time()) {
-            return $data_store['data'];
+        //IS EXIST
+        if(class_exists($this->cache_functions['exist']['class']) &&
+            is_callable([$this->cache_functions['exist']['class'],
+                $this->cache_functions['exist']['method']])) {
+            if(call_user_func_array([$this->cache_functions['exist']['class'],
+                $this->cache_functions['exist']['method']], $key)) {
+                //GET
+                if(class_exists($this->cache_functions['read']['class']) &&
+                    is_callable([$this->cache_functions['read']['class'],
+                        $this->cache_functions['read']['method']])) {
+                    $serialize_data = call_user_func_array([$this->cache_functions['read']['class'],
+                        $this->cache_functions['read']['method']], $key);
+                    $data_store = unserialize($serialize_data); unset($serialize_data);
+                    //For Static file cache
+                    if(!empty($data_store['data']) && $data_store['ttl'] >= time()) {
+                        return $data_store['data'];
+                    }
+                }
+
+            }
         }
 
         return false;
@@ -565,17 +584,52 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
 
     /**
      * @param string $key
-     * @param $var
+     * @param mixed $var
      * @param int $ttl
      * @return bool
      */
-    public function setCache(string $key,$var,int $ttl=60) {
+    public function setCache(string $key, mixed $var,int $ttl=60) {
         if(!$this->client_cache)
             return false;
 
-        $hash = md5($key);
+        if(!array_key_exists('write',$this->cache_functions))
+            return false;
+
         $data_store = serialize(['data' => $var, 'ttl' => (time()+$ttl)]);
-        $data_store = gzcompress($data_store);
-        return (file_put_contents($this->cache_dir.$hash.'.cache',$data_store) >= 1);
+        if(class_exists($this->cache_functions['write']['class']) &&
+            is_callable([$this->cache_functions['write']['class'],
+                $this->cache_functions['write']['method']]))
+        return call_user_func_array([$this->cache_functions['write']['class'],
+            $this->cache_functions['write']['method']], [$key,$data_store,$ttl]);
+    }
+
+    /**
+     * @param string $class
+     * @param string $method
+     * @api
+     */
+    public function registerCacheWrite(string $class, string $method) {
+        $this->cache_functions['write']['class'] = trim($class);
+        $this->cache_functions['write']['method'] = trim($method);
+    }
+
+    /**
+     * @param string $class
+     * @param string $method
+     * @api
+     */
+    public function registerCacheRead(string $class, string $method) {
+        $this->cache_functions['read']['class'] = trim($class);
+        $this->cache_functions['read']['method'] = trim($method);
+    }
+
+    /**
+     * @param string $class
+     * @param string $method
+     * @api
+     */
+    public function registerCacheExist(string $class, string $method) {
+        $this->cache_functions['exist']['class'] = trim($class);
+        $this->cache_functions['exist']['method'] = trim($method);
     }
 }
