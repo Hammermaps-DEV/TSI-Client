@@ -84,7 +84,11 @@ interface TSI_Client_Base_Interface {
     public function debugAllIndexes(bool $PrintOutput);
 
     //REGISTER
-    public function registerCacheWrite(string $class,string $method);
-    public function registerCacheRead(string $class,string $method);
-    public function registerCacheExist(string $class,string $method);
+    public function setRegisterCacheWrite(string $class,string $method);
+    public function setRegisterCacheRead(string $class,string $method);
+    public function setRegisterCacheExist(string $class,string $method);
+
+    public function getRegisterCacheWrite();
+    public function getRegisterCacheRead();
+    public function getRegisterCacheExist();
 }

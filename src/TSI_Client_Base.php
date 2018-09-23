@@ -132,7 +132,20 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @var array
      * @internal
      */
-    private $cache_functions = [];
+    private $cache_functions = [
+        'write' => [
+            'class' => '',
+            'method' => ''
+        ],
+        'read' => [
+            'class' => '',
+            'method' => ''
+        ],
+        'exist' => [
+            'class' => '',
+            'method' => ''
+        ]
+    ];
 
     /**
      * PHP TSI-Client Branches
@@ -611,6 +624,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
     /**
      * @param bool $responseProcessing
+     * @throws \Exception
      */
     public function Exec(bool $responseProcessing = true) {
         if (!extension_loaded('curl')) { return; }
@@ -673,6 +687,12 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             !array_key_exists('read',$this->cache_functions))
             return false;
 
+        if(!array_key_exists('class',$this->cache_functions['exist']) ||
+            !array_key_exists('method',$this->cache_functions['exist']) ||
+            !array_key_exists('class',$this->cache_functions['read']) ||
+            !array_key_exists('method',$this->cache_functions['read']))
+            return false;
+
         //IS EXIST
         if(class_exists($this->cache_functions['exist']['class']) &&
             is_callable([$this->cache_functions['exist']['class'],
@@ -712,6 +732,10 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         if(!array_key_exists('write',$this->cache_functions))
             return false;
 
+        if(!array_key_exists('class',$this->cache_functions['write']) ||
+            !array_key_exists('method',$this->cache_functions['write']))
+            return false;
+
         $data_store = serialize(['data' => $var, 'ttl' => (time()+$ttl)]);
         if(class_exists($this->cache_functions['write']['class']) &&
             is_callable([$this->cache_functions['write']['class'],
@@ -730,9 +754,16 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $method
      * @api
      */
-    public function registerCacheWrite(string $class, string $method) {
+    public function setRegisterCacheWrite(string $class, string $method) {
         $this->cache_functions['write']['class'] = trim($class);
         $this->cache_functions['write']['method'] = trim($method);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisterCacheWrite() {
+        return $this->cache_functions['write'];
     }
 
     /**
@@ -743,9 +774,16 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $method
      * @api
      */
-    public function registerCacheRead(string $class, string $method) {
+    public function setRegisterCacheRead(string $class, string $method) {
         $this->cache_functions['read']['class'] = trim($class);
         $this->cache_functions['read']['method'] = trim($method);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisterCacheRead() {
+        return $this->cache_functions['read'];
     }
 
     /**
@@ -756,9 +794,16 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $method
      * @api
      */
-    public function registerCacheExist(string $class, string $method) {
+    public function setRegisterCacheExist(string $class, string $method) {
         $this->cache_functions['exist']['class'] = trim($class);
         $this->cache_functions['exist']['method'] = trim($method);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisterCacheExist() {
+        return $this->cache_functions['exist'];
     }
 
     /**
