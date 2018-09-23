@@ -114,7 +114,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     /**
      * PHP TSI-Client Version
      */
-    const TSI_CLIENT_VERSION = '1.1.0';
+    const TSI_CLIENT_VERSION = '1.0.2';
 
     /**
      * CURL Agent
