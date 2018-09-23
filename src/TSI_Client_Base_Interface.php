@@ -61,6 +61,7 @@ interface TSI_Client_Base_Interface {
     public function setSSLOptions(bool $ssl_verifyhost,bool $ssl_verifypeer);
     public function setCache(string $key,$var,int $ttl);
     public function setClientCache(bool $cache);
+    public function setProxyServer(string $ip,int $port,string $username,string $password);
 
     //GETTER
     public function getKeys();
@@ -70,6 +71,7 @@ interface TSI_Client_Base_Interface {
     public function getResponse(string $call);
     public function getCache(string $key);
     public function getClientCache();
+    public function getProxyServer();
 
     //FUNCTIONS
     public function autoload(string $class);

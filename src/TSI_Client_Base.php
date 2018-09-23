@@ -28,63 +28,86 @@ namespace TSI_Client;
 abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @var null|resource
+     * @internal
      */
-    public $curl_multi = null;
+    private $curl_multi = null;
 
     /**
      * @var string
+     * @internal
      */
-    public $client_key = '';
+    private $client_key = '';
 
     /**
      * @var string
+     * @internal
      */
-    public $secret_key = '';
+    private $secret_key = '';
 
     /**
      * @var array
+     * @internal
      */
-    public $curl_handles = [];
+    private $curl_handles = [];
 
     /**
      * @var array
+     * @internal
      */
-    public $curl_config = [];
+    private $curl_config = [];
+
+    /**
+     * @var array
+     * @internal
+     */
+    private $curl_proxy = [
+        'ip' => '',
+        'port' => 0,
+        'user' => '',
+        'passwd' => ''
+    ];
 
     /**
      * @var bool
+     * @internal
      */
-    public $ssl_verifyhost = false;
+    private $ssl_verifyhost = false;
 
     /**
      * @var bool
+     * @internal
      */
-    public $ssl_verifypeer = false;
+    private $ssl_verifypeer = false;
 
     /**
      * @var string
+     * @internal
      */
-    public $server_url = '';
+    private $server_url = '';
 
     /**
      * @var array
+     * @internal
      */
-    public $http_query = [];
+    private $http_query = [];
 
     /**
      * @var bool
+     * @internal
      */
     private $server_gzip = true;
 
     /**
      * @var bool
+     * @internal
      */
-    public $client_cache = true;
+    private $client_cache = true;
 
     /**
      * @var array
+     * @internal
      */
-    public $server_data = [
+    private $server_data = [
         'query'=>[],
         'input'=>[],
         'data'=>[],
@@ -100,12 +123,14 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
     /**
      * @var string
+     * @internal
      */
-    public $lastcall = '';
+    private $lastcall = '';
 
     /**
      * Array of static cache methods
      * @var array
+     * @internal
      */
     private $cache_functions = [];
 
@@ -123,7 +148,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * PHP TSI-Client Version
      * @var string
      */
-    const TSI_CLIENT_VERSION = '1.0.2';
+    const TSI_CLIENT_VERSION = '1.0.3';
 
     /**
      * CURL Agent
@@ -283,6 +308,28 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             'ssl_verifyhost'=>$this->ssl_verifyhost,
             'ssl_verifypeer'=>$this->ssl_verifypeer
         ];
+    }
+
+    /**
+     * Set the Proxy-Server for CURL Requests
+     * @param string $ip
+     * @param int $port
+     * @param string $username
+     * @param string $password
+     */
+    public function setProxyServer(string $ip='',int $port=8080,string $username='',string $password='') {
+        $this->curl_proxy['ip'] = trim($ip);
+        $this->curl_proxy['port'] = (int)$port;
+        $this->curl_proxy['user'] = trim($username);
+        $this->curl_proxy['passwd'] = trim($password);
+    }
+
+    /**
+     * Give the Proxy-Server config for CURL Requests
+     * @return array
+     */
+    public function getProxyServer() {
+        return $this->curl_proxy;
     }
 
     /**
@@ -473,18 +520,28 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         if (!extension_loaded('curl')) { return; }
 
         $use_url = !empty($url);
-        $url = !empty($url) ? $url : $this->server_url.'/?'.
+        $this->http_query['action'] = trim($call);
+        $url = $use_url ? $url : $this->server_url.'/?'.
             http_build_query($this->http_query);
 
         $curl = curl_init();
-        $this->http_query['action'] = trim($call);
         curl_setopt($curl,CURLOPT_URL, $url);
-        curl_setopt($curl,CURLOPT_HEADER, $this->server_gzip || !$use_url);
+        curl_setopt($curl,CURLOPT_HEADER, ($this->server_gzip || $use_url));
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 0);
         curl_setopt($curl,CURLOPT_TIMEOUT, 20);
         curl_setopt($curl,CURLOPT_USERAGENT,
             str_replace('{version}',self::TSI_CLIENT_VERSION,self::USER_AGENT));
+
+        //set proxy config
+        if(!empty($this->curl_proxy['ip']) && $this->curl_proxy['port'] >= 1) {
+            curl_setopt($curl, CURLOPT_PROXY, $this->curl_proxy['ip']);
+            curl_setopt($curl, CURLOPT_PROXYPORT, $this->curl_proxy['port']);
+            if(!empty($this->curl_proxy['user']) && !empty($this->curl_proxy['passwd'])) {
+                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                curl_setopt($curl, CURLOPT_PROXYUSERPWD, $this->curl_proxy['user'] . ':' . $this->curl_proxy['passwd']);
+            }
+        }
 
         //only on SSL connection
         if (strpos($url, 'https') !== false) {
@@ -502,7 +559,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             curl_setopt($curl, CURLOPT_ENCODING, "gzip,deflate");
         }
 
-        if(count(array_merge($client_secret_keys,$post))) {
+        if(count(array_merge($client_secret_keys,$post)) >= 1) {
             curl_setopt($curl,CURLOPT_POST, true);
             curl_setopt($curl,CURLOPT_POSTFIELDS,
                 http_build_query(array_merge($client_secret_keys,$post)));
@@ -611,8 +668,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         if(class_exists($this->cache_functions['write']['class']) &&
             is_callable([$this->cache_functions['write']['class'],
                 $this->cache_functions['write']['method']]))
-        return call_user_func_array([$this->cache_functions['write']['class'],
-            $this->cache_functions['write']['method']], [$key,$data_store,$ttl]);
+            return call_user_func_array([$this->cache_functions['write']['class'],
+                $this->cache_functions['write']['method']], [$key,$data_store,$ttl]);
 
         return false;
     }

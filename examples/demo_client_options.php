@@ -28,6 +28,9 @@ $client->setKeys(
 
 $client->setServerUrl('https://meine_domain.de'); //Server URL
 
+//Soll ein Proxy-Server verwendet werden
+$client->setProxyServer('123.123.123.123',9000, 'username', 'password');
+
 //Soll die Verbindung (wenn möglich) mit GZIP komprimiert werden? [ Ist standardmäßig aktiviert ]
 $client->setGZIPSupport(true); // true || false
 
