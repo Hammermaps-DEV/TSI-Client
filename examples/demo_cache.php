@@ -3,6 +3,45 @@
 //Include Client
 include_once ("../TSI_Client.php");
 
+/****
+ * Test Cache Class
+ */
+class cache {
+    public static function set($key,$data,$ttl) {
+        $array = [
+            'ttl' => (time() + $ttl),
+            'data' => $data
+        ];
+
+        $stream = gzcompress(json_encode($array));
+        file_put_contents(md5($key).'.cache',$stream);
+    }
+
+    public static function get($key) {
+        if(file_exists(md5($key).'.cache')) {
+            $stream = file_get_contents(md5($key).'.cache');
+            $json = json_decode(gzuncompress($stream),true);
+            if($json['ttl'] >= time()) {
+                return $json['data'];
+            }
+        }
+
+        return false;
+    }
+
+    public static function exists($key) {
+        if(file_exists(md5($key).'.cache')) {
+            $stream = file_get_contents(md5($key).'.cache');
+            $json = json_decode(gzuncompress($stream),true);
+            if($json['ttl'] >= time()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
 /**
  * ###################################################################################
  * Übersicht über die Methoden die einem Objekt zur Verfügung stehen
@@ -23,6 +62,11 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', //Dein Client-Key sehe "API Zugänge"
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
+
+//Register Cache
+$client->registerCacheWrite('cache','set');
+$client->registerCacheExist('cache','exists');
+$client->registerCacheRead('cache','get');
 
 echo 'Version des API Interface Moduls ohne Cache: '.$client->getAddonVersion('modul_ai',0)['version'];
 echo '<br>';
