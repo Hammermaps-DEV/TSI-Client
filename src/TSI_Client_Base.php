@@ -246,7 +246,12 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $url
      */
     public function setServerUrl(string $url = 'http://localhost') {
-        $this->server_url = $url;
+        $url = filter_var($url, FILTER_SANITIZE_URL);
+        if(filter_var($url, FILTER_VALIDATE_URL)) {
+            $this->server_url = $url;
+        } else {
+            trigger_error(__CLASS__ . ' => setServerUrl(): "' . $url . '" is not a valid URL!', E_USER_WARNING);
+        }
     }
 
     /**
@@ -435,7 +440,28 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
                     if($data = $this->checkJSON($this->server_data['json']['versionsGet'])) {
                         $this->server_data['data']['versionsGet'] = $data; unset($data);
-                        if($this->server_data['data']['versionsGet']['valid']) {
+                        if($this->server_data['data']['versionsGet']['valid'] &&
+                            array_key_exists('response',$this->server_data['data']['versionsGet'])) {
+                            //Null check
+                            $modules = [];
+                            foreach ($this->server_data['data']['versionsGet']['response'] as $key => $data) {
+                                $new_data = [];
+                                foreach ($data as $dkey => $dd) {
+                                    if($dkey == 'last_update' && is_null($dd)) {
+                                        $dd = [
+                                            'date' => '',
+                                            'timezone_type' => 0,
+                                            'timezone' => '',
+                                        ];
+                                    }
+                                    $new_data[$dkey] = $dd;
+                                }
+
+                                $modules[$key] = $new_data;
+                            }
+                            $this->server_data['data']['versionsGet']['response'] = $modules;
+                            unset($modules);
+
                             if(count($this->server_data['data']['versionsGet']['response']) &&
                                 array_key_exists('modul_ai',$this->server_data['data']['versionsGet']['response'])) {
                                 foreach ($this->server_data['data']['versionsGet']['response'] as $key => $var) {
@@ -535,11 +561,15 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
         //set proxy config
         if(!empty($this->curl_proxy['ip']) && $this->curl_proxy['port'] >= 1) {
-            curl_setopt($curl, CURLOPT_PROXY, $this->curl_proxy['ip']);
-            curl_setopt($curl, CURLOPT_PROXYPORT, $this->curl_proxy['port']);
-            if(!empty($this->curl_proxy['user']) && !empty($this->curl_proxy['passwd'])) {
-                curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                curl_setopt($curl, CURLOPT_PROXYUSERPWD, $this->curl_proxy['user'] . ':' . $this->curl_proxy['passwd']);
+            if(filter_var($this->curl_proxy['ip'], FILTER_VALIDATE_IP)) {
+                curl_setopt($curl, CURLOPT_PROXY, $this->curl_proxy['ip']);
+                curl_setopt($curl, CURLOPT_PROXYPORT, $this->curl_proxy['port']);
+                if(!empty($this->curl_proxy['user']) && !empty($this->curl_proxy['passwd'])) {
+                    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                    curl_setopt($curl, CURLOPT_PROXYUSERPWD, $this->curl_proxy['user'] . ':' . $this->curl_proxy['passwd']);
+                }
+            } else {
+                trigger_error(__CLASS__.' => insertCall():Proxy-Server IP is not a valid IP address!', E_USER_WARNING);
             }
         }
 
@@ -570,7 +600,10 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             throw new \Exception(__CLASS__.": "."Curl handle for ".$url." could not be added");
         }
         $this->curl_handles[$call] = $curl;
-        $this->curl_config[$call] = ['gzip'=>$this->server_gzip];
+        $this->curl_config[$call] = [
+            'gzip'=>$this->server_gzip,
+            'time'=>microtime(true)
+        ];
         $this->server_data['query'][$call] = $url;
         $this->server_data['input'][$call] = $post;
         $this->lastcall = $call;
@@ -581,14 +614,16 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     public function Exec(bool $responseProcessing = true) {
         if (!extension_loaded('curl')) { return; }
+        $active = null;
         do {
-            $status = curl_multi_exec($this->curl_multi, $active);
-        } while ($status === CURLM_CALL_MULTI_PERFORM || $active);
+            $mrc = curl_multi_exec($this->curl_multi, $active);
+        } while ($mrc == CURLM_CALL_MULTI_PERFORM || $active);
 
         foreach ($this->curl_handles as $i => $url) {
             $this->server_data['json'][$i] = curl_multi_getcontent($this->curl_handles[$i]);
-            $this->server_data['http_status_code'][$i] = curl_getinfo($this->curl_handles[$i], CURLINFO_HTTP_CODE);
-            if($this->server_data['http_status_code'][$i] == 200) {
+            $this->server_data['http_status_code'][$i]['code'] = curl_getinfo($this->curl_handles[$i], CURLINFO_HTTP_CODE);
+            curl_multi_remove_handle($this->curl_multi, $this->curl_handles[$i]); //remove
+            if ($this->server_data['http_status_code'][$i]['code'] == 200) {
                 if ($this->curl_config[$i]['gzip']) {
                     $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$i], 2);
                     while (!strncmp($sections[1], 'HTTP/', 5)) {
@@ -602,21 +637,27 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                     }
                 }
 
-                if($responseProcessing) {
+                if ($responseProcessing) {
                     $this->responseProcessing($i); //processing data
                 }
+
+                //execution time
+                $this->server_data['http_status_code'][$i]['execution_time'] =
+                    (microtime(true) - $this->curl_config[$i]['time']);
             }
 
             curl_close($this->curl_handles[$i]);
-            unset($this->curl_handles[$i],$this->curl_config[$i]);
+            unset($this->curl_handles[$i], $this->curl_config[$i]);
         }
 
+        curl_multi_close($this->curl_multi);
         $this->curl_multi = curl_multi_init();
     }
 
     /**
      * @param string $key
      * @return bool|mixed
+     * @internal
      */
     public function getCache(string $key) {
         if(!$this->client_cache)
@@ -656,6 +697,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param mixed $var
      * @param int $ttl
      * @return bool
+     * @internal
      */
     public function setCache(string $key,$var,int $ttl=60) {
         if(!$this->client_cache)
@@ -675,6 +717,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     }
 
     /**
+     * Register a static Write-Cache function
+     * Register: $client->registerCacheWrite('cache','set');
+     * Cache function: public static function set($key,$data,$ttl);
      * @param string $class
      * @param string $method
      * @api
@@ -685,6 +730,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     }
 
     /**
+     * Register a static Read-Cache function
+     * Register: $client->registerCacheWrite('cache','get');
+     * Cache function: public static function get($key);
      * @param string $class
      * @param string $method
      * @api
@@ -695,6 +743,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     }
 
     /**
+     * Register a static Is-Exist-Cache function
+     * Register: $client->registerCacheWrite('cache','exists');
+     * Cache function: public static function exists($key);
      * @param string $class
      * @param string $method
      * @api
@@ -769,8 +820,6 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         $msg .= print_r($this->server_data['json'],true);
         $msg .= '<br>############### Server - HTTP-Status ##################<br>';
         $msg .= print_r($this->server_data['http_status_code'],true);
-        $msg .= '<br>################### CURL - Config #####################<br>';
-        $msg .= print_r($this->curl_config,true);
         $msg .= '<br>################# Server - Versions ###################<br>';
         $msg .= print_r($this->version,true);
         $msg .= '<br>################# Cache - Functions ###################<br>';

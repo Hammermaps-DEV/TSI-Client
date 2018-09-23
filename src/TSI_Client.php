@@ -28,6 +28,24 @@ namespace TSI_Client;
 use TSI_Client\Models;
 
 class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
+
+    /**
+     * TSI_Client constructor.
+     * @param string $server_url
+     * @param string $client_key
+     * @param string $secret_key
+     */
+     function __construct(string $server_url = '', string $client_key = '', string $secret_key = '') {
+         parent::__construct($server_url, $client_key, $secret_key);
+     }
+
+    /**
+     * TSI_Client deconstruct.
+     */
+     function __destruct() {
+         parent::__destruct();
+     }
+
     /**
      * Shows the version of Teamspeak Interface
      * @param int $cache
