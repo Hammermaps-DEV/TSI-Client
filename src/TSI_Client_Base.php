@@ -601,6 +601,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
                 $this->cache_functions['write']['method']]))
         return call_user_func_array([$this->cache_functions['write']['class'],
             $this->cache_functions['write']['method']], [$key,$data_store,$ttl]);
+
+        return false;
     }
 
     /**
