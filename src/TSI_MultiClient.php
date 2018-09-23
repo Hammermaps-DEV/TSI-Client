@@ -23,9 +23,10 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_MultiClient;
 
 use TSI_Client\Models;
+use TSI_Client\TSI_Client;
 
 class TSI_MultiClient extends TSI_Client implements TSI_MultiClient_Interface {
     /**
@@ -70,4 +71,58 @@ class TSI_MultiClient extends TSI_Client implements TSI_MultiClient_Interface {
          parent::__destruct();
      }
 
+    /**
+     * Give a TSI User Profile
+     * @param int $user_id
+     * @return Models\TSI_User|bool
+     * @throws \Exception
+     */
+    public function getTSIUser(int $user_id) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => getTSIUser(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(!$user_id) {
+            trigger_error(__CLASS__.' => getTSIUser(): User ID must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $this->insertCall('userGet',['id'=>$user_id]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data) {
+            trigger_error(__CLASS__.' => getTSIUser(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        if(count($data) <= 9) {
+            trigger_error(__CLASS__.' => getTSIUser(): response is empty or has invalid result!', E_USER_WARNING);
+            return false;
+        }
+
+        $user = new Models\TSI_User(true);
+        $user->setUserID((int)$data['id']);
+        $user->setResellerID((int)$data['reseller_id']);
+        $user->setRoleID((int)$data['group_id']);
+        $user->setUsername(html_entity_decode($data['username']));
+        $user->setFirstName(html_entity_decode($data['first_name']));
+        $user->setLastName(html_entity_decode($data['last_name']));
+        $user->setEmail(html_entity_decode($data['email']));
+        $user->setQueryNickname(html_entity_decode($data['query_nickname']));
+        $user->setLanguage(html_entity_decode($data['lang']));
+        $user->setFixedVMs($data['fixed_virtual_servers']);
+        $user->setMaxSlotsVMs((int)$data['max_slots_per_virtualservers']);
+        $user->setRegDateArray($data['reg_date']);
+        $user->setActive(($data['active'] ? true : false));
+        $user->setIcon(html_entity_decode($data['icon_pkg']));
+        unset($data);
+
+        return $user;
+    }
 }

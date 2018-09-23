@@ -23,8 +23,10 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client;
+namespace TSI_MultiClient;
+
+use TSI_Client\TSI_Client_Interface;
 
 interface TSI_MultiClient_Interface extends TSI_Client_Interface {
-
+    public function getTSIUser(int $user_id);
 }
