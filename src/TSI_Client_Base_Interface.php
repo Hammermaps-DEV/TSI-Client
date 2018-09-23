@@ -61,7 +61,6 @@ interface TSI_Client_Base_Interface {
     public function setSSLOptions(bool $ssl_verifyhost,bool $ssl_verifypeer);
     public function setCache(string $key,$var,int $ttl);
     public function setClientCache(bool $cache);
-    public function setCacheDir(string $dir);
 
     //GETTER
     public function getKeys();
@@ -71,15 +70,16 @@ interface TSI_Client_Base_Interface {
     public function getResponse(string $call);
     public function getCache(string $key);
     public function getClientCache();
-    public function getCacheDir();
 
     //FUNCTIONS
     public function autoload(string $class);
     public function responseProcessing(string $call);
     public function checkAPI(bool $recache,int $cache);
     public function checkJSON(string $json);
-    public function insertCall(string $call,array $post);
-    public function Exec();
+    public function insertCall(string $call,array $post,string $url);
+    public function Exec(bool $responseProcessing);
+    public function apiIsActual(int $cache);
+    public function debugAllIndexes(bool $PrintOutput);
 
     //REGISTER
     public function registerCacheWrite(string $class,string $method);

@@ -35,6 +35,8 @@ echo 'Version: '.$version_tsi['version'];
 echo '<br>';
 echo 'Letztes Update: '.$version_tsi['last_update'];
 echo '<br>';
+echo 'Ist der TSI-Client aktuell: '.($client->apiIsActual() ? 'JA' : 'NEIN');
+echo '<br>';
 
 /**
  * array (size=6)

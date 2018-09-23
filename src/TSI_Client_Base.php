@@ -25,8 +25,7 @@
 
 namespace TSI_Client;
 
-abstract class TSI_Client_Base implements TSI_Client_Base_Interface
-{
+abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @var null|resource
      */
@@ -75,7 +74,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     /**
      * @var bool
      */
-    public $server_gzip = true;
+    private $server_gzip = true;
 
     /**
      * @var bool
@@ -88,10 +87,13 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     public $server_data = [
         'query'=>[],
         'input'=>[],
-        'data'=>[]
+        'data'=>[],
+        'json'=>[],
+        'http_status_code'=>[]
     ];
 
     /**
+     * Array of TSI-Core & TSI-Module
      * @var array
      */
     public $version = [];
@@ -102,24 +104,38 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     public $lastcall = '';
 
     /**
-     * @var bool
-     */
-    public $cache_dir = 'cache/';
-
-    /**
+     * Array of static cache methods
      * @var array
      */
     private $cache_functions = [];
 
     /**
+     * PHP TSI-Client Branches
+     * @var array
+     */
+    const TSI_CLIENT_BRANCHES = [
+        'final' => false,
+        'beta' => false,
+        'master' => true
+    ];
+
+    /**
      * PHP TSI-Client Version
+     * @var string
      */
     const TSI_CLIENT_VERSION = '1.0.2';
 
     /**
      * CURL Agent
+     * @var string
      */
     const USER_AGENT = 'PHP-TSI-Client-V{version}';
+
+    /**
+     * PHP TSI-Client Version check url
+     * @var string
+     */
+    const TSI_CLIENT_UPDATE_URL = 'https://raw.githubusercontent.com/Hammermaps-DEV/TSI-Client/{branch}/version';
 
     /**
      * TSI_Client constructor.
@@ -246,22 +262,6 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
      */
     public function getClientCache() {
         return $this->client_cache;
-    }
-
-    /**
-     * Set dir for cache files
-     * @param string $dir
-     */
-    public function setCacheDir(string $dir) {
-        $this->cache_dir = $dir;
-    }
-
-    /**
-     * Get dir of cache files
-     * @return bool
-     */
-    public function getCacheDir() {
-        return strval($this->cache_dir);
     }
 
     /**
@@ -466,53 +466,63 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     /**
      * @param string $call
      * @param array $post
+     * @param string $url
      * @throws \Exception
      */
-    public function insertCall(string $call,array $post=[]) {
+    public function insertCall(string $call,array $post=[],string $url = '') {
         if (!extension_loaded('curl')) { return; }
+
+        $use_url = !empty($url);
+        $url = !empty($url) ? $url : $this->server_url.'/?'.
+            http_build_query($this->http_query);
 
         $curl = curl_init();
         $this->http_query['action'] = trim($call);
-        curl_setopt($curl, CURLOPT_URL, $this->server_url.'/?'.
-            http_build_query($this->http_query));
-        curl_setopt($curl,CURLOPT_HEADER, $this->server_gzip);
+        curl_setopt($curl,CURLOPT_URL, $url);
+        curl_setopt($curl,CURLOPT_HEADER, $this->server_gzip || !$use_url);
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 0);
+        curl_setopt($curl,CURLOPT_TIMEOUT, 20);
         curl_setopt($curl,CURLOPT_USERAGENT,
             str_replace('{version}',self::TSI_CLIENT_VERSION,self::USER_AGENT));
 
         //only on SSL connection
-        if (strpos($this->server_url, 'https') !== false) {
+        if (strpos($url, 'https') !== false) {
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $this->ssl_verifyhost);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
         }
 
-        $client_secret_keys = [
-            'client' => $this->client_key,
-            'secret' => $this->secret_key
-        ];
+        $client_secret_keys = [];
+        if(!$use_url) {
+            $client_secret_keys['client'] = $this->client_key;
+            $client_secret_keys['secret'] = $this->secret_key;
+        }
 
         if($this->server_gzip) {
             curl_setopt($curl, CURLOPT_ENCODING, "gzip,deflate");
         }
 
-        curl_setopt($curl,CURLOPT_POST, true);
-        curl_setopt($curl,CURLOPT_POSTFIELDS,
-            http_build_query(array_merge($client_secret_keys,$post)));
+        if(count(array_merge($client_secret_keys,$post))) {
+            curl_setopt($curl,CURLOPT_POST, true);
+            curl_setopt($curl,CURLOPT_POSTFIELDS,
+                http_build_query(array_merge($client_secret_keys,$post)));
+        }
+
         $code = \curl_multi_add_handle($this->curl_multi,$curl);
         if ($code != CURLM_OK) {
-            throw new \Exception(__CLASS__.": "."Curl handle for ".$this->server_url.'/?'.
-                http_build_query($this->http_query)." could not be added");
+            throw new \Exception(__CLASS__.": "."Curl handle for ".$url." could not be added");
         }
         $this->curl_handles[$call] = $curl;
         $this->curl_config[$call] = ['gzip'=>$this->server_gzip];
-        $this->server_data['query'][$call] = $this->server_url.'/?'.
-            http_build_query($this->http_query);
+        $this->server_data['query'][$call] = $url;
         $this->server_data['input'][$call] = $post;
         $this->lastcall = $call;
     }
 
-    public function Exec() {
+    /**
+     * @param bool $responseProcessing
+     */
+    public function Exec(bool $responseProcessing = true) {
         if (!extension_loaded('curl')) { return; }
         do {
             $status = curl_multi_exec($this->curl_multi, $active);
@@ -535,7 +545,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
                     }
                 }
 
-                $this->responseProcessing($i); //processing data
+                if($responseProcessing) {
+                    $this->responseProcessing($i); //processing data
+                }
             }
 
             curl_close($this->curl_handles[$i]);
@@ -633,5 +645,85 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
     public function registerCacheExist(string $class, string $method) {
         $this->cache_functions['exist']['class'] = trim($class);
         $this->cache_functions['exist']['method'] = trim($method);
+    }
+
+    /**
+     * Check is TSI-API Class UpToDate
+     * @param int $cache
+     * @return bool
+     * @throws \Exception
+     */
+    public function apiIsActual(int $cache = 30) {
+        if($cache >= 1 && ($cache_data = $this->getCache('apiIsActual'))) {
+            return $cache_data['status'];
+        }
+
+        $hasBranch = false; $url = '';
+        foreach (self::TSI_CLIENT_BRANCHES as $branch => $enabled) {
+            if($enabled) {
+                $url = str_replace('{branch}', $branch, self::TSI_CLIENT_UPDATE_URL);
+                $hasBranch = true;
+                break;
+            }
+        }
+
+        if($hasBranch) {
+            $this->insertCall('tsiVersion',[],$url);
+            $this->Exec(false);
+            if(array_key_exists('tsiVersion',$this->server_data['json'])) {
+                if(!empty($this->server_data['json']['tsiVersion'])) {
+                    if(version_compare( self::TSI_CLIENT_VERSION, $this->server_data['json']['tsiVersion'], '<')) {
+                        if ($cache >= 1) {
+                            $this->setCache('apiIsActual', ['status'=>false], $cache);
+                        }
+
+                        return false;
+                    }
+
+                    if ($cache >= 1) {
+                        $this->setCache('apiIsActual', ['status'=>true], $cache);
+                    }
+
+                    return true;
+                }
+            }
+
+            trigger_error(__CLASS__.' => apiIsActual(): response is empty or has invalid result!', E_USER_WARNING);
+            return true;
+        }
+
+        trigger_error(__CLASS__.' => apiIsActual(): no active branch!', E_USER_WARNING);
+        return true;
+    }
+
+    /**
+     * @param bool $PrintOutput
+     * @return string
+     */
+    public function debugAllIndexes(bool $PrintOutput = true) {
+        $msg = '';
+        $msg .= '<br>################### Server - Query ####################<br>';
+        $msg .= print_r($this->server_data['query'],true);
+        $msg .= '<br>################### Server - Input ####################<br>';
+        $msg .= print_r($this->server_data['input'],true);
+        $msg .= '<br>################### Server - Data #####################<br>';
+        $msg .= print_r($this->server_data['data'],true);
+        $msg .= '<br>################### Server - Json #####################<br>';
+        $msg .= print_r($this->server_data['json'],true);
+        $msg .= '<br>############### Server - HTTP-Status ##################<br>';
+        $msg .= print_r($this->server_data['http_status_code'],true);
+        $msg .= '<br>################### CURL - Config #####################<br>';
+        $msg .= print_r($this->curl_config,true);
+        $msg .= '<br>################# Server - Versions ###################<br>';
+        $msg .= print_r($this->version,true);
+        $msg .= '<br>################# Cache - Functions ###################<br>';
+        $msg .= print_r($this->cache_functions,true);
+        if($PrintOutput) {
+            echo '<pre>';
+            print_r($msg);
+            echo '</pre>';
+        } else {
+            return $msg;
+        }
     }
 }
