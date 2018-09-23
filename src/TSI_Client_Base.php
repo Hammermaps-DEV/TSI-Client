@@ -562,13 +562,13 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface
             is_callable([$this->cache_functions['exist']['class'],
                 $this->cache_functions['exist']['method']])) {
             if(call_user_func_array([$this->cache_functions['exist']['class'],
-                $this->cache_functions['exist']['method']], $key)) {
+                $this->cache_functions['exist']['method']], [$key])) {
                 //GET
                 if(class_exists($this->cache_functions['read']['class']) &&
                     is_callable([$this->cache_functions['read']['class'],
                         $this->cache_functions['read']['method']])) {
                     $serialize_data = call_user_func_array([$this->cache_functions['read']['class'],
-                        $this->cache_functions['read']['method']], $key);
+                        $this->cache_functions['read']['method']], [$key]);
                     $data_store = unserialize($serialize_data); unset($serialize_data);
                     //For Static file cache
                     if(!empty($data_store['data']) && $data_store['ttl'] >= time()) {
