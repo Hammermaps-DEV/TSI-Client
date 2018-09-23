@@ -693,6 +693,10 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             !array_key_exists('method',$this->cache_functions['read']))
             return false;
 
+        if(empty($this->cache_functions['exist']['method']) ||
+            $this->cache_functions['read']['method'])
+            return false;
+
         //IS EXIST
         if(class_exists($this->cache_functions['exist']['class']) &&
             is_callable([$this->cache_functions['exist']['class'],
@@ -734,6 +738,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
         if(!array_key_exists('class',$this->cache_functions['write']) ||
             !array_key_exists('method',$this->cache_functions['write']))
+            return false;
+
+        if(empty($this->cache_functions['write']['method']))
             return false;
 
         $data_store = serialize(['data' => $var, 'ttl' => (time()+$ttl)]);
