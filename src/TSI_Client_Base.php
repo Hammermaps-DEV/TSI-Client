@@ -651,6 +651,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                 curl_close($this->curl_handles[$i]);
                 unset($this->curl_handles[$i], $this->curl_config[$i]);
             }
+        } else {
+            throw new \Exception(__CLASS__.": "."cURL-Multi-Handle error!");
+            return;
         }
 
         curl_multi_close($this->curl_multi);
