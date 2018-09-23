@@ -619,35 +619,38 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             $mrc = curl_multi_exec($this->curl_multi, $active);
         } while ($mrc == CURLM_CALL_MULTI_PERFORM || $active);
 
-        foreach ($this->curl_handles as $i => $url) {
-            $this->server_data['json'][$i] = curl_multi_getcontent($this->curl_handles[$i]);
-            $this->server_data['http_status_code'][$i]['code'] = curl_getinfo($this->curl_handles[$i], CURLINFO_HTTP_CODE);
-            curl_multi_remove_handle($this->curl_multi, $this->curl_handles[$i]); //remove
-            if ($this->server_data['http_status_code'][$i]['code'] == 200) {
-                if ($this->curl_config[$i]['gzip']) {
-                    $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$i], 2);
-                    while (!strncmp($sections[1], 'HTTP/', 5)) {
-                        $sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
-                    }
+        if($mrc == CURLM_OK && !$active) {
+            unset($mrc,$active);
+            foreach ($this->curl_handles as $i => $url) {
+                $this->server_data['json'][$i] = curl_multi_getcontent($this->curl_handles[$i]);
+                $this->server_data['http_status_code'][$i]['code'] = curl_getinfo($this->curl_handles[$i], CURLINFO_HTTP_CODE);
+                curl_multi_remove_handle($this->curl_multi, $this->curl_handles[$i]); //remove
+                if ($this->server_data['http_status_code'][$i]['code'] == 200) {
+                    if ($this->curl_config[$i]['gzip']) {
+                        $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$i], 2);
+                        while (!strncmp($sections[1], 'HTTP/', 5)) {
+                            $sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
+                        }
 
-                    if (count($sections) >= 2) {
-                        if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
-                            $this->server_data['json'][$i] = $sections[1];
+                        if (count($sections) >= 2) {
+                            if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
+                                $this->server_data['json'][$i] = $sections[1];
+                            }
                         }
                     }
+
+                    if ($responseProcessing) {
+                        $this->responseProcessing($i); //processing data
+                    }
+
+                    //execution time
+                    $this->server_data['http_status_code'][$i]['execution_time'] =
+                        (microtime(true) - $this->curl_config[$i]['time']);
                 }
 
-                if ($responseProcessing) {
-                    $this->responseProcessing($i); //processing data
-                }
-
-                //execution time
-                $this->server_data['http_status_code'][$i]['execution_time'] =
-                    (microtime(true) - $this->curl_config[$i]['time']);
+                curl_close($this->curl_handles[$i]);
+                unset($this->curl_handles[$i], $this->curl_config[$i]);
             }
-
-            curl_close($this->curl_handles[$i]);
-            unset($this->curl_handles[$i], $this->curl_config[$i]);
         }
 
         curl_multi_close($this->curl_multi);
