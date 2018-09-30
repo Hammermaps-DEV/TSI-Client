@@ -749,7 +749,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             return false;
 
         if(empty($this->cache_functions['exist']['method']) ||
-            $this->cache_functions['read']['method'])
+            empty($this->cache_functions['read']['method']))
             return false;
 
         //IS EXIST
@@ -802,6 +802,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         if(class_exists($this->cache_functions['write']['class']) &&
             is_callable([$this->cache_functions['write']['class'],
                 $this->cache_functions['write']['method']]))
+
             return call_user_func_array([$this->cache_functions['write']['class'],
                 $this->cache_functions['write']['method']], [$key,$data_store,$ttl]);
 
