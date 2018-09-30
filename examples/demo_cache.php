@@ -65,9 +65,9 @@ $client = new TSI_Client\TSI_Client(
 );
 
 //Register Cache
-$client->registerCacheWrite('cache','set');
-$client->registerCacheExist('cache','exists');
-$client->registerCacheRead('cache','get');
+$client->setRegisterCacheWrite('cache','set');
+$client->setRegisterCacheExist('cache','exists');
+$client->setRegisterCacheRead('cache','get');
 
 echo 'Version des API Interface Moduls ohne Cache: '.$client->getAddonVersion('modul_ai',0)['version'];
 echo '<br>';
