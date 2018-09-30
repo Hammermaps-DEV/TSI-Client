@@ -32,7 +32,7 @@ echo '<pre><p>##################################################################
 //Jetzt eine Schleife der vorhandenen User
 foreach ($users as $user) {
     //Die Server stehen als "TSI_User Objekt" zur verfügung:
-    if($user instanceof TSI_Client\TSI_User) {
+    if($user instanceof TSI_Client\Models\TSI_User) {
         echo 'User-ID: '.$user->getUserID();
         echo '<br>';
         echo 'Username: '.$user->getUsername();

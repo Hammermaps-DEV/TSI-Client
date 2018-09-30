@@ -37,7 +37,7 @@ echo '<pre><p>##################################################################
 foreach ($array_of_servers as $server) {
 
     //Die Server stehen als "TSI_VServer Objekt" zur verfügung:
-    if($server instanceof TSI_Client\TSI_VServer) {
+    if($server instanceof TSI_Client\Models\TSI_VServer) {
         echo 'VServer ID: '.$server->getServerID();
         echo '<br>';
         echo 'Name: '.$server->getServerName();
