@@ -153,8 +153,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     const TSI_CLIENT_BRANCHES = [
         'final' => false,
-        'beta' => true,
-        'master' => false
+        'beta' => false,
+        'master' => true
     ];
 
     /**
