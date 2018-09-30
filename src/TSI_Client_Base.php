@@ -324,7 +324,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool
      */
     public function getClientCache(): bool {
-        return $this->client_cache;
+        return (bool)$this->client_cache;
     }
 
     /**
@@ -367,7 +367,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return array
      */
     public function getProxyServer(): array {
-        return $this->curl_proxy;
+        return (array)$this->curl_proxy;
     }
 
     /**
