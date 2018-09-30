@@ -23,20 +23,10 @@
  * THE SOFTWARE.
  */
 
-namespace TSI_Client\Models;
+namespace TSI_MultiClient;
 
-interface TSI_Instance_Interface {
-    //SETTER
-    public function setID(int $user_id);
-    public function setIP(string $server_ip);
-    public function setQueryPort(int $query_port);
-    public function setServerAdmin(string $serveradmin);
-    public function setLastPermImport(string $last_perm_import);
+use TSI_Client\TSI_Client_Interface;
 
-    //GETTER
-    public function getID();
-    public function getIP();
-    public function getQueryPort();
-    public function getServerAdmin();
-    public function getLastPermImport();
+interface TSI_MultiClient_Interface extends TSI_Client_Interface {
+    public function getTSIUser(int $user_id);
 }

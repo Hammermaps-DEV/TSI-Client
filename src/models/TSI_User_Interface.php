@@ -63,4 +63,7 @@ interface TSI_User_Interface {
     public function getIcon();
     public function getServer(int $instance, int $vserver_id);
     public function getVMsByInstance(int $instance);
+
+    //MULTI
+    public function getServersMulti();
 }

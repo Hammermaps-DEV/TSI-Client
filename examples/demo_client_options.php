@@ -15,6 +15,7 @@ include_once ("../TSI_Client.php");
  * TSI_Role Objekt                      => Datei: TSI_Role_Interface.php
  * TSI_Properties Objekt                => Datei: TSI_Properties_Interface.php
  * TSI_User Objekt                      => Datei: TSI_User_Interface.php
+ * TSI_MultiClient Objekt               => Datei: TSI_MultiClient_Interface.php
  */
 
 //Client erstellen
@@ -27,6 +28,9 @@ $client->setKeys(
 );
 
 $client->setServerUrl('https://meine_domain.de'); //Server URL
+
+//Soll ein Proxy-Server verwendet werden
+$client->setProxyServer('123.123.123.123',9000, 'username', 'password');
 
 //Soll die Verbindung (wenn möglich) mit GZIP komprimiert werden? [ Ist standardmäßig aktiviert ]
 $client->setGZIPSupport(true); // true || false

@@ -28,6 +28,24 @@ namespace TSI_Client;
 use TSI_Client\Models;
 
 class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
+
+    /**
+     * TSI_Client constructor.
+     * @param string $server_url
+     * @param string $client_key
+     * @param string $secret_key
+     */
+     function __construct(string $server_url = '', string $client_key = '', string $secret_key = '') {
+         parent::__construct($server_url, $client_key, $secret_key);
+     }
+
+    /**
+     * TSI_Client deconstruct.
+     */
+     function __destruct() {
+         parent::__destruct();
+     }
+
     /**
      * Shows the version of Teamspeak Interface
      * @param int $cache
@@ -242,7 +260,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $user = new Models\TSI_User();
+        $user = new Models\TSI_User(true);
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);
@@ -929,7 +947,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         }
 
         $this->insertCall('vServerGet',[
-            'id'=>$instance_id,
+        'id'=>$instance_id,
             'sid'=>$vserver_id]); //set the call
         $this->Exec(); //execute
 

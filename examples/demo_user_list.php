@@ -15,6 +15,7 @@ include_once ("../TSI_Client.php");
  * TSI_Role Objekt                      => Datei: TSI_Role_Interface.php
  * TSI_Properties Objekt                => Datei: TSI_Properties_Interface.php
  * TSI_User Objekt                      => Datei: TSI_User_Interface.php
+ * TSI_MultiClient Objekt               => Datei: TSI_MultiClient_Interface.php
  */
 
 //Client erstellen
@@ -31,7 +32,7 @@ echo '<pre><p>##################################################################
 //Jetzt eine Schleife der vorhandenen User
 foreach ($users as $user) {
     //Die Server stehen als "TSI_User Objekt" zur verfügung:
-    if($user instanceof TSI_Client\TSI_User) {
+    if($user instanceof TSI_Client\Models\TSI_User) {
         echo 'User-ID: '.$user->getUserID();
         echo '<br>';
         echo 'Username: '.$user->getUsername();
