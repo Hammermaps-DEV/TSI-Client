@@ -784,7 +784,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool
      * @internal
      */
-    public function setCache(string $key,$var,int $ttl=60): bool {
+    public function setCache(string $key,$var,int $ttl=60) {
         if(!$this->client_cache)
             return false;
 
