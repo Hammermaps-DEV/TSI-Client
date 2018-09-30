@@ -229,7 +229,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     public function __destruct() {
         if (extension_loaded('curl')) {
-            if($this->curl_multi instanceof CURLFile) {
+            if($this->curl_multi instanceof \CURLFile) {
                 curl_multi_close($this->curl_multi);
             }
         }
@@ -239,7 +239,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Autoloader for interfaces & classes
      * @param $class
      */
-    public function autoload(string $class) {
+    public function autoload(string $class): void {
         if(class_exists($class, false) || interface_exists($class, false)) {
             return;
         }
@@ -258,7 +258,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $client_key
      * @param string $secret_key
      */
-    public function setKeys(string $client_key,string $secret_key) {
+    public function setKeys(string $client_key,string $secret_key): void {
         $this->client_key = $client_key;
         $this->secret_key = $secret_key;
     }
@@ -278,7 +278,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Set the Full-URL to TSI Installation
      * @param string $url
      */
-    public function setServerUrl(string $url = 'http://localhost') {
+    public function setServerUrl(string $url = 'http://localhost'): void {
         $url = filter_var($url, FILTER_SANITIZE_URL);
         if(filter_var($url, FILTER_VALIDATE_URL)) {
             $this->server_url = $url;
@@ -299,7 +299,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Use GZip compressed server answer
      * @param bool $gzip
      */
-    public function setGZIPSupport(bool $gzip = false) {
+    public function setGZIPSupport(bool $gzip = false): void {
         $this->server_gzip = $gzip;
     }
 
@@ -315,7 +315,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Use cache for server answers
      * @param bool $cache
      */
-    public function setClientCache(bool $cache = false) {
+    public function setClientCache(bool $cache = false): void {
         $this->client_cache = $cache;
     }
 
@@ -332,7 +332,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param bool $ssl_verifyhost
      * @param bool $ssl_verifypeer
      */
-    public function setSSLOptions(bool $ssl_verifyhost,bool $ssl_verifypeer) {
+    public function setSSLOptions(bool $ssl_verifyhost,bool $ssl_verifypeer): void {
         $this->ssl_verifyhost = $ssl_verifyhost;
         $this->ssl_verifypeer = $ssl_verifypeer;
     }
@@ -355,7 +355,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $username
      * @param string $password
      */
-    public function setProxyServer(string $ip='',int $port=8080,string $username='',string $password='') {
+    public function setProxyServer(string $ip='',int $port=8080,string $username='',string $password=''): void {
         $this->curl_proxy['ip'] = trim($ip);
         $this->curl_proxy['port'] = (int)$port;
         $this->curl_proxy['user'] = trim($username);
@@ -413,6 +413,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * Processing the response
      * @param string $call
+     * @param string $hash
      * @return bool|array
      * @internal
      */
@@ -463,7 +464,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool
      * @throws \Exception
      */
-    public function checkAPI(bool $recache = false, int $cache = 60) {
+    public function checkAPI(bool $recache = false, int $cache = 60): bool {
         if (!extension_loaded('curl')) { return false; }
 
         //No MultiCalls
@@ -490,9 +491,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
             if($data = $this->checkJSON($this->server_data['json']['api'][$hash])) {
                 $this->server_data['data']['api'][$hash] = $data; unset($data);
+                $hash_version = $this->insertCall('versionsGet');
                 if($this->server_data['data']['api'][$hash]['valid']) {
                     //response is ok (access granted)
-                    $hash_version = $this->insertCall('versionsGet');
                     $this->Exec(); //execute
 
                     if(empty($this->server_data['json']['versionsGet'][$hash_version])) {
@@ -602,10 +603,11 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $call
      * @param array $post
      * @param string $url
+     * @return string
      * @throws \Exception
      */
-    public function insertCall(string $call,array $post=[],string $url = '') {
-        if (!extension_loaded('curl')) { return; }
+    public function insertCall(string $call,array $post=[],string $url = ''): string {
+        if (!extension_loaded('curl')) { return ''; }
 
         $use_url = !empty($url);
         $this->http_query['action'] = trim($call);
@@ -678,7 +680,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param bool $responseProcessing
      * @throws \Exception
      */
-    public function Exec(bool $responseProcessing = true) {
+    public function Exec(bool $responseProcessing = true): void {
         if (!extension_loaded('curl')) { return; }
         $active = null;
         do {
@@ -719,13 +721,12 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                     unset($this->curl_handles[$call][$hash], $this->curl_config[$call][$hash]);
                 }
             }
+
+            curl_multi_close($this->curl_multi);
+            $this->curl_multi = curl_multi_init();
         } else {
             throw new \Exception(__CLASS__.": "."cURL-Multi-Handle error!");
-            return;
         }
-
-        curl_multi_close($this->curl_multi);
-        $this->curl_multi = curl_multi_init();
     }
 
     /**
@@ -783,7 +784,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool
      * @internal
      */
-    public function setCache(string $key,$var,int $ttl=60) {
+    public function setCache(string $key,$var,int $ttl=60): bool {
         if(!$this->client_cache)
             return false;
 
@@ -815,7 +816,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $method
      * @api
      */
-    public function setRegisterCacheWrite(string $class, string $method) {
+    public function setRegisterCacheWrite(string $class, string $method): void {
         $this->cache_functions['write']['class'] = trim($class);
         $this->cache_functions['write']['method'] = trim($method);
     }
@@ -835,7 +836,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $method
      * @api
      */
-    public function setRegisterCacheRead(string $class, string $method) {
+    public function setRegisterCacheRead(string $class, string $method): void {
         $this->cache_functions['read']['class'] = trim($class);
         $this->cache_functions['read']['method'] = trim($method);
     }
@@ -855,7 +856,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param string $method
      * @api
      */
-    public function setRegisterCacheExist(string $class, string $method) {
+    public function setRegisterCacheExist(string $class, string $method): void {
         $this->cache_functions['exist']['class'] = trim($class);
         $this->cache_functions['exist']['method'] = trim($method);
     }
@@ -873,7 +874,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool
      * @throws \Exception
      */
-    public function apiIsActual(int $cache = 30) {
+    public function apiIsActual(int $cache = 30): bool {
         if($cache >= 1 && ($cache_data = $this->getCache('apiIsActual'))) {
             return $cache_data['status'];
         }
@@ -888,11 +889,11 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         }
 
         if($hasBranch) {
-            $this->insertCall('tsiVersion',[],$url);
+            $hash = $this->insertCall('tsiVersion',[],$url);
             $this->Exec(false);
             if(array_key_exists('tsiVersion',$this->server_data['json'])) {
                 if(!empty($this->server_data['json']['tsiVersion'])) {
-                    if(version_compare( self::TSI_CLIENT_VERSION, $this->server_data['json']['tsiVersion'], '<')) {
+                    if(version_compare( self::TSI_CLIENT_VERSION, $this->server_data['json']['tsiVersion'][$hash], '<')) {
                         if ($cache >= 1) {
                             $this->setCache('apiIsActual', ['status'=>false], $cache);
                         }
@@ -920,7 +921,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @param bool $PrintOutput
      * @return string
      */
-    public function debugAllIndexes(bool $PrintOutput = true) {
+    public function debugAllIndexes(bool $PrintOutput = true): string {
         $msg = '';
         $msg .= '<br>################### Server - Query ####################<br>';
         $msg .= print_r($this->server_data['query'],true);
@@ -940,6 +941,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             echo '<pre>';
             print_r($msg);
             echo '</pre>';
+            return '';
         } else {
             return $msg;
         }
