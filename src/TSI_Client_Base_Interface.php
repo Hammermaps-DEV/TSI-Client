@@ -68,14 +68,15 @@ interface TSI_Client_Base_Interface {
     public function getServerUrl();
     public function getGZIPSupport();
     public function getSSLOptions();
-    public function getResponse(string $call);
+    public function getResponse(string $call,string $hash);
+    public function getResponseGroup(string $call);
     public function getCache(string $key);
     public function getClientCache();
     public function getProxyServer();
 
     //FUNCTIONS
     public function autoload(string $class);
-    public function responseProcessing(string $call);
+    public function responseProcessing(string $call,string $hash);
     public function checkAPI(bool $recache,int $cache);
     public function checkJSON(string $json);
     public function insertCall(string $call,array $post,string $url);

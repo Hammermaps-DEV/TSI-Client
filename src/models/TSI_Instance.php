@@ -119,9 +119,9 @@ class TSI_Instance implements TSI_Instance_Interface {
     }
 
     /**
-     * @param mixed $last_perm_import
+     * @param string $last_perm_import
      */
-    public function setLastPermImport(mixed $last_perm_import): void {
+    public function setLastPermImport(string $last_perm_import): void {
         $this->last_perm_import = $last_perm_import;
     }
 

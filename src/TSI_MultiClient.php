@@ -72,7 +72,7 @@ class TSI_MultiClient extends TSI_Client implements TSI_MultiClient_Interface {
      }
 
     /**
-     * Give a TSI User Profile
+     * Give a TSI User Profile with Instance and VServers
      * @param int $user_id
      * @return Models\TSI_User|bool
      * @throws \Exception
@@ -107,6 +107,7 @@ class TSI_MultiClient extends TSI_Client implements TSI_MultiClient_Interface {
         }
 
         $user = new Models\TSI_User(true);
+        $user->client = $this;
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);

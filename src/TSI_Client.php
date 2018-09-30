@@ -260,7 +260,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $user = new Models\TSI_User();
+        $user = new Models\TSI_User(true);
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);
@@ -947,7 +947,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         }
 
         $this->insertCall('vServerGet',[
-            'id'=>$instance_id,
+        'id'=>$instance_id,
             'sid'=>$vserver_id]); //set the call
         $this->Exec(); //execute
 

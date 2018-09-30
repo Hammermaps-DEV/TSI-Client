@@ -122,10 +122,10 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     public $version = [];
 
     /**
-     * @var string
+     * @var array
      * @internal
      */
-    private $lastcall = '';
+    private $lastcall = [];
 
     /**
      * Array of static cache methods
@@ -161,7 +161,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * PHP TSI-Client Version
      * @var string
      */
-    const TSI_CLIENT_VERSION = '1.0.3';
+    const TSI_CLIENT_VERSION = '1.0.4';
 
     /**
      * CURL Agent
@@ -188,7 +188,25 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             return;
         }
 
-        spl_autoload_register(array($this,'autoload'));
+        //Use Composer
+        $autoload_register = false;
+        if(method_exists('\Composer\Autoload\ClassLoader','findFile')) {
+            $baseDir = dirname(dirname(__FILE__));
+            $vendorDir = dirname(dirname($baseDir)).'\\composer';
+            $installed = file_get_contents($vendorDir . '/installed.json');
+            $installed = json_decode($installed,true);
+            foreach ($installed as $ext) {
+                if($ext['name'] == 'hammermaps/tsic') {
+                    $autoload_register = true;
+                    break;
+                }
+            }
+            unset($baseDir,$vendorDir,$installed,$ext);
+        }
+
+        if($autoload_register) {
+            spl_autoload_register(array($this,'autoload'));
+        }
 
         $this->curl_multi = curl_multi_init();
 
@@ -211,7 +229,9 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     public function __destruct() {
         if (extension_loaded('curl')) {
-            curl_multi_close($this->curl_multi);
+            if($this->curl_multi instanceof CURLFile) {
+                curl_multi_close($this->curl_multi);
+            }
         }
     }
 
@@ -352,20 +372,43 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
     /**
      * @param string $call
-     * @return bool|array
+     * @param string $hash
+     * @return array|bool
      */
-    public function getResponse(string $call = '') {
+    public function getResponse(string $call = '',string $hash = '') {
         if(empty($call)) {
-            $call = strval($this->lastcall);
+            $call = $this->lastcall['call'];
         }
 
-        if(!empty($this->server_data['data'][$call]) &&
+        if(empty($hash)) {
+            $hash = $this->lastcall['hash'];
+        }
+
+        if(!empty($this->server_data['data'][$call][$hash]) &&
             array_key_exists($call,$this->server_data['data'])) {
-            return (array)$this->server_data['data'][$call]['response'];
+            return (array)$this->server_data['data'][$call][$hash]['response'];
         }
 
         return false;
     }
+
+    /**
+     * @param string $call
+     * @return array|bool
+     */
+    public function getResponseGroup(string $call = '') {
+        if(empty($call)) {
+            $call = $this->lastcall['call'];
+        }
+
+        if(count($this->server_data['data'][$call]) &&
+            array_key_exists($call,$this->server_data['data'])) {
+            return (array)$this->server_data['data'][$call];
+        }
+
+        return false;
+    }
+
 
     /**
      * Processing the response
@@ -373,34 +416,38 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool|array
      * @internal
      */
-    public function responseProcessing(string $call = '') {
+    public function responseProcessing(string $call = '',string $hash = '') {
         if (!extension_loaded('curl')) { return false; }
 
         if(empty($call)) {
-            $call = $this->lastcall;
+            $call = $this->lastcall['call'];
         }
 
-        if($this->server_data['http_status_code'][$call] >= 400 && $this->server_data['http_status_code'][$call] < 500) {
-            trigger_error(__CLASS__.': The call "'.ucfirst($call).'" returned a "'.$this->server_data['http_status_code'][$call].'" HTTP-Statuscode by Client!\'', E_USER_WARNING);
+        if(empty($hash)) {
+            $hash = $this->lastcall['hash'];
+        }
+
+        if($this->server_data['http_status_code'][$call][$hash]['code'] >= 400 && $this->server_data['http_status_code'][$call][$hash]['code'] < 500) {
+            trigger_error(__CLASS__.': The call "'.ucfirst($call).'" returned a "'.$this->server_data['http_status_code'][$call][$hash]['code'].'" HTTP-Statuscode by Client!\'', E_USER_WARNING);
             return false;
         }
 
-        if($this->server_data['http_status_code'][$call] >= 500 && $this->server_data['http_status_code'][$call] < 600) {
-            trigger_error(__CLASS__.': The call "'.ucfirst($call).'" returned a "'.$this->server_data['http_status_code'][$call].'" HTTP-Statuscode by Server!\'', E_USER_WARNING);
+        if($this->server_data['http_status_code'][$call][$hash]['code'] >= 500 && $this->server_data['http_status_code'][$call][$hash]['code'] < 600) {
+            trigger_error(__CLASS__.': The call "'.ucfirst($call).'" returned a "'.$this->server_data['http_status_code'][$call][$hash]['code'].'" HTTP-Statuscode by Server!\'', E_USER_WARNING);
             return false;
         }
 
-        if(empty($this->server_data['json'][$call])) {
+        if(empty($this->server_data['json'][$call][$hash])) {
             trigger_error(__CLASS__.': The call "'.ucfirst($call).'" returned a blank result!\'', E_USER_WARNING);
             return false;
         }
 
-        if($data = $this->checkJSON($this->server_data['json'][$call])) {
+        if($data = $this->checkJSON($this->server_data['json'][$call][$hash])) {
             if($data['valid']) {
-                $this->server_data['data'][$call] = $data;
+                $this->server_data['data'][$call][$hash] = $data;
                 unset($data);
             } else {
-                $this->server_data['data'][$call] = null;
+                $this->server_data['data'][$call][$hash] = null;
                 trigger_error(__CLASS__.": ".
                     ucfirst($data['error']), E_USER_WARNING);
             }
@@ -431,33 +478,35 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             return true;
         }
 
-        $this->insertCall('api'); //set a call
+        $hash = $this->insertCall('api'); //set a call
         $this->Exec(); //execute
-        if(array_key_exists('api',$this->server_data['json'])) {
+
+        if(array_key_exists('api',$this->server_data['json']) &&
+            array_key_exists($hash,$this->server_data['json']['api'])) {
             if(empty($this->server_data['json']['api'])) {
                 trigger_error(__CLASS__.': The call "Api" returned a blank result!\'', E_USER_WARNING);
                 return false;
             }
 
-            if($data = $this->checkJSON($this->server_data['json']['api'])) {
-                $this->server_data['data']['api'] = $data; unset($data);
-                if($this->server_data['data']['api']['valid']) {
+            if($data = $this->checkJSON($this->server_data['json']['api'][$hash])) {
+                $this->server_data['data']['api'][$hash] = $data; unset($data);
+                if($this->server_data['data']['api'][$hash]['valid']) {
                     //response is ok (access granted)
-                    $this->insertCall('versionsGet');
+                    $hash_version = $this->insertCall('versionsGet');
                     $this->Exec(); //execute
 
-                    if(empty($this->server_data['json']['versionsGet'])) {
+                    if(empty($this->server_data['json']['versionsGet'][$hash_version])) {
                         trigger_error(__CLASS__.': The call "Version" returned a blank result!', E_USER_WARNING);
                         return false;
                     }
 
-                    if($data = $this->checkJSON($this->server_data['json']['versionsGet'])) {
-                        $this->server_data['data']['versionsGet'] = $data; unset($data);
-                        if($this->server_data['data']['versionsGet']['valid'] &&
-                            array_key_exists('response',$this->server_data['data']['versionsGet'])) {
+                    if($data = $this->checkJSON($this->server_data['json']['versionsGet'][$hash])) {
+                        $this->server_data['data']['versionsGet'][$hash] = $data; unset($data);
+                        if($this->server_data['data']['versionsGet'][$hash]['valid'] &&
+                            array_key_exists('response',$this->server_data['data']['versionsGet'][$hash])) {
                             //Null check
                             $modules = [];
-                            foreach ($this->server_data['data']['versionsGet']['response'] as $key => $data) {
+                            foreach ($this->server_data['data']['versionsGet'][$hash_version]['response'] as $key => $data) {
                                 $new_data = [];
                                 foreach ($data as $dkey => $dd) {
                                     if($dkey == 'last_update' && is_null($dd)) {
@@ -472,18 +521,18 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
                                 $modules[$key] = $new_data;
                             }
-                            $this->server_data['data']['versionsGet']['response'] = $modules;
+                            $this->server_data['data']['versionsGet'][$hash_version]['response'] = $modules;
                             unset($modules);
 
-                            if(count($this->server_data['data']['versionsGet']['response']) &&
-                                array_key_exists('modul_ai',$this->server_data['data']['versionsGet']['response'])) {
-                                foreach ($this->server_data['data']['versionsGet']['response'] as $key => $var) {
+                            if(count($this->server_data['data']['versionsGet'][$hash_version]['response']) &&
+                                array_key_exists('modul_ai',$this->server_data['data']['versionsGet'][$hash_version]['response'])) {
+                                foreach ($this->server_data['data']['versionsGet'][$hash_version]['response'] as $key => $var) {
                                     $this->version[$key] = $var; //Set API Version
                                 }
 
                                 if($cache >= 1) {
                                     $this->setCache('checkAPI',[
-                                        'data' => $this->server_data['data']['versionsGet'],
+                                        'data' => $this->server_data['data']['versionsGet'][$hash_version],
                                         'version' => $this->version,
                                     ],$cache);
                                 }
@@ -494,12 +543,12 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                             }
                         } else {
                             trigger_error(__CLASS__.": ".
-                                ucfirst($this->server_data['data']['versionsGet']['error']), E_USER_WARNING);
+                                ucfirst($this->server_data['data']['versionsGet'][$hash_version]['error']), E_USER_WARNING);
                         }
                     }
                 } else {
                     trigger_error(__CLASS__.": ".
-                        ucfirst($this->server_data['data']['api']['error']), E_USER_WARNING);
+                        ucfirst($this->server_data['data']['api'][$hash_version]['error']), E_USER_WARNING);
                 }
             }
         }
@@ -612,14 +661,17 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         if ($code != CURLM_OK) {
             throw new \Exception(__CLASS__.": "."Curl handle for ".$url." could not be added");
         }
-        $this->curl_handles[$call] = $curl;
-        $this->curl_config[$call] = [
+
+        $this->curl_handles[$call][md5(serialize($post))] = $curl;
+        $this->curl_config[$call][md5(serialize($post))] = [
             'gzip'=>$this->server_gzip,
             'time'=>microtime(true)
         ];
-        $this->server_data['query'][$call] = $url;
-        $this->server_data['input'][$call] = $post;
-        $this->lastcall = $call;
+        $this->server_data['query'][$call][md5(serialize($post))] = $url;
+        $this->server_data['input'][$call][md5(serialize($post))] = $post;
+        $this->lastcall = ['call' => $call, 'hash' => md5(serialize($post))];
+
+        return md5(serialize($post));
     }
 
     /**
@@ -634,36 +686,38 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         } while ($mrc == CURLM_CALL_MULTI_PERFORM || $active);
 
         if($mrc == CURLM_OK && !$active) {
-            unset($mrc,$active);
-            foreach ($this->curl_handles as $i => $url) {
-                $this->server_data['json'][$i] = curl_multi_getcontent($this->curl_handles[$i]);
-                $this->server_data['http_status_code'][$i]['code'] = curl_getinfo($this->curl_handles[$i], CURLINFO_HTTP_CODE);
-                curl_multi_remove_handle($this->curl_multi, $this->curl_handles[$i]); //remove
-                if ($this->server_data['http_status_code'][$i]['code'] == 200) {
-                    if ($this->curl_config[$i]['gzip']) {
-                        $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$i], 2);
-                        while (!strncmp($sections[1], 'HTTP/', 5)) {
-                            $sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
-                        }
+            unset($mrc, $active);
+            foreach ($this->curl_handles as $call => $hashs) {
+                foreach ($hashs as $hash => $curl) {
+                    $this->server_data['json'][$call][$hash] = curl_multi_getcontent($curl);
+                    $this->server_data['http_status_code'][$call][$hash]['code'] = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    curl_multi_remove_handle($this->curl_multi, $curl); //remove
+                    if ($this->server_data['http_status_code'][$call][$hash]['code'] == 200) {
+                        if ($this->curl_config[$call][$hash]['gzip']) {
+                            $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$call][$hash], 2);
+                            while (!strncmp($sections[1], 'HTTP/', 5)) {
+                                $sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
+                            }
 
-                        if (count($sections) >= 2) {
-                            if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
-                                $this->server_data['json'][$i] = $sections[1];
+                            if (count($sections) >= 2) {
+                                if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
+                                    $this->server_data['json'][$call][$hash] = $sections[1];
+                                }
                             }
                         }
+
+                        if ($responseProcessing) {
+                            $this->responseProcessing($call,$hash); //processing data
+                        }
+
+                        //execution time
+                        $this->server_data['http_status_code'][$call][$hash]['execution_time'] =
+                            (microtime(true) - $this->curl_config[$call][$hash]['time']);
                     }
 
-                    if ($responseProcessing) {
-                        $this->responseProcessing($i); //processing data
-                    }
-
-                    //execution time
-                    $this->server_data['http_status_code'][$i]['execution_time'] =
-                        (microtime(true) - $this->curl_config[$i]['time']);
+                    curl_close($this->curl_handles[$call][$hash]);
+                    unset($this->curl_handles[$call][$hash], $this->curl_config[$call][$hash]);
                 }
-
-                curl_close($this->curl_handles[$i]);
-                unset($this->curl_handles[$i], $this->curl_config[$i]);
             }
         } else {
             throw new \Exception(__CLASS__.": "."cURL-Multi-Handle error!");
