@@ -153,8 +153,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     const TSI_CLIENT_BRANCHES = [
         'final' => false,
-        'beta' => false,
-        'master' => true
+        'beta' => true,
+        'master' => false
     ];
 
     /**
@@ -267,7 +267,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Get the client and secret keys
      * @return array
      */
-    public function getKeys() {
+    public function getKeys(): array {
         return [
             'client_key'=>$this->client_key,
             'secret_key'=>$this->secret_key
@@ -291,7 +291,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Get the URL to TSI Installation
      * @return string
      */
-    public function getServerUrl() {
+    public function getServerUrl(): string {
         return strval($this->server_url);
     }
 
@@ -307,7 +307,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Get var for GZip compressed server answer
      * @return bool
      */
-    public function getGZIPSupport() {
+    public function getGZIPSupport(): bool {
         return (bool)$this->server_gzip;
     }
 
@@ -323,8 +323,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Get var for cache server answer
      * @return bool
      */
-    public function getClientCache() {
-        return $this->client_cache;
+    public function getClientCache(): bool {
+        return (bool)$this->client_cache;
     }
 
     /**
@@ -341,7 +341,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Get ssl_verifyhost and ssl_verifypeer option for curl
      * @return array
      */
-    public function getSSLOptions() {
+    public function getSSLOptions(): array {
         return [
             'ssl_verifyhost'=>$this->ssl_verifyhost,
             'ssl_verifypeer'=>$this->ssl_verifypeer
@@ -366,8 +366,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Give the Proxy-Server config for CURL Requests
      * @return array
      */
-    public function getProxyServer() {
-        return $this->curl_proxy;
+    public function getProxyServer(): array {
+        return (array)$this->curl_proxy;
     }
 
     /**
@@ -417,7 +417,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @return bool|array
      * @internal
      */
-    public function responseProcessing(string $call = '',string $hash = '') {
+    public function responseProcessing(string $call = '',string $hash = ''): bool {
         if (!extension_loaded('curl')) { return false; }
 
         if(empty($call)) {
@@ -452,6 +452,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                 trigger_error(__CLASS__.": ".
                     ucfirst($data['error']), E_USER_WARNING);
             }
+
+            return true;
         }
 
         return false;
@@ -749,7 +751,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
             return false;
 
         if(empty($this->cache_functions['exist']['method']) ||
-            $this->cache_functions['read']['method'])
+            empty($this->cache_functions['read']['method']))
             return false;
 
         //IS EXIST
@@ -802,7 +804,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         if(class_exists($this->cache_functions['write']['class']) &&
             is_callable([$this->cache_functions['write']['class'],
                 $this->cache_functions['write']['method']]))
-            return call_user_func_array([$this->cache_functions['write']['class'],
+
+            return (bool)call_user_func_array([$this->cache_functions['write']['class'],
                 $this->cache_functions['write']['method']], [$key,$data_store,$ttl]);
 
         return false;
@@ -824,8 +827,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheWrite() {
-        return $this->cache_functions['write'];
+    public function getRegisterCacheWrite(): string {
+        return strval($this->cache_functions['write']);
     }
 
     /**
@@ -844,8 +847,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheRead() {
-        return $this->cache_functions['read'];
+    public function getRegisterCacheRead(): string {
+        return strval($this->cache_functions['read']);
     }
 
     /**
@@ -864,8 +867,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheExist() {
-        return $this->cache_functions['exist'];
+    public function getRegisterCacheExist(): string {
+        return strval($this->cache_functions['exist']);
     }
 
     /**
