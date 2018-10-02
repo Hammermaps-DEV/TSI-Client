@@ -25,6 +25,10 @@
 
 namespace TSI_Client\Models;
 
+/**
+ * Class TSI_Instance
+ * @package TSI_Client\Models
+ */
 class TSI_Instance implements TSI_Instance_Interface {
     /**
      * @var int

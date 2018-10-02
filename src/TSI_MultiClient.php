@@ -28,6 +28,10 @@ namespace TSI_MultiClient;
 use TSI_Client\Models;
 use TSI_Client\TSI_Client;
 
+/**
+ * Class TSI_MultiClient
+ * @package TSI_MultiClient
+ */
 class TSI_MultiClient extends TSI_Client implements TSI_MultiClient_Interface {
     /**
      * TSI_MultiClient constructor.

@@ -1,0 +1,658 @@
+.TH "TSI_Client_Base" 3 "Die Okt 2 2018" "Version 1.0.4 Beta" "TeamSpeak Interface Client" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TSI_Client_Base
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Abgeleitet von \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Basisklasse für \fBTSI_Client\fP\&.
+.SS "Öffentliche Methoden"
+
+.in +1c
+.ti -1c
+.RI "\fB__construct\fP (string $server_url='', string $client_key='', string $secret_key='')"
+.br
+.ti -1c
+.RI "\fB__destruct\fP ()"
+.br
+.ti -1c
+.RI "\fBautoload\fP (string $class)"
+.br
+.ti -1c
+.RI "\fBsetKeys\fP (string $client_key, string $secret_key)"
+.br
+.ti -1c
+.RI "\fBgetKeys\fP ()"
+.br
+.ti -1c
+.RI "\fBsetServerUrl\fP (string $url='http://localhost')"
+.br
+.ti -1c
+.RI "\fBgetServerUrl\fP ()"
+.br
+.ti -1c
+.RI "\fBsetGZIPSupport\fP (bool $gzip=false)"
+.br
+.ti -1c
+.RI "\fBgetGZIPSupport\fP ()"
+.br
+.ti -1c
+.RI "\fBsetClientCache\fP (bool $cache=false)"
+.br
+.ti -1c
+.RI "\fBgetClientCache\fP ()"
+.br
+.ti -1c
+.RI "\fBsetSSLOptions\fP (bool $ssl_verifyhost, bool $ssl_verifypeer)"
+.br
+.ti -1c
+.RI "\fBgetSSLOptions\fP ()"
+.br
+.ti -1c
+.RI "\fBsetProxyServer\fP (string $ip='', int $port=8080, string $username='', string $password='')"
+.br
+.ti -1c
+.RI "\fBgetProxyServer\fP ()"
+.br
+.ti -1c
+.RI "\fBgetResponse\fP (string $call='', string $hash='')"
+.br
+.ti -1c
+.RI "\fBgetResponseGroup\fP (string $call='')"
+.br
+.ti -1c
+.RI "\fBresponseProcessing\fP (string $call='', string $hash='')"
+.br
+.ti -1c
+.RI "\fBcheckAPI\fP (bool $recache=false, int $cache=60)"
+.br
+.ti -1c
+.RI "\fBcheckJSON\fP (string $json)"
+.br
+.ti -1c
+.RI "\fBinsertCall\fP (string $call, array $post=[], string $url='')"
+.br
+.ti -1c
+.RI "\fBExec\fP (bool $\fBresponseProcessing\fP=true)"
+.br
+.ti -1c
+.RI "\fBgetCache\fP (string $key)"
+.br
+.ti -1c
+.RI "\fBsetCache\fP (string $key, $var, int $ttl=60)"
+.br
+.ti -1c
+.RI "\fBsetRegisterCacheWrite\fP (string $class, string $method)"
+.br
+.ti -1c
+.RI "\fBgetRegisterCacheWrite\fP ()"
+.br
+.ti -1c
+.RI "\fBsetRegisterCacheRead\fP (string $class, string $method)"
+.br
+.ti -1c
+.RI "\fBgetRegisterCacheRead\fP ()"
+.br
+.ti -1c
+.RI "\fBsetRegisterCacheExist\fP (string $class, string $method)"
+.br
+.ti -1c
+.RI "\fBgetRegisterCacheExist\fP ()"
+.br
+.ti -1c
+.RI "\fBapiIsActual\fP (int $cache=30)"
+.br
+.ti -1c
+.RI "\fBdebugAllIndexes\fP (bool $PrintOutput=true)"
+.br
+.in -1c
+.SS "Datenfelder"
+
+.in +1c
+.ti -1c
+.RI "\fB$version\fP = []"
+.br
+.ti -1c
+.RI "const \fBTSI_CLIENT_BRANCHES\fP"
+.br
+.ti -1c
+.RI "const \fBTSI_CLIENT_VERSION\fP = '1\&.0\&.4'"
+.br
+.ti -1c
+.RI "const \fBUSER_AGENT\fP = 'PHP\-TSI\-Client\-V{version}'"
+.br
+.ti -1c
+.RI "const \fBTSI_CLIENT_UPDATE_URL\fP = 'https://raw\&.githubusercontent\&.com/Hammermaps\-DEV/TSI\-Client/{branch}/version'"
+.br
+.in -1c
+.SH "Ausführliche Beschreibung"
+.PP 
+Definiert in Zeile 32 der Datei TSI_Client_Base\&.php\&.
+.SH "Beschreibung der Konstruktoren und Destruktoren"
+.PP 
+.SS "__construct (string $server_url = \fC''\fP, string $client_key = \fC''\fP, string $secret_key = \fC''\fP)"
+\fBTSI_Client\fP constructor\&. 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$server_url\fP 
+.br
+\fI$client_key\fP 
+.br
+\fI$secret_key\fP 
+.RE
+.PP
+
+.PP
+Definiert in Zeile 188 der Datei TSI_Client_Base\&.php\&.
+.SS "__destruct ()"
+\fBTSI_Client\fP deconstructor\&. 
+.PP
+Definiert in Zeile 234 der Datei TSI_Client_Base\&.php\&.
+.SH "Dokumentation der Elementfunktionen"
+.PP 
+.SS "apiIsActual (int $cache = \fC30\fP)"
+Check is TSI-API Class UpToDate 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$cache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 884 der Datei TSI_Client_Base\&.php\&.
+.SS "autoload (string $class)"
+Autoloader for interfaces & classes 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$class\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 246 der Datei TSI_Client_Base\&.php\&.
+.SS "checkAPI (bool $recache = \fCfalse\fP, int $cache = \fC60\fP)"
+Check the Server-API Version 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$cache\fP 
+.br
+\fI$recache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 473 der Datei TSI_Client_Base\&.php\&.
+.SS "checkJSON (string $json)"
+Check the JSON string 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$json\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool|mixed|string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 571 der Datei TSI_Client_Base\&.php\&.
+.SS "debugAllIndexes (bool $PrintOutput = \fCtrue\fP)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$PrintOutput\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 931 der Datei TSI_Client_Base\&.php\&.
+.SS "Exec (bool $responseProcessing = \fCtrue\fP)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$responseProcessing\fP 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 689 der Datei TSI_Client_Base\&.php\&.
+.SS "getCache (string $key)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$key\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool|mixed 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 743 der Datei TSI_Client_Base\&.php\&.
+.SS "getClientCache ()"
+Get var for cache server answer 
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 330 der Datei TSI_Client_Base\&.php\&.
+.SS "getGZIPSupport ()"
+Get var for GZip compressed server answer 
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 314 der Datei TSI_Client_Base\&.php\&.
+.SS "getKeys ()"
+Get the client and secret keys 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 274 der Datei TSI_Client_Base\&.php\&.
+.SS "getProxyServer ()"
+Give the Proxy-Server config for CURL Requests 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 373 der Datei TSI_Client_Base\&.php\&.
+.SS "getRegisterCacheExist ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 874 der Datei TSI_Client_Base\&.php\&.
+.SS "getRegisterCacheRead ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 854 der Datei TSI_Client_Base\&.php\&.
+.SS "getRegisterCacheWrite ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 834 der Datei TSI_Client_Base\&.php\&.
+.SS "getResponse (string $call = \fC''\fP, string $hash = \fC''\fP)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$call\fP 
+.br
+\fI$hash\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 382 der Datei TSI_Client_Base\&.php\&.
+.SS "getResponseGroup (string $call = \fC''\fP)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$call\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 403 der Datei TSI_Client_Base\&.php\&.
+.SS "getServerUrl ()"
+Get the URL to TSI Installation 
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 298 der Datei TSI_Client_Base\&.php\&.
+.SS "getSSLOptions ()"
+Get ssl_verifyhost and ssl_verifypeer option for curl 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 348 der Datei TSI_Client_Base\&.php\&.
+.SS "insertCall (string $call, array $post = \fC[]\fP, string $url = \fC''\fP)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$call\fP 
+.br
+\fI$post\fP 
+.br
+\fI$url\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 615 der Datei TSI_Client_Base\&.php\&.
+.SS "responseProcessing (string $call = \fC''\fP, string $hash = \fC''\fP)"
+Processing the response 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$call\fP 
+.br
+\fI$hash\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool|array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 424 der Datei TSI_Client_Base\&.php\&.
+.SS "setCache (string $key,  $var, int $ttl = \fC60\fP)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$key\fP 
+.br
+\fI$var\fP 
+.br
+\fI$ttl\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+bool 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 793 der Datei TSI_Client_Base\&.php\&.
+.SS "setClientCache (bool $cache = \fCfalse\fP)"
+Use cache for server answers 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$cache\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 322 der Datei TSI_Client_Base\&.php\&.
+.SS "setGZIPSupport (bool $gzip = \fCfalse\fP)"
+Use GZip compressed server answer 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$gzip\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 306 der Datei TSI_Client_Base\&.php\&.
+.SS "setKeys (string $client_key, string $secret_key)"
+Set client and secret key for API 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$client_key\fP 
+.br
+\fI$secret_key\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 265 der Datei TSI_Client_Base\&.php\&.
+.SS "setProxyServer (string $ip = \fC''\fP, int $port = \fC8080\fP, string $username = \fC''\fP, string $password = \fC''\fP)"
+Set the Proxy-Server for CURL Requests 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$ip\fP 
+.br
+\fI$port\fP 
+.br
+\fI$username\fP 
+.br
+\fI$password\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 362 der Datei TSI_Client_Base\&.php\&.
+.SS "setRegisterCacheExist (string $class, string $method)"
+Register a static Is-Exist-Cache function Register: $client->registerCacheWrite('cache','exists'); Cache function: public static function exists($key); 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$class\fP 
+.br
+\fI$method\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 866 der Datei TSI_Client_Base\&.php\&.
+.SS "setRegisterCacheRead (string $class, string $method)"
+Register a static Read-Cache function Register: $client->registerCacheWrite('cache','get'); Cache function: public static function get($key); 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$class\fP 
+.br
+\fI$method\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 846 der Datei TSI_Client_Base\&.php\&.
+.SS "setRegisterCacheWrite (string $class, string $method)"
+Register a static Write-Cache function Register: $client->registerCacheWrite('cache','set'); Cache function: public static function set($key,$data,$ttl); 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$class\fP 
+.br
+\fI$method\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 826 der Datei TSI_Client_Base\&.php\&.
+.SS "setServerUrl (string $url = \fC'http://localhost'\fP)"
+Set the Full-URL to TSI Installation 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$url\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 285 der Datei TSI_Client_Base\&.php\&.
+.SS "setSSLOptions (bool $ssl_verifyhost, bool $ssl_verifypeer)"
+Set ssl_verifyhost and ssl_verifypeer option for curl 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$ssl_verifyhost\fP 
+.br
+\fI$ssl_verifypeer\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Definiert in Zeile 339 der Datei TSI_Client_Base\&.php\&.
+.SH "Dokumentation der Felder"
+.PP 
+.SS "const TSI_CLIENT_BRANCHES"
+\fBInitialisierung:\fP
+.PP
+.nf
+= [
+        'final' => false
+.fi
+.PP
+Definiert in Zeile 158 der Datei TSI_Client_Base\&.php\&.
+
+.SH "Autor"
+.PP 
+Automatisch erzeugt von Doxygen für TeamSpeak Interface Client aus dem Quellcode\&.

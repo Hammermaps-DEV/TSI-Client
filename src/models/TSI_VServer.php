@@ -26,9 +26,8 @@
 namespace TSI_Client\Models;
 
 /**
- * TSI-Virtual-Server: v1.0.61
  * Class TSI_VServer
- * @package TSI_VServer
+ * @package TSI_Client\Models
  */
 class TSI_VServer implements TSI_VServer_Interface {
     private $instance_id = 0;

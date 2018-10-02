@@ -27,6 +27,10 @@ namespace TSI_Client;
 
 use TSI_Client\Models;
 
+/**
+ * Class TSI_Client
+ * @package TSI_Client
+ */
 class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
     /**

@@ -25,6 +25,10 @@
 
 namespace TSI_Client;
 
+/**
+ * Class TSI_Client_Base
+ * @package TSI_Client
+ */
 abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @var null|resource

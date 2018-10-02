@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['_5f_5fconstruct',['__construct',['../d5/d08/class_t_s_i___client_1_1_models_1_1_t_s_i___user.html#aae4cfd52440b7e2b41d99fea6f79fac8',1,'TSI_Client\Models\TSI_User\__construct()'],['../d2/d1e/class_t_s_i___client_1_1_t_s_i___client.html#a650e989c8d14dad216aa9a1f0e1ea39b',1,'TSI_Client\TSI_Client\__construct()'],['../d1/d39/class_t_s_i___client_1_1_t_s_i___client___base.html#a650e989c8d14dad216aa9a1f0e1ea39b',1,'TSI_Client\TSI_Client_Base\__construct()'],['../d3/df8/class_t_s_i___multi_client_1_1_t_s_i___multi_client.html#a0d49a7664e1ad87580cc59ff76483c57',1,'TSI_MultiClient\TSI_MultiClient\__construct()']]],
+  ['_5f_5fdestruct',['__destruct',['../d2/d1e/class_t_s_i___client_1_1_t_s_i___client.html#a421831a265621325e1fdd19aace0c758',1,'TSI_Client\TSI_Client\__destruct()'],['../d1/d39/class_t_s_i___client_1_1_t_s_i___client___base.html#a421831a265621325e1fdd19aace0c758',1,'TSI_Client\TSI_Client_Base\__destruct()'],['../d3/df8/class_t_s_i___multi_client_1_1_t_s_i___multi_client.html#a421831a265621325e1fdd19aace0c758',1,'TSI_MultiClient\TSI_MultiClient\__destruct()']]]
+];

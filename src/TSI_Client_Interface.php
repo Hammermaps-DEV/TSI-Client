@@ -25,6 +25,10 @@
 
 namespace TSI_Client;
 
+/**
+ * Interface TSI_Client_Interface
+ * @package TSI_Client
+ */
 interface TSI_Client_Interface extends TSI_Client_Base_Interface {
     //GETTER
     public function getTSIVersion(int $cache);

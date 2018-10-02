@@ -27,6 +27,10 @@ namespace TSI_Client\Models;
 
 use TSI_Client;
 
+/**
+ * Class TSI_Role
+ * @package TSI_Client\Models
+ */
 class TSI_Role implements TSI_Role_Interface {
     /**
      * @var int

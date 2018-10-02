@@ -26,9 +26,8 @@
 namespace TSI_Client\Models;
 
 /**
- * TSI-User: v1.1.1
  * Class TSI_User
- * @package TSI_Client
+ * @package TSI_Client\Models
  */
 class TSI_User implements TSI_User_Interface {
     /**

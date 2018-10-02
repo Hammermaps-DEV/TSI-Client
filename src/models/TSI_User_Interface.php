@@ -25,6 +25,10 @@
 
 namespace TSI_Client\Models;
 
+/**
+ * Interface TSI_User_Interface
+ * @package TSI_Client\Models
+ */
 interface TSI_User_Interface {
     //SETTER
     public function setUserID(int $user_id);
