@@ -25,10 +25,13 @@
 
 namespace TSI_Client\Models;
 
-interface TSI_User_Interface {
+/**
+ * Interface TSI_Resellers_Interface
+ * @package TSI_Client\Models
+ */
+interface TSI_Resellers_Interface {
     //SETTER
     public function setUserID(int $user_id);
-    public function setResellerID(int $id);
     public function setRoleID(int $role_id);
     public function setUsername(string $username);
     public function setFirstName(string $first_name);
@@ -37,16 +40,21 @@ interface TSI_User_Interface {
     public function setQueryNickname(string $query_name);
     public function setLanguage(string $lang);
     public function setFixedVMs(array $vms);
+    public function setFixedInstances(array $instances);
     public function setMaxSlotsVMs(int $slots);
+    public function setMaxWebUsers(int $users);
+    public function setMaxVirtualServers(int $users);
+    public function setLimits(array $limits);
     public function setRegDateArray(array $reg_date);
     public function setActive(bool $active);
     public function setIcon(string $icon_pkg);
     public function setInitPassword(string $password);
     public function setServer(int $instance, int $vserver_id);
+    public function setAllowedOwnInstances(bool $active);
+    public function setFixedInstance(int $instance);
 
     //GETTER
     public function getUserID();
-    public function getResellerID();
     public function getRoleID();
     public function getUsername();
     public function getFirstName();
@@ -55,7 +63,11 @@ interface TSI_User_Interface {
     public function getQueryNickname();
     public function getLanguage();
     public function getFixedVMs();
+    public function getFixedInstances();
     public function getMaxSlotsVMs();
+    public function getMaxWebUsers();
+    public function getMaxVirtualServers();
+    public function getLimits();
     public function getRegDate();
     public function getRegDateTimezone();
     public function getRegDateTimezoneType();
@@ -63,7 +75,5 @@ interface TSI_User_Interface {
     public function getIcon();
     public function getServer(int $instance, int $vserver_id);
     public function getVMsByInstance(int $instance);
-
-    //MULTI
-    public function getServersMulti();
+    public function getAllowedOwnInstances();
 }

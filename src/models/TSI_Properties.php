@@ -25,10 +25,6 @@
 
 namespace TSI_Client\Models;
 
-/**
- * Class TSI_Properties
- * @package TSI_Client\Models
- */
 class TSI_Properties implements TSI_Properties_Interface {
     /**
      * @var array

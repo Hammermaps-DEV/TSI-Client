@@ -25,10 +25,6 @@
 
 namespace TSI_Client;
 
-/**
- * Interface TSI_Client_Base_Interface
- * @package TSI_Client
- */
 interface TSI_Client_Base_Interface {
     const virtualserver_modify = array(
         "virtualserver_name",

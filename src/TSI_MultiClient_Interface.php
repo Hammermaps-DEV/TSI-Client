@@ -27,10 +27,6 @@ namespace TSI_MultiClient;
 
 use TSI_Client\TSI_Client_Interface;
 
-/**
- * Interface TSI_MultiClient_Interface
- * @package TSI_MultiClient
- */
 interface TSI_MultiClient_Interface extends TSI_Client_Interface {
     public function getTSIUser(int $user_id);
 }

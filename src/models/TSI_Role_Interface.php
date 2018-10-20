@@ -25,10 +25,6 @@
 
 namespace TSI_Client\Models;
 
-/**
- * Interface TSI_Role_Interface
- * @package TSI_Client\Models
- */
 interface TSI_Role_Interface {
     const tsi_permissions = [
         "tsi_profile_edit",

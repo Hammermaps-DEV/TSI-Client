@@ -26,11 +26,10 @@
 namespace TSI_Client\Models;
 
 /**
- * TSI-User: v1.1.1
- * Class TSI_User
- * @package TSI_Client
+ * Class TSI_Instance
+ * @package TSI_Client\Models
  */
-class TSI_User implements TSI_User_Interface {
+class TSI_Resellers implements TSI_Resellers_Interface {
     /**
      * @var TSI_Client
      */
@@ -102,6 +101,11 @@ class TSI_User implements TSI_User_Interface {
     private $servers = [];
 
     /**
+     * @var array
+     */
+    private $instances = [];
+
+    /**
      * @var string
      * @internal
      */
@@ -117,33 +121,20 @@ class TSI_User implements TSI_User_Interface {
         'timezone' => 'Europe/Berlin'];
 
     /**
-     * @var int
+     * @var array
      * @internal
      */
-    private $reseller_id = 0;
-
-    /**
-     * @var int
-     * @internal
-     */
-    private $maxslots = 0;
+    private $limits = [
+        'max_slots_per_virtualservers' => 32,
+        'max_web_users' => 2,
+        'max_virtualservers' => 2
+    ];
 
     /**
      * @var bool
      * @internal
      */
     private $active = false;
-
-    /* ################################## MULTI ######################################### */
-    /**
-     * @var array
-     */
-    private $multi_instances = [];
-
-    /**
-     * @var array
-     */
-    private $multi_vservers = [];
 
     /**
      * TSI_User constructor.
@@ -165,20 +156,6 @@ class TSI_User implements TSI_User_Interface {
      */
     public function getUserID(): int {
         return (int)$this->id;
-    }
-
-    /**
-     * @param int $reseller_id
-     */
-    public function setResellerID(int $reseller_id): void {
-        $this->reseller_id = $reseller_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getResellerID(): int {
-        return (int)$this->reseller_id;
     }
 
     /**
@@ -290,10 +267,6 @@ class TSI_User implements TSI_User_Interface {
      */
     public function setFixedVMs(array $servers): void {
         $this->servers = $servers;
-
-        if($this->multi) {
-            $this->readServerMulti();
-        }
     }
 
     /**
@@ -304,17 +277,80 @@ class TSI_User implements TSI_User_Interface {
     }
 
     /**
+     * @return array
+     */
+    public function getFixedInstances(): array {
+        return (array)$this->instances;
+    }
+
+    /**
+     * @param array $instances
+     */
+    public function setFixedInstances(array $instances) {
+        $this->instances = $instances;
+    }
+
+    /**
+     * @param int $instance
+     */
+    public function setFixedInstance(int $instance): void {
+        $this->instances[] = (int)$instance;
+    }
+
+    /**
      * @param int $slots
      */
     public function setMaxSlotsVMs(int $slots): void {
-        $this->maxslots = $slots;
+        $this->limits['max_slots_per_virtualservers'] = $slots;
     }
 
     /**
      * @return int
      */
     public function getMaxSlotsVMs(): int {
-        return (int)$this->maxslots;
+        return (int)$this->limits['max_slots_per_virtualservers'];
+    }
+
+    /**
+     * @param int $users
+     */
+    public function setMaxWebUsers(int $users): void {
+        $this->limits['max_web_users'] = $users;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxWebUsers(): int {
+        return (int)$this->limits['max_web_users'];
+    }
+
+    /**
+     * @param int $servers
+     */
+    public function setMaxVirtualServers(int $servers): void {
+        $this->limits['max_virtualservers'] = $servers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxVirtualServers(): int {
+        return (int)$this->limits['max_virtualservers'];
+    }
+
+    /**
+     * @param array $limits
+     */
+    public function setLimits(array $limits): void {
+        $this->limits = $limits;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLimits(): array {
+        return (array)$this->limits;
     }
 
     /**
@@ -357,6 +393,20 @@ class TSI_User implements TSI_User_Interface {
      */
     public function setActive(bool $active): void {
         $this->active = $active;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllowedOwnInstances(): bool {
+        return (bool)$this->allowed_own_instances;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setAllowedOwnInstances(bool $active): void {
+        $this->allowed_own_instances = $active;
     }
 
     /**
@@ -414,84 +464,5 @@ class TSI_User implements TSI_User_Interface {
             return (array)$this->servers[(int)$instance];
 
         return [];
-    }
-
-    /***************************** MULTI '''''''''''''''''''''''''''''*/
-
-    /**
-     * @return array
-     */
-    public function getServersMulti(): array {
-        if(!$this->multi)
-            return [];
-
-        return [
-            'instances' => $this->multi_instances,
-            'vservers' => $this->multi_vservers
-        ];
-    }
-
-    /**
-     * Read for Multi Calls
-     */
-    private function readServerMulti(): void {
-        if(!$this->multi)
-            return;
-
-        //Get all Servers
-        $vserver_ids = []; $i=0;
-        if(count($this->servers >= 2)) {
-            foreach ($this->servers as $instance => $server) {
-                $this->client->insertCall('instanceGet',['id'=>(int)$instance]); //set the call
-                foreach ($server as $vserver_id) {
-                    $this->client->insertCall('vServerGet',['id'=>$instance,'sid'=>$vserver_id]);
-                    $vserver_ids[$i]['vserver_id'] = (int)$vserver_id;
-                    $vserver_ids[$i]['instance'] = (int)$instance;
-                    $i++;
-                }
-            }
-
-            $this->client->Exec(); //execute
-            foreach ($this->client->getResponseGroup('instanceGet') as $hash => $instance_data) {
-                if($instance_data['valid'] &&
-                    array_key_exists('response',$instance_data) &&
-                    count($instance_data['response'])) {
-                    $instance = new TSI_Instance();
-                    $instance->setID((int)$instance_data['response']['id']);
-                    $instance->setIP(strval($instance_data['response']['server_ip']));
-                    $instance->setLastPermImport(strval($instance_data['response']['last_perm_import']));
-                    $instance->setQueryPort((int)$instance_data['response']['query_port']);
-                    $instance->setServerAdmin(html_entity_decode($instance_data['response']['serveradmin']));
-                    $this->multi_instances[] = $instance;
-                    unset($instance);
-                }
-            }
-
-            $i=0;
-            foreach ($this->client->getResponseGroup('vServerGet') as $hash => $vserver_data) {
-                if($vserver_data['valid'] &&
-                    array_key_exists('response',$vserver_data) &&
-                    count($vserver_data['response'])) {
-                    $properties = new TSI_Properties();
-                    $properties->setName(html_entity_decode($vserver_data['response']['name']));
-                    $properties->setMaxClients((int)$vserver_data['response']['maxclients']);
-
-                    $vserver = new TSI_VServer();
-                    $vserver->setProperties($properties);
-                    $vserver->setServerID($vserver_ids[$i]['vserver_id']);
-                    $vserver->setInstanceID($vserver_ids[$i]['instance']);
-                    $vserver->setUID(html_entity_decode($vserver_data['response']['unique_id']));
-                    $vserver->setOnline(strval($vserver_data['response']['status']));
-                    $vserver->setPlatform(html_entity_decode($vserver_data['response']['platform']));
-                    $vserver->setVersion(html_entity_decode($vserver_data['response']['version']));
-                    $vserver->setClientsOnline((int)$vserver_data['response']['clientsonline']);
-                    $vserver->setChannelOnline((int)$vserver_data['response']['channelsonline']);
-                    $vserver->setCreatedTime((int)$vserver_data['response']['created']);
-                    $vserver->setUptime((int)$vserver_data['response']['uptime']);
-                    $this->multi_vservers[] = $vserver;
-                    unset($vserver);
-                } $i++;
-            }
-        }
     }
 }

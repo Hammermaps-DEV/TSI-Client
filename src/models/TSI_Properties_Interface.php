@@ -25,10 +25,6 @@
 
 namespace TSI_Client\Models;
 
-/**
- * Interface TSI_Properties_Interface
- * @package TSI_Client\Models
- */
 interface TSI_Properties_Interface {
     //SETTER
     public function setName(string $name);

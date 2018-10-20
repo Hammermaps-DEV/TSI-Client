@@ -25,10 +25,6 @@
 
 namespace TSI_Client\Models;
 
-/**
- * Interface TSI_VServer_Interface
- * @package TSI_Client\Models
- */
 interface TSI_VServer_Interface {
     //SETTER
     public function setInstanceID(int $instance_id);

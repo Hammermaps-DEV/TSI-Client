@@ -26,27 +26,12 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
-//Erstelle neues Properties Objekt für den V-Server (Optional)
-$new_server_properties = new TSI_Client\TSI_Properties();
+//by ID
+$id = 1; //reseller id
 
-//Erstelle den Server mit 16 Slots
-$new_server_properties->setMaxClients(16);
+$reseller = $client->getTSVReseller($id);
 
-//Servername setzen
-$new_server_properties->setName('Ein TestServer');
+$reseller->setFirstName('Otto');
+$reseller->setInitPassword('xyz1234');
 
-//Wähle zufällig einen Port
-$new_server_properties->setPort(rand(9988,11999));
-
-/* ###################################################### */
-
-//Erstelle neues Server Objekt
-$new_server = new TSI_Client\TSI_VServer();
-
-//Auf welcher Instanz soll der neue V-Server erstellt werden?
-$new_server->setInstanceID(1);
-
-//Setzt die Einstellungen des V-Servers (Optional)
-$new_server->setProperties($new_server_permissons);
-
-$client->addTSVServer($new_server); //Server Erstellen
+$client->editTSVReseller($reseller);

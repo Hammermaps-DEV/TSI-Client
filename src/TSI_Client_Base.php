@@ -25,10 +25,6 @@
 
 namespace TSI_Client;
 
-/**
- * Class TSI_Client_Base
- * @package TSI_Client
- */
 abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @var null|resource
@@ -157,15 +153,15 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     const TSI_CLIENT_BRANCHES = [
         'final' => false,
-        'beta' => false,
-        'master' => true
+        'beta' => true,
+        'master' => false
     ];
 
     /**
      * PHP TSI-Client Version
      * @var string
      */
-    const TSI_CLIENT_VERSION = '1.0.4';
+    const TSI_CLIENT_VERSION = '1.0.5';
 
     /**
      * CURL Agent
