@@ -1,0 +1,828 @@
+.TH "TSI_Client" 3 "Die Okt 2 2018" "Version 1.0.4 Beta" "TeamSpeak Interface Client" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TSI_Client
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Abgeleitet von \fBTSI_Client_Base\fP und \fBTSI_Client_Interface\fP\&.
+.PP
+Basisklasse für \fBTSI_MultiClient\fP\&.
+.SS "Öffentliche Methoden"
+
+.in +1c
+.ti -1c
+.RI "\fB__construct\fP (string $server_url='', string $client_key='', string $secret_key='')"
+.br
+.ti -1c
+.RI "\fB__destruct\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIVersion\fP (int $cache=30)"
+.br
+.ti -1c
+.RI "\fBgetAPIVersion\fP (int $cache=30)"
+.br
+.ti -1c
+.RI "\fBgetAddonVersion\fP (string $addon_name, int $cache=30)"
+.br
+.ti -1c
+.RI "\fBgetAddons\fP (int $cache=30)"
+.br
+.ti -1c
+.RI "\fBgetTSIUsers\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIUser\fP (int $user_id)"
+.br
+.ti -1c
+.RI "\fBgetTSIUserByUsername\fP (string $username)"
+.br
+.ti -1c
+.RI "\fBgetTSIUserByEMail\fP (string $email)"
+.br
+.ti -1c
+.RI "\fBaddTSIUser\fP (\fBModels\\TSI_User\fP $user)"
+.br
+.ti -1c
+.RI "\fBeditTSIUser\fP (\fBModels\\TSI_User\fP $user)"
+.br
+.ti -1c
+.RI "\fBdeleteTSIUser\fP (\fBModels\\TSI_User\fP $user)"
+.br
+.ti -1c
+.RI "\fBgetTSIRolesList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIRole\fP (int $role_id)"
+.br
+.ti -1c
+.RI "\fBgetTSIRoleByName\fP (string $name)"
+.br
+.ti -1c
+.RI "\fBdeleteTSIRole\fP (\fBModels\\TSI_Role\fP $role)"
+.br
+.ti -1c
+.RI "\fBgetTSInstanceList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSInstance\fP (int $instance_id)"
+.br
+.ti -1c
+.RI "\fBgetTSInstanceByIP\fP (string $ip)"
+.br
+.ti -1c
+.RI "\fBdeleteTSInstance\fP (\fBModels\\TSI_Instance\fP $instance)"
+.br
+.ti -1c
+.RI "\fBgetTSVServerList\fP (int $instance_id)"
+.br
+.ti -1c
+.RI "\fBgetTSVServer\fP (int $instance_id, int $vserver_id)"
+.br
+.ti -1c
+.RI "\fBaddTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBeditTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBdeleteTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBstartTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBstopTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBgetTSViewer\fP (int $instance_id, int $vserver_id, bool $show_flags=true, string $style='old', int $cache=30)"
+.br
+.ti -1c
+.RI "\fBrunTSICron\fP ()"
+.br
+.ti -1c
+.RI "\fBisTSIBotRun\fP (int $instance_id, int $vserver_id)"
+.br
+.ti -1c
+.RI "\fBstartTSIBot\fP (int $instance_id, int $vserver_id, string $language='de_DE')"
+.br
+.ti -1c
+.RI "\fBstopTSIBot\fP (int $instance_id, int $vserver_id)"
+.br
+.in -1c
+.SS "Weitere Geerbte Elemente"
+.SH "Ausführliche Beschreibung"
+.PP 
+Definiert in Zeile 34 der Datei TSI_Client\&.php\&.
+.SH "Beschreibung der Konstruktoren und Destruktoren"
+.PP 
+.SS "__construct (string $server_url = \fC''\fP, string $client_key = \fC''\fP, string $secret_key = \fC''\fP)"
+\fBTSI_Client\fP constructor\&. 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$server_url\fP 
+.br
+\fI$client_key\fP 
+.br
+\fI$secret_key\fP 
+.RE
+.PP
+
+.PP
+Definiert in Zeile 42 der Datei TSI_Client\&.php\&.
+.SS "__destruct ()"
+\fBTSI_Client\fP deconstruct\&. 
+.PP
+Definiert in Zeile 49 der Datei TSI_Client\&.php\&.
+.SH "Dokumentation der Elementfunktionen"
+.PP 
+.SS "addTSIUser (\fBModels\\TSI_User\fP $user)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$user\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 399 der Datei TSI_Client\&.php\&.
+.SS "addTSVServer (\fBModels\\TSI_VServer\fP $vserver)"
+Create a virtual server 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$vserver\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 989 der Datei TSI_Client\&.php\&.
+.SS "deleteTSInstance (\fBModels\\TSI_Instance\fP $instance)"
+Delete TS instance 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 845 der Datei TSI_Client\&.php\&.
+.SS "deleteTSIRole (\fBModels\\TSI_Role\fP $role)"
+Delete TSI role 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$role\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 695 der Datei TSI_Client\&.php\&.
+.SS "deleteTSIUser (\fBModels\\TSI_User\fP $user)"
+Delete TSI users based on user-id 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$user\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 535 der Datei TSI_Client\&.php\&.
+.SS "deleteTSVServer (\fBModels\\TSI_VServer\fP $vserver)"
+Delete virtual server 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$vserver\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1089 der Datei TSI_Client\&.php\&.
+.SS "editTSIUser (\fBModels\\TSI_User\fP $user)"
+Edit a TSI user 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$user\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 467 der Datei TSI_Client\&.php\&.
+.SS "editTSVServer (\fBModels\\TSI_VServer\fP $vserver)"
+Change virtual server 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$vserver\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1036 der Datei TSI_Client\&.php\&.
+.SS "getAddons (int $cache = \fC30\fP)"
+Returns a list of all addons 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$cache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 158 der Datei TSI_Client\&.php\&.
+.SS "getAddonVersion (string $addon_name, int $cache = \fC30\fP)"
+Shows the versions of the TSI-Extensions 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$addon_name\fP 
+.br
+\fI$cache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 125 der Datei TSI_Client\&.php\&.
+.SS "getAPIVersion (int $cache = \fC30\fP)"
+Shows the version of Server-API 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$cache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 91 der Datei TSI_Client\&.php\&.
+.SS "getTSInstance (int $instance_id)"
+Get TS instance data 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 767 der Datei TSI_Client\&.php\&.
+.SS "getTSInstanceByIP (string $ip)"
+Get TS instance data by IP 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$ip\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 806 der Datei TSI_Client\&.php\&.
+.SS "getTSInstanceList ()"
+Get TS instance list 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 727 der Datei TSI_Client\&.php\&.
+.SS "getTSIRole (int $role_id)"
+Get TSI role by id 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$role_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 609 der Datei TSI_Client\&.php\&.
+.SS "getTSIRoleByName (string $name)"
+Find TSI role by name 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$name\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 652 der Datei TSI_Client\&.php\&.
+.SS "getTSIRolesList ()"
+Get TSI role list 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 567 der Datei TSI_Client\&.php\&.
+.SS "getTSIUser (int $user_id)"
+Give a TSI User Profile 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$user_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 238 der Datei TSI_Client\&.php\&.
+.SS "getTSIUserByEMail (string $email)"
+Find TSI users based on the email address 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$email\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 344 der Datei TSI_Client\&.php\&.
+.SS "getTSIUserByUsername (string $username)"
+Find a TSI user by username 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$username\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 293 der Datei TSI_Client\&.php\&.
+.SS "getTSIUsers ()"
+Returns a list of TSI users 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 182 der Datei TSI_Client\&.php\&.
+.SS "getTSIVersion (int $cache = \fC30\fP)"
+Shows the version of Teamspeak Interface 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$cache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 59 der Datei TSI_Client\&.php\&.
+.SS "getTSViewer (int $instance_id, int $vserver_id, bool $show_flags = \fCtrue\fP, string $style = \fC'old'\fP, int $cache = \fC30\fP)"
+Call Teamspeak Viewer 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.br
+\fI$vserver_id\fP 
+.br
+\fI$show_flags\fP 
+.br
+\fI$style\fP 
+.br
+\fI$cache\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1207 der Datei TSI_Client\&.php\&.
+.SS "getTSVServer (int $instance_id, int $vserver_id)"
+Retrieve data from a virtual server 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.br
+\fI$vserver_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+\fBModels\fP|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 933 der Datei TSI_Client\&.php\&.
+.SS "getTSVServerList (int $instance_id)"
+Get list of virtual servers of an instance 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 878 der Datei TSI_Client\&.php\&.
+.SS "isTSIBotRun (int $instance_id, int $vserver_id)"
+Check if Simple Bot is active 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.br
+\fI$vserver_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1278 der Datei TSI_Client\&.php\&.
+.SS "runTSICron ()"
+Cronjobs abarbeiten 
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1249 der Datei TSI_Client\&.php\&.
+.SS "startTSIBot (int $instance_id, int $vserver_id, string $language = \fC'de_DE'\fP)"
+Start Simple Bot 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.br
+\fI$vserver_id\fP 
+.br
+\fI$language\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1327 der Datei TSI_Client\&.php\&.
+.SS "startTSVServer (\fBModels\\TSI_VServer\fP $vserver)"
+Start virtual server 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$vserver\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1127 der Datei TSI_Client\&.php\&.
+.SS "stopTSIBot (int $instance_id, int $vserver_id)"
+Stop Simple Bot 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance_id\fP 
+.br
+\fI$vserver_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1376 der Datei TSI_Client\&.php\&.
+.SS "stopTSVServer (\fBModels\\TSI_VServer\fP $vserver)"
+Stop virtual server 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$vserver\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+array|bool 
+.RE
+.PP
+\fBAusnahmebehandlung:\fP
+.RS 4
+\fI\fP .RE
+.PP
+
+.PP
+Implementiert \fBTSI_Client_Interface\fP\&.
+.PP
+Definiert in Zeile 1165 der Datei TSI_Client\&.php\&.
+
+.SH "Autor"
+.PP 
+Automatisch erzeugt von Doxygen für TeamSpeak Interface Client aus dem Quellcode\&.
