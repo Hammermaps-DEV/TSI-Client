@@ -28,6 +28,15 @@ namespace TSI_MultiClient;
 use TSI_Client\Models;
 use TSI_Client\TSI_Client;
 
+if (!defined('TSI_DIR')) {
+    define('TSI_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+}
+
+require_once TSI_DIR . 'TSI_Client_Base_Interface.php';
+require_once TSI_DIR . 'TSI_Client_Base.php';
+require_once TSI_DIR . 'TSI_Client.php';
+require_once TSI_DIR . 'TSI_Client_Interface.php';
+
 class TSI_MultiClient extends TSI_Client implements TSI_MultiClient_Interface {
     /**
      * TSI_MultiClient constructor.

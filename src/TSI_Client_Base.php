@@ -161,7 +161,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * PHP TSI-Client Version
      * @var string
      */
-    const TSI_CLIENT_VERSION = '1.0.5';
+    const TSI_CLIENT_VERSION = '1.0.6';
 
     /**
      * CURL Agent
@@ -572,28 +572,28 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                 return $json;
                 break;
             case JSON_ERROR_DEPTH:
-                trigger_error(__CLASS__.': Maximum stack depth exceeded', E_USER_WARNING);
                 print_r($stream_orginal);
+                trigger_error(__CLASS__.': Maximum stack depth exceeded', E_USER_WARNING);
                 break;
             case JSON_ERROR_STATE_MISMATCH:
-                trigger_error(__CLASS__.': Underflow or the modes mismatch', E_USER_WARNING);
                 print_r($stream_orginal);
+                trigger_error(__CLASS__.': Underflow or the modes mismatch', E_USER_WARNING);
                 break;
             case JSON_ERROR_CTRL_CHAR:
-                trigger_error(__CLASS__.': Unexpected control character found', E_USER_WARNING);
                 print_r($stream_orginal);
+                trigger_error(__CLASS__.': Unexpected control character found', E_USER_WARNING);
                 break;
             case JSON_ERROR_SYNTAX:
-                trigger_error(__CLASS__.': Syntax error, malformed JSON', E_USER_WARNING);
                 print_r($stream_orginal);
+                trigger_error(__CLASS__.': Syntax error, malformed JSON', E_USER_WARNING);
                 break;
             case JSON_ERROR_UTF8:
-                trigger_error(__CLASS__.': Malformed UTF-8 characters, possibly incorrectly encoded', E_USER_WARNING);
                 print_r($stream_orginal);
+                trigger_error(__CLASS__.': Malformed UTF-8 characters, possibly incorrectly encoded', E_USER_WARNING);
                 break;
             default:
-                trigger_error(__CLASS__.': Unknown error', E_USER_WARNING);
                 print_r($stream_orginal);
+                trigger_error(__CLASS__.': Unknown error', E_USER_WARNING);
                 break;
         }
 
