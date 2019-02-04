@@ -196,7 +196,6 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        var_dump($this->version['modul_ai']['version']);
         if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
             trigger_error(__CLASS__.' => getTSIUsers(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
             return false;
@@ -212,13 +211,13 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-		$this->autoload('TSI_User','Models');
         foreach ($users as $key => $data) {
             if(count($data) <= 9) {
                 trigger_error(__CLASS__.' => getTSIUsers(): response is empty or has invalid result!', E_USER_WARNING);
                 return false;
             }
 
+			$user = new Models\TSI_User(true);
             $user->setUserID((int)$data['id']);
             $user->setResellerID((int)$data['reseller_id']);
             $user->setRoleID((int)$data['group_id']);
@@ -266,7 +265,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -317,7 +316,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIUserByUsername(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -373,7 +372,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIUserByEMail(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -462,7 +461,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => addTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -530,7 +529,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => editTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -563,7 +562,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -590,7 +589,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIRolesList(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -637,7 +636,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIRole(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -680,7 +679,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIRoleByName(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -723,7 +722,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSIRole(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -795,7 +794,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSInstance(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -834,7 +833,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSInstanceByIP(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -873,7 +872,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSInstance(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -906,7 +905,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVServerList(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -968,7 +967,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1031,7 +1030,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => addTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1084,7 +1083,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => editTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1122,7 +1121,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1160,7 +1159,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => startTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1198,7 +1197,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => stopTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1245,7 +1244,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSViewer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1272,7 +1271,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => runTSICron(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1320,7 +1319,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => isTSIBotRun(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1370,7 +1369,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => startTSIBot(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1418,7 +1417,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => stopTSIBot(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1450,7 +1449,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVReseller(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1508,7 +1507,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVResellerByUsername(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1566,7 +1565,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVResellerByEmail(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1718,7 +1717,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => addTSVReseller(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1787,7 +1786,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => editTSVReseller(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1822,7 +1821,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSVReseller(): Unknown answer!', E_USER_WARNING);
             return false;
         }

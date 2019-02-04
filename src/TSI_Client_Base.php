@@ -837,8 +837,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheWrite(): string {
-        return strval($this->cache_functions['write']);
+    public function getRegisterCacheWrite(): array {
+        return $this->cache_functions['write'];
     }
 
     /**
@@ -857,8 +857,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheRead(): string {
-        return strval($this->cache_functions['read']);
+    public function getRegisterCacheRead(): array {
+        return $this->cache_functions['read'];
     }
 
     /**
@@ -877,8 +877,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheExist(): string {
-        return strval($this->cache_functions['exist']);
+    public function getRegisterCacheExist(): array {
+        return $this->cache_functions['exist'];
     }
 
     /**
