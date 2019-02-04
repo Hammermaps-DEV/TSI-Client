@@ -1719,7 +1719,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
 
         $data = $this->getResponse();
         if(!$data) {
-            trigger_error(__CLASS__.' => addTSIUser(): Unknown answer!', E_USER_WARNING);
+            trigger_error(__CLASS__.' => addTSVReseller(): Unknown answer!', E_USER_WARNING);
             return false;
         }
 
