@@ -707,15 +707,17 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                     if ($this->server_data['http_status_code'][$call][$hash]['code'] == 200) {
                         if ($this->curl_config[$call][$hash]['gzip']) {
                             $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$call][$hash], 2);
-                            while (!strncmp($sections[1], 'HTTP/', 5)) {
-                                $sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
-                            }
+							if(count($sections) >= 2) {
+								while (!strncmp($sections[1], 'HTTP/', 5)) {
+									$sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
+								}
 
-                            if (count($sections) >= 2) {
-                                if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
-                                    $this->server_data['json'][$call][$hash] = $sections[1];
-                                }
-                            }
+								if (count($sections) >= 2) {
+									if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
+										$this->server_data['json'][$call][$hash] = $sections[1];
+									}
+								}
+							}
                         }
 
                         if ($responseProcessing) {
