@@ -239,16 +239,22 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * Autoloader for interfaces & classes
      * @param $class
      */
-    public function autoload(string $class): void {
+    public function autoload(string $class,string $namespace = null): void {
         if(class_exists($class, false) || interface_exists($class, false)) {
             return;
         }
 
-        $class = str_replace([__NAMESPACE__,'\\'],'',$class);
-        if (file_exists("models/".$class.'.php') &&
-            file_exists("models/".$class."_Interface.php")) {
-            require_once("models/".$class."_Interface.php");
-            require_once("models/".$class.".php");
+		$basedir = '';
+		if(!empty($namespace)) {
+			$basedir = TSI_DIR.'/';
+		}
+
+		$namespace = !empty($namespace) ? $namespace : __NAMESPACE__;
+        $class = str_replace([$namespace,'\\'],'',$class);
+        if (file_exists($basedir."models/".$class.'.php') &&
+            file_exists($basedir."models/".$class."_Interface.php")) {
+            require_once($basedir."models/".$class."_Interface.php");
+            require_once($basedir."models/".$class.".php");
         }
     }
 

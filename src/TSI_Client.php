@@ -45,6 +45,14 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
      */
      function __construct(string $server_url = '', string $client_key = '', string $secret_key = '') {
          parent::__construct($server_url, $client_key, $secret_key);
+		 
+		 //Autoload
+		$this->autoload('TSI_Instance','Models');
+		$this->autoload('TSI_Properties','Models');
+		$this->autoload('TSI_Resellers','Models');
+		$this->autoload('TSI_Role','Models');
+		$this->autoload('TSI_User','Models');
+		$this->autoload('TSI_VServer','Models');
      }
 
     /**
@@ -204,13 +212,13 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
+		$this->autoload('TSI_User','Models');
         foreach ($users as $key => $data) {
             if(count($data) <= 9) {
                 trigger_error(__CLASS__.' => getTSIUsers(): response is empty or has invalid result!', E_USER_WARNING);
                 return false;
             }
 
-            $user = new Models\TSI_User();
             $user->setUserID((int)$data['id']);
             $user->setResellerID((int)$data['reseller_id']);
             $user->setRoleID((int)$data['group_id']);
@@ -830,7 +838,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             trigger_error(__CLASS__.' => getTSInstanceByIP(): Unknown answer!', E_USER_WARNING);
             return false;
         }
-
+		
         $instance = new Models\TSI_Instance();
         $instance->setID((int)$data['id']);
         $instance->setIP(strval($data['server_ip']));
