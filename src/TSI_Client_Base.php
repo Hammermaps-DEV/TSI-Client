@@ -95,7 +95,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @var bool
      * @internal
      */
-    private $server_gzip = true;
+    private $server_gzip = false;
 
     /**
      * @var bool
@@ -618,9 +618,11 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_URL, $url);
-        curl_setopt($curl,CURLOPT_HEADER, ($this->server_gzip || $use_url));
+		if($this->server_gzip || $use_url) {
+					curl_setopt($curl, CURLOPT_ENCODING, 'gzip'); 
+		}
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 0);
+        curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 10);
         curl_setopt($curl,CURLOPT_TIMEOUT, 20);
         curl_setopt($curl,CURLOPT_USERAGENT,
             str_replace('{version}',self::TSI_CLIENT_VERSION,self::USER_AGENT));
