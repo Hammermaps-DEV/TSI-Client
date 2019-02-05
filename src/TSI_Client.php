@@ -1782,7 +1782,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $data['fixed_virtual_servers'] = $reseller->getFixedVMs();
         $data['allowed_own_instances'] = ($reseller->getAllowedOwnInstances() ? 1 : 0);
 
-        $this->insertCall('resellerModify',['data'=>$data]); //set the call
+        $this->insertCall('resellerModify',['id'=>$reseller->getUserID(), 'data'=>$data]); //set the call
         $this->Exec(); //execute
 
         $data = $this->getResponse();

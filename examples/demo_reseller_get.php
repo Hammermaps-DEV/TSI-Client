@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -27,12 +27,16 @@ $client = new TSI_Client\TSI_Client(
 );
 
 //by ID
-$id = 1; //reseller id
+$id = 2; //reseller id
+
+echo '<pre>';
 
 print_r($client->getTSVReseller($id));
 
 //by username
-print_r($client->getTSVResellerByUsername('max001'));
+print_r($client->getTSVResellerByUsername('hammer'));
 
 //by email
-print_r($client->getTSIUserByEMail('max@test1234.de'));
+print_r($client->getTSIUserByEMail('test@1234domain.de'));
+
+echo '</pre>';

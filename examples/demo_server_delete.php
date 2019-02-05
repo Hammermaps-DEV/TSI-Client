@@ -26,26 +26,13 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
-$users = $client->getTSIUsers();
+echo '<pre>';
 
-echo '<pre><p>##################################################################</p>';
+$vserver = new TSI_Client\Models\TSI_VServer();
 
-//Jetzt eine Schleife der vorhandenen User
-foreach ($users as $user) {
-    //Die Server stehen als "TSI_User Objekt" zur verfügung:
-    if($user instanceof TSI_Client\Models\TSI_User) {
-        echo 'User-ID: '.$user->getUserID();
-        echo '<br>';
-        echo 'Username: '.$user->getUsername();
-        echo '<br>';
-        echo 'FirstName: '.$user->getFirstName();
-        echo '<br>';
-        echo 'LastName: '.$user->getLastName();
-        echo '<br>';
-        echo 'E-Mail: '.$user->getEmail();
-        echo '<br>';
-        echo '<p>##################################################################</p>';
-    }
-}
+$vserver->setInstanceID(1);
+$vserver->setServerID(2);
+
+print_r($client->deleteTSVServer($vserver));
 
 echo '</pre>';

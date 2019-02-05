@@ -153,15 +153,15 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     const TSI_CLIENT_BRANCHES = [
         'final' => false,
-        'beta' => true,
-        'master' => false
+        'beta' => false,
+        'master' => true
     ];
 
     /**
      * PHP TSI-Client Version
      * @var string
      */
-    const TSI_CLIENT_VERSION = '1.0.6';
+    const TSI_CLIENT_VERSION = '1.1.0';
 
     /**
      * CURL Agent
@@ -237,7 +237,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
     /**
      * Autoloader for interfaces & classes
-     * @param $class
+     * @param string $class
+     * @param string $namespace
      */
     public function autoload(string $class,string $namespace = null): void {
         if(class_exists($class, false) || interface_exists($class, false)) {
@@ -414,7 +415,6 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
         return false;
     }
-
 
     /**
      * Processing the response
@@ -625,7 +625,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_URL, $url);
 		if($this->server_gzip || $use_url) {
-					curl_setopt($curl, CURLOPT_ENCODING, 'gzip'); 
+		    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
 		}
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 10);

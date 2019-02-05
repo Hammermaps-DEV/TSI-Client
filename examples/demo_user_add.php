@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -26,6 +26,8 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
+echo '<pre>';
+
 //Erstelle neues TSI_User Objekt
 $new_tsi_user = new \TSI_Client\Models\TSI_User();
 
@@ -37,6 +39,6 @@ $new_tsi_user->setUsername('hammer');
 $new_tsi_user->setRoleID(1);
 $new_tsi_user->setServer(1, 1);
 
-$client->addTSIUser($new_tsi_user); //User Erstellen
+print_r($client->addTSIUser($new_tsi_user)); //User Erstellen
 
-
+echo '</pre>';

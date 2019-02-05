@@ -1,7 +1,8 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
+include_once ("../src/TSI_MultiClient.php");
 
 /**
  * ###################################################################################
