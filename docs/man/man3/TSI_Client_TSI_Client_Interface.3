@@ -1,0 +1,117 @@
+.TH "TSI_Client_Interface" 3 "Die Okt 2 2018" "Version 1.0.4 Beta" "TeamSpeak Interface Client" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TSI_Client_Interface
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Abgeleitet von \fBTSI_Client_Base_Interface\fP\&.
+.PP
+Basisklasse für \fBTSI_Client\fP und \fBTSI_MultiClient_Interface\fP\&.
+.SS "Öffentliche Methoden"
+
+.in +1c
+.ti -1c
+.RI "\fBgetTSIVersion\fP (int $cache)"
+.br
+.ti -1c
+.RI "\fBgetAPIVersion\fP (int $cache)"
+.br
+.ti -1c
+.RI "\fBgetAddons\fP (int $cache)"
+.br
+.ti -1c
+.RI "\fBgetAddonVersion\fP (string $addon_name, int $cache)"
+.br
+.ti -1c
+.RI "\fBgetTSIUsers\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIUser\fP (int $user_id)"
+.br
+.ti -1c
+.RI "\fBgetTSIUserByUsername\fP (string $username)"
+.br
+.ti -1c
+.RI "\fBgetTSIUserByEMail\fP (string $email)"
+.br
+.ti -1c
+.RI "\fBgetTSIRolesList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIRole\fP (int $role_id)"
+.br
+.ti -1c
+.RI "\fBgetTSIRoleByName\fP (string $name)"
+.br
+.ti -1c
+.RI "\fBgetTSInstanceList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSInstance\fP (int $instance_id)"
+.br
+.ti -1c
+.RI "\fBgetTSInstanceByIP\fP (string $ip)"
+.br
+.ti -1c
+.RI "\fBgetTSVServerList\fP (int $instance_id)"
+.br
+.ti -1c
+.RI "\fBgetTSVServer\fP (int $instance_id, int $vserver_id)"
+.br
+.ti -1c
+.RI "\fBgetTSViewer\fP (int $instance_id, int $vserver_id, bool $show_flags, string $style, int $cache)"
+.br
+.ti -1c
+.RI "\fBaddTSIUser\fP (\fBModels\\TSI_User\fP $user)"
+.br
+.ti -1c
+.RI "\fBaddTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBeditTSIUser\fP (\fBModels\\TSI_User\fP $user)"
+.br
+.ti -1c
+.RI "\fBeditTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBdeleteTSIUser\fP (\fBModels\\TSI_User\fP $user)"
+.br
+.ti -1c
+.RI "\fBdeleteTSIRole\fP (\fBModels\\TSI_Role\fP $role)"
+.br
+.ti -1c
+.RI "\fBdeleteTSInstance\fP (\fBModels\\TSI_Instance\fP $instance)"
+.br
+.ti -1c
+.RI "\fBdeleteTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBstartTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBstopTSVServer\fP (\fBModels\\TSI_VServer\fP $vserver)"
+.br
+.ti -1c
+.RI "\fBstartTSIBot\fP (int $instance_id, int $vserver_id, string $language)"
+.br
+.ti -1c
+.RI "\fBstopTSIBot\fP (int $instance_id, int $vserver_id)"
+.br
+.ti -1c
+.RI "\fBrunTSICron\fP ()"
+.br
+.ti -1c
+.RI "\fBisTSIBotRun\fP (int $instance_id, int $vserver_id)"
+.br
+.in -1c
+.SS "Weitere Geerbte Elemente"
+.SH "Ausführliche Beschreibung"
+.PP 
+Definiert in Zeile 32 der Datei TSI_Client_Interface\&.php\&.
+
+.SH "Autor"
+.PP 
+Automatisch erzeugt von Doxygen für TeamSpeak Interface Client aus dem Quellcode\&.

@@ -1,0 +1,623 @@
+.TH "TSI_User" 3 "Die Okt 2 2018" "Version 1.0.4 Beta" "TeamSpeak Interface Client" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TSI_User
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Abgeleitet von \fBTSI_User_Interface\fP\&.
+.SS "Öffentliche Methoden"
+
+.in +1c
+.ti -1c
+.RI "\fB__construct\fP (bool $multi=false)"
+.br
+.ti -1c
+.RI "\fBsetUserID\fP (int $user_id)"
+.br
+.ti -1c
+.RI "\fBgetUserID\fP ()"
+.br
+.ti -1c
+.RI "\fBsetResellerID\fP (int $reseller_id)"
+.br
+.ti -1c
+.RI "\fBgetResellerID\fP ()"
+.br
+.ti -1c
+.RI "\fBsetRoleID\fP (int $role_id)"
+.br
+.ti -1c
+.RI "\fBgetRoleID\fP ()"
+.br
+.ti -1c
+.RI "\fBsetUsername\fP (string $username)"
+.br
+.ti -1c
+.RI "\fBgetUsername\fP ()"
+.br
+.ti -1c
+.RI "\fBsetFirstName\fP (string $first_name)"
+.br
+.ti -1c
+.RI "\fBgetFirstName\fP ()"
+.br
+.ti -1c
+.RI "\fBsetLastName\fP (string $last_name)"
+.br
+.ti -1c
+.RI "\fBgetLastName\fP ()"
+.br
+.ti -1c
+.RI "\fBsetEmail\fP (string $email)"
+.br
+.ti -1c
+.RI "\fBgetEmail\fP ()"
+.br
+.ti -1c
+.RI "\fBsetQueryNickname\fP (string $query_name)"
+.br
+.ti -1c
+.RI "\fBgetQueryNickname\fP ()"
+.br
+.ti -1c
+.RI "\fBsetLanguage\fP (string $lang)"
+.br
+.ti -1c
+.RI "\fBgetLanguage\fP ()"
+.br
+.ti -1c
+.RI "\fBsetFixedVMs\fP (array $servers)"
+.br
+.ti -1c
+.RI "\fBgetFixedVMs\fP ()"
+.br
+.ti -1c
+.RI "\fBsetMaxSlotsVMs\fP (int $slots)"
+.br
+.ti -1c
+.RI "\fBgetMaxSlotsVMs\fP ()"
+.br
+.ti -1c
+.RI "\fBgetRegDate\fP ()"
+.br
+.ti -1c
+.RI "\fBgetRegDateTimezone\fP ()"
+.br
+.ti -1c
+.RI "\fBgetRegDateTimezoneType\fP ()"
+.br
+.ti -1c
+.RI "\fBsetRegDateArray\fP (array $reg_date)"
+.br
+.ti -1c
+.RI "\fBgetActive\fP ()"
+.br
+.ti -1c
+.RI "\fBsetActive\fP (bool $active)"
+.br
+.ti -1c
+.RI "\fBsetIcon\fP (string $icon_pkg)"
+.br
+.ti -1c
+.RI "\fBgetIcon\fP ()"
+.br
+.ti -1c
+.RI "\fBsetInitPassword\fP (string $password)"
+.br
+.ti -1c
+.RI "\fBsetServer\fP (int $instance, int $vserver_id)"
+.br
+.ti -1c
+.RI "\fBgetServer\fP (int $instance, int $vserver_id)"
+.br
+.ti -1c
+.RI "\fBgetVMsByInstance\fP (int $instance)"
+.br
+.ti -1c
+.RI "\fBgetServersMulti\fP ()"
+.br
+.in -1c
+.SS "Datenfelder"
+
+.in +1c
+.ti -1c
+.RI "\fB$client\fP = null"
+.br
+.ti -1c
+.RI "\fB$init_pw\fP = ''"
+.br
+.in -1c
+.SH "Ausführliche Beschreibung"
+.PP 
+Definiert in Zeile 32 der Datei TSI_User\&.php\&.
+.SH "Beschreibung der Konstruktoren und Destruktoren"
+.PP 
+.SS "__construct (bool $multi = \fCfalse\fP)"
+\fBTSI_User\fP constructor\&. 
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$multi\fP 
+.RE
+.PP
+
+.PP
+Definiert in Zeile 151 der Datei TSI_User\&.php\&.
+.SH "Dokumentation der Elementfunktionen"
+.PP 
+.SS "getActive ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+int 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 350 der Datei TSI_User\&.php\&.
+.SS "getEmail ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 255 der Datei TSI_User\&.php\&.
+.SS "getFirstName ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 221 der Datei TSI_User\&.php\&.
+.SS "getFixedVMs ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 301 der Datei TSI_User\&.php\&.
+.SS "getIcon ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 371 der Datei TSI_User\&.php\&.
+.SS "getLanguage ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 283 der Datei TSI_User\&.php\&.
+.SS "getLastName ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 235 der Datei TSI_User\&.php\&.
+.SS "getMaxSlotsVMs ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+int 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 315 der Datei TSI_User\&.php\&.
+.SS "getQueryNickname ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 269 der Datei TSI_User\&.php\&.
+.SS "getRegDate ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 322 der Datei TSI_User\&.php\&.
+.SS "getRegDateTimezone ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 329 der Datei TSI_User\&.php\&.
+.SS "getRegDateTimezoneType ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+int 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 336 der Datei TSI_User\&.php\&.
+.SS "getResellerID ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+int 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 179 der Datei TSI_User\&.php\&.
+.SS "getRoleID ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+int 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 193 der Datei TSI_User\&.php\&.
+.SS "getServer (int $instance, int $vserver_id)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance\fP 
+.br
+\fI$vserver_id\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+mixed 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 395 der Datei TSI_User\&.php\&.
+.SS "getServersMulti ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+array 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 423 der Datei TSI_User\&.php\&.
+.SS "getUserID ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+int 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 165 der Datei TSI_User\&.php\&.
+.SS "getUsername ()"
+
+.PP
+\fBRückgabe:\fP
+.RS 4
+string 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 207 der Datei TSI_User\&.php\&.
+.SS "getVMsByInstance (int $instance)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance\fP 
+.RE
+.PP
+\fBRückgabe:\fP
+.RS 4
+mixed 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 411 der Datei TSI_User\&.php\&.
+.SS "setActive (bool $active)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$active\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 357 der Datei TSI_User\&.php\&.
+.SS "setEmail (string $email)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$email\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 242 der Datei TSI_User\&.php\&.
+.SS "setFirstName (string $first_name)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$first_name\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 214 der Datei TSI_User\&.php\&.
+.SS "setFixedVMs (array $servers)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$servers\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 290 der Datei TSI_User\&.php\&.
+.SS "setIcon (string $icon_pkg)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$icon_pkg\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 364 der Datei TSI_User\&.php\&.
+.SS "setInitPassword (string $password)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$password\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 378 der Datei TSI_User\&.php\&.
+.SS "setLanguage (string $lang)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$lang\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 276 der Datei TSI_User\&.php\&.
+.SS "setLastName (string $last_name)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$last_name\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 228 der Datei TSI_User\&.php\&.
+.SS "setMaxSlotsVMs (int $slots)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$slots\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 308 der Datei TSI_User\&.php\&.
+.SS "setQueryNickname (string $query_name)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$query_name\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 262 der Datei TSI_User\&.php\&.
+.SS "setRegDateArray (array $reg_date)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$reg_date\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 343 der Datei TSI_User\&.php\&.
+.SS "setResellerID (int $reseller_id)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$reseller_id\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 172 der Datei TSI_User\&.php\&.
+.SS "setRoleID (int $role_id)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$role_id\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 186 der Datei TSI_User\&.php\&.
+.SS "setServer (int $instance, int $vserver_id)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$instance\fP 
+.br
+\fI$vserver_id\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 386 der Datei TSI_User\&.php\&.
+.SS "setUserID (int $user_id)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$user_id\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 158 der Datei TSI_User\&.php\&.
+.SS "setUsername (string $username)"
+
+.PP
+\fBParameter:\fP
+.RS 4
+\fI$username\fP 
+.RE
+.PP
+
+.PP
+Implementiert \fBTSI_User_Interface\fP\&.
+.PP
+Definiert in Zeile 200 der Datei TSI_User\&.php\&.
+
+.SH "Autor"
+.PP 
+Automatisch erzeugt von Doxygen für TeamSpeak Interface Client aus dem Quellcode\&.

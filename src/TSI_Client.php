@@ -27,7 +27,41 @@ namespace TSI_Client;
 
 use TSI_Client\Models;
 
+if (!defined('TSI_DIR')) {
+    define('TSI_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+}
+
+require_once TSI_DIR . 'TSI_Client_Base_Interface.php';
+require_once TSI_DIR . 'TSI_Client_Base.php';
+require_once TSI_DIR . 'TSI_Client_Interface.php';
+
 class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
+
+    /**
+     * TSI_Client constructor.
+     * @param string $server_url
+     * @param string $client_key
+     * @param string $secret_key
+     */
+     function __construct(string $server_url = '', string $client_key = '', string $secret_key = '') {
+         parent::__construct($server_url, $client_key, $secret_key);
+		 
+		 //Autoload
+		$this->autoload('TSI_Instance','Models');
+		$this->autoload('TSI_Properties','Models');
+		$this->autoload('TSI_Resellers','Models');
+		$this->autoload('TSI_Role','Models');
+		$this->autoload('TSI_User','Models');
+		$this->autoload('TSI_VServer','Models');
+     }
+
+    /**
+     * TSI_Client deconstruct.
+     */
+     function __destruct() {
+         parent::__destruct();
+     }
+
     /**
      * Shows the version of Teamspeak Interface
      * @param int $cache
@@ -162,7 +196,6 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        var_dump($this->version['modul_ai']['version']);
         if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
             trigger_error(__CLASS__.' => getTSIUsers(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
             return false;
@@ -184,7 +217,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
                 return false;
             }
 
-            $user = new Models\TSI_User();
+			$user = new Models\TSI_User(true);
             $user->setUserID((int)$data['id']);
             $user->setResellerID((int)$data['reseller_id']);
             $user->setRoleID((int)$data['group_id']);
@@ -232,7 +265,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -242,7 +275,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
             return false;
         }
 
-        $user = new Models\TSI_User();
+        $user = new Models\TSI_User(true);
         $user->setUserID((int)$data['id']);
         $user->setResellerID((int)$data['reseller_id']);
         $user->setRoleID((int)$data['group_id']);
@@ -283,7 +316,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIUserByUsername(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -339,7 +372,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIUserByEMail(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -428,7 +461,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => addTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -496,7 +529,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => editTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -529,7 +562,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSIUser(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -556,7 +589,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIRolesList(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -603,7 +636,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIRole(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -646,7 +679,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSIRoleByName(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -689,7 +722,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSIRole(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -761,7 +794,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSInstance(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -800,11 +833,11 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSInstanceByIP(): Unknown answer!', E_USER_WARNING);
             return false;
         }
-
+		
         $instance = new Models\TSI_Instance();
         $instance->setID((int)$data['id']);
         $instance->setIP(strval($data['server_ip']));
@@ -839,7 +872,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSInstance(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -872,7 +905,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVServerList(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -929,12 +962,12 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         }
 
         $this->insertCall('vServerGet',[
-            'id'=>$instance_id,
+        'id'=>$instance_id,
             'sid'=>$vserver_id]); //set the call
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -997,7 +1030,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => addTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1050,7 +1083,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => editTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1088,7 +1121,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => deleteTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1126,7 +1159,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => startTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1164,7 +1197,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => stopTSVServer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1211,7 +1244,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => getTSViewer(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1238,7 +1271,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => runTSICron(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1286,7 +1319,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => isTSIBotRun(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1336,7 +1369,7 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => startTSIBot(): Unknown answer!', E_USER_WARNING);
             return false;
         }
@@ -1384,8 +1417,412 @@ class TSI_Client extends TSI_Client_Base implements TSI_Client_Interface {
         $this->Exec(); //execute
 
         $data = $this->getResponse();
-        if(!$data) {
+        if(!$data && !is_array($data)) {
             trigger_error(__CLASS__.' => stopTSIBot(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param int $reseller_id
+     * @return bool|TSI_Resellers
+     * @throws \Exception
+     */
+    public function getTSVReseller(int $reseller_id) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => getTSVReseller(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(!$reseller_id) {
+            trigger_error(__CLASS__.' => getTSVReseller(): Reseller-ID must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $this->insertCall('resellerGet',['id'=>$reseller_id]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data && !is_array($data)) {
+            trigger_error(__CLASS__.' => getTSVReseller(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        if(count($data) <= 16) {
+            trigger_error(__CLASS__.' => getTSVReseller(): response is empty or has invalid result!', E_USER_WARNING);
+            return false;
+        }
+
+        $reseller = new Models\TSI_Resellers();
+        $reseller->setUserID((int)$data['id']);
+        $reseller->setRoleID((int)$data['group_id']);
+        $reseller->setUsername(html_entity_decode($data['username']));
+        $reseller->setFirstName(html_entity_decode($data['first_name']));
+        $reseller->setLastName(html_entity_decode($data['last_name']));
+        $reseller->setEmail(html_entity_decode($data['email']));
+        $reseller->setQueryNickname(html_entity_decode($data['query_nickname']));
+        $reseller->setLanguage(html_entity_decode($data['lang']));
+        $reseller->setFixedVMs($data['fixed_virtual_servers']);
+        $reseller->setLimits([
+            'max_slots_per_virtualservers' => (int)$data['max_slots_per_virtualservers'],
+            'max_web_users' => (int)$data['max_web_users'],
+            'max_virtualservers' => (int)$data['max_virtualservers']
+        ]);
+        $reseller->setAllowedOwnInstances(($data['allowed_own_instances'] == 1));
+        $reseller->setRegDateArray($data['reg_date']);
+        $reseller->setActive(($data['active'] ? true : false));
+        $reseller->setIcon(html_entity_decode($data['icon_pkg']));
+        unset($data);
+
+        return $reseller;
+    }
+
+    /**
+     * @param string $username
+     * @return bool|TSI_Resellers
+     * @throws \Exception
+     */
+    public function getTSVResellerByUsername(string $username) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => getTSVResellerByUsername(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($username)) {
+            trigger_error(__CLASS__.' => getTSVResellerByUsername(): Reseller-Username must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $this->insertCall('resellerFindByUsername',['username'=>$username]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data && !is_array($data)) {
+            trigger_error(__CLASS__.' => getTSVResellerByUsername(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        if(count($data) <= 16) {
+            trigger_error(__CLASS__.' => getTSVResellerByUsername(): response is empty or has invalid result!', E_USER_WARNING);
+            return false;
+        }
+
+        $reseller = new Models\TSI_Resellers();
+        $reseller->setUserID((int)$data['id']);
+        $reseller->setRoleID((int)$data['group_id']);
+        $reseller->setUsername(html_entity_decode($data['username']));
+        $reseller->setFirstName(html_entity_decode($data['first_name']));
+        $reseller->setLastName(html_entity_decode($data['last_name']));
+        $reseller->setEmail(html_entity_decode($data['email']));
+        $reseller->setQueryNickname(html_entity_decode($data['query_nickname']));
+        $reseller->setLanguage(html_entity_decode($data['lang']));
+        $reseller->setFixedVMs($data['fixed_virtual_servers']);
+        $reseller->setLimits([
+            'max_slots_per_virtualservers' => (int)$data['max_slots_per_virtualservers'],
+            'max_web_users' => (int)$data['max_web_users'],
+            'max_virtualservers' => (int)$data['max_virtualservers']
+        ]);
+        $reseller->setAllowedOwnInstances(($data['allowed_own_instances'] == 1));
+        $reseller->setRegDateArray($data['reg_date']);
+        $reseller->setActive(($data['active'] ? true : false));
+        $reseller->setIcon(html_entity_decode($data['icon_pkg']));
+        unset($data);
+
+        return $reseller;
+    }
+
+    /**
+     * @param string $reseller_email
+     * @return bool|TSI_Resellers
+     * @throws \Exception
+     */
+    public function getTSVResellerByEmail(string $reseller_email) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => getTSVResellerByEmail(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller_email)) {
+            trigger_error(__CLASS__.' => getTSVResellerByEmail(): Reseller-Username must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $this->insertCall('resellerFindByEmail',['email'=>$reseller_email]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data && !is_array($data)) {
+            trigger_error(__CLASS__.' => getTSVResellerByEmail(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        if(count($data) <= 16) {
+            trigger_error(__CLASS__.' => getTSVResellerByEmail(): response is empty or has invalid result!', E_USER_WARNING);
+            return false;
+        }
+
+        $reseller = new Models\TSI_Resellers();
+        $reseller->setUserID((int)$data['id']);
+        $reseller->setRoleID((int)$data['group_id']);
+        $reseller->setUsername(html_entity_decode($data['username']));
+        $reseller->setFirstName(html_entity_decode($data['first_name']));
+        $reseller->setLastName(html_entity_decode($data['last_name']));
+        $reseller->setEmail(html_entity_decode($data['email']));
+        $reseller->setQueryNickname(html_entity_decode($data['query_nickname']));
+        $reseller->setLanguage(html_entity_decode($data['lang']));
+        $reseller->setFixedVMs($data['fixed_virtual_servers']);
+        $reseller->setLimits([
+            'max_slots_per_virtualservers' => (int)$data['max_slots_per_virtualservers'],
+            'max_web_users' => (int)$data['max_web_users'],
+            'max_virtualservers' => (int)$data['max_virtualservers']
+        ]);
+        $reseller->setAllowedOwnInstances(($data['allowed_own_instances'] == 1));
+        $reseller->setRegDateArray($data['reg_date']);
+        $reseller->setActive(($data['active'] ? true : false));
+        $reseller->setIcon(html_entity_decode($data['icon_pkg']));
+        unset($data);
+
+        return $reseller;
+    }
+
+    /**
+     * @return bool|array
+     * @throws \Exception
+     */
+    public function getTSVResellers() {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => getTSVResellers(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        $this->insertCall('resellersGet'); //set the call
+        $this->Exec(); //execute
+
+        $return = [];
+        $resellers = $this->getResponse();
+        if(!$resellers) {
+            trigger_error(__CLASS__.' => getTSVResellers(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        foreach ($resellers as $key => $data) {
+            if(count($data) <= 16) {
+                trigger_error(__CLASS__.' => getTSVResellers(): response is empty or has invalid result!', E_USER_WARNING);
+                return false;
+            }
+
+            $reseller = new Models\TSI_Resellers();
+            $reseller->setUserID((int)$data['id']);
+            $reseller->setRoleID((int)$data['group_id']);
+            $reseller->setUsername(html_entity_decode($data['username']));
+            $reseller->setFirstName(html_entity_decode($data['first_name']));
+            $reseller->setLastName(html_entity_decode($data['last_name']));
+            $reseller->setEmail(html_entity_decode($data['email']));
+            $reseller->setQueryNickname(html_entity_decode($data['query_nickname']));
+            $reseller->setLanguage(html_entity_decode($data['lang']));
+            $reseller->setFixedVMs($data['fixed_virtual_servers']);
+            $reseller->setLimits([
+                'max_slots_per_virtualservers' => (int)$data['max_slots_per_virtualservers'],
+                'max_web_users' => (int)$data['max_web_users'],
+                'max_virtualservers' => (int)$data['max_virtualservers']
+            ]);
+            $reseller->setAllowedOwnInstances(($data['allowed_own_instances'] == 1));
+            $reseller->setRegDateArray($data['reg_date']);
+            $reseller->setActive(($data['active'] ? true : false));
+            $reseller->setIcon(html_entity_decode($data['icon_pkg']));
+            unset($data);
+
+            $return[$key] = $reseller;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param Models\TSI_Resellers $reseller
+     * @return bool
+     * @throws \Exception
+     */
+    public function addTSVReseller(Models\TSI_Resellers $reseller) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => addTSVReseller(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->init_pw)) {
+            trigger_error(__CLASS__.' => addTSVReseller(): Init-Password must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getUsername())) {
+            trigger_error(__CLASS__.' => addTSVReseller(): Username must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getFirstName())) {
+            trigger_error(__CLASS__.' => addTSVReseller(): FirstName must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getLastName())) {
+            trigger_error(__CLASS__.' => addTSVReseller(): LastName must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getEmail())) {
+            trigger_error(__CLASS__.' => addTSVReseller(): E-Mail must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getRoleID())) {
+            trigger_error(__CLASS__.' => addTSVReseller(): Role-ID must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $data = [];
+        $data['username'] = $reseller->getUsername();
+        $data['group_id'] = $reseller->getRoleID();
+        $data['init_pw'] = $reseller->init_pw;
+        $data['first_name'] = $reseller->getFirstName();
+        $data['last_name'] = $reseller->getLastName();
+        $data['email'] = $reseller->getEmail();
+        $data['lang'] = $reseller->getLanguage();
+        $data['fixed_instances'] = $reseller->getFixedInstances();
+        $data['fixed_virtual_servers'] = $reseller->getFixedVMs();
+        $data['allowed_own_instances'] = ($reseller->getAllowedOwnInstances() ? 1 : 0);
+
+        $this->insertCall('resellerAdd',['data'=>$data]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data && !is_array($data)) {
+            trigger_error(__CLASS__.' => addTSVReseller(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param Models\TSI_Resellers $reseller
+     * @return array|bool
+     * @throws \Exception
+     */
+    public function editTSVReseller(Models\TSI_Resellers $reseller) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => editTSVReseller(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->init_pw)) {
+            trigger_error(__CLASS__.' => editTSVReseller(): Init-Password must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getUsername())) {
+            trigger_error(__CLASS__.' => editTSVReseller(): Username must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getFirstName())) {
+            trigger_error(__CLASS__.' => editTSVReseller(): FirstName must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getLastName())) {
+            trigger_error(__CLASS__.' => editTSVReseller(): LastName must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getEmail())) {
+            trigger_error(__CLASS__.' => editTSVReseller(): E-Mail must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getRoleID())) {
+            trigger_error(__CLASS__.' => editTSVReseller(): Role-ID must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $data = [];
+        $data['username'] = $reseller->getUsername();
+        $data['group_id'] = $reseller->getRoleID();
+        $data['init_pw'] = $reseller->init_pw;
+        $data['first_name'] = $reseller->getFirstName();
+        $data['last_name'] = $reseller->getLastName();
+        $data['email'] = $reseller->getEmail();
+        $data['lang'] = $reseller->getLanguage();
+        $data['fixed_instances'] = $reseller->getFixedInstances();
+        $data['fixed_virtual_servers'] = $reseller->getFixedVMs();
+        $data['allowed_own_instances'] = ($reseller->getAllowedOwnInstances() ? 1 : 0);
+
+        $this->insertCall('resellerModify',['id'=>$reseller->getUserID(), 'data'=>$data]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data && !is_array($data)) {
+            trigger_error(__CLASS__.' => editTSVReseller(): Unknown answer!', E_USER_WARNING);
+            return false;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param Models\TSI_Resellers $reseller
+     * @return array|bool
+     * @throws \Exception
+     */
+    public function deleteTSVReseller(Models\TSI_Resellers $reseller) {
+        if(!$this->checkAPI()) {
+            return false;
+        }
+
+        if(version_compare($this->version['modul_ai']['version'], '1.1.0', '<')) {
+            trigger_error(__CLASS__.' => deleteTSVReseller(): Requires version "1.1.0" of the TSI-API interface!', E_USER_WARNING);
+            return false;
+        }
+
+        if(empty($reseller->getUserID()) || !$reseller->getUserID()) {
+            trigger_error(__CLASS__.' => deleteTSVReseller(): User-ID must be set!', E_USER_WARNING);
+            return false;
+        }
+
+        $data = [];
+        $data['id'] = $reseller->getUserID();
+
+        $this->insertCall('resellerDel',['data'=>$data]); //set the call
+        $this->Exec(); //execute
+
+        $data = $this->getResponse();
+        if(!$data && !is_array($data)) {
+            trigger_error(__CLASS__.' => deleteTSVReseller(): Unknown answer!', E_USER_WARNING);
             return false;
         }
 

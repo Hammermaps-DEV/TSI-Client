@@ -31,7 +31,7 @@ interface TSI_Instance_Interface {
     public function setIP(string $server_ip);
     public function setQueryPort(int $query_port);
     public function setServerAdmin(string $serveradmin);
-    public function setLastPermImport(mixed $last_perm_import);
+    public function setLastPermImport(string $last_perm_import);
 
     //GETTER
     public function getID();

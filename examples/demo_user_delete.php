@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -15,6 +15,8 @@ include_once ("../TSI_Client.php");
  * TSI_Role Objekt                      => Datei: TSI_Role_Interface.php
  * TSI_Properties Objekt                => Datei: TSI_Properties_Interface.php
  * TSI_User Objekt                      => Datei: TSI_User_Interface.php
+ * TSI_Resellers Objekt                 => Datei: TSI_Resellers_Interface.php
+ * TSI_MultiClient Objekt               => Datei: TSI_MultiClient_Interface.php
  */
 
 //Client erstellen
@@ -24,10 +26,16 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
-//Erstelle neues TSI_User Objekt
-$user = new TSI_Client\TSI_User();
+echo '<pre>';
 
-$user->setUserID(1);
+//Erstelle neues TSI_User Objekt
+$tsi_user = new \TSI_Client\Models\TSI_User();
+$tsi_user->setUserID(1);
+
+//Oder hole das Objekt von TSI
+$tsi_user = $client->getTSIUser(1);
 
 //User Löschen
-$client->deleteTSIUser($user);
+print_r($client->deleteTSIUser($user));
+
+echo '</pre>';

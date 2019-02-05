@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TeamSpeak Interface Client: src/models/TSI_Instance.php Quellcode</title>
+<link href="../../tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../dynsections.js"></script>
+<link href="../../navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../resize.js"></script>
+<script type="text/javascript" src="../../navtreedata.js"></script>
+<script type="text/javascript" src="../../navtree.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(initResizable);
+/* @license-end */</script>
+<link href="../../search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../search/searchdata.js"></script>
+<script type="text/javascript" src="../../search/search.js"></script>
+<link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="../../tsi-api-client.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">TeamSpeak Interface Client
+   &#160;<span id="projectnumber">1.0.4 Beta</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.14 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "../../search",false,'Suchen');
+/* @license-end */
+</script>
+<script type="text/javascript" src="../../menudata.js"></script>
+<script type="text/javascript" src="../../menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('../../',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('dd/d81/_t_s_i___instance_8php_source.html','../../');});
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">TSI_Instance.php</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;?php</div><div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="../../db/dd7/namespace_t_s_i___client_1_1_models.html">   26</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="../../db/dd7/namespace_t_s_i___client_1_1_models.html">TSI_Client\Models</a>;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div><div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html">TSI_Instance</a> <span class="keyword">implements</span> <a class="code" href="../../d3/d7c/interface_t_s_i___client_1_1_models_1_1_t_s_i___instance___interface.html">TSI_Instance_Interface</a> {</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">private</span> $id = 0;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">private</span> $server_ip = <span class="stringliteral">&#39;&#39;</span>;</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">private</span> $query_port = 10011;</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">private</span> $serveradmin = <span class="stringliteral">&#39;&#39;</span>;</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">private</span> $last_perm_import = <span class="stringliteral">&#39;&#39;</span>;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div><div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a5622ba68428d3375e677ad9d1f37d59d">   66</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a5622ba68428d3375e677ad9d1f37d59d">setID</a>(<span class="keywordtype">int</span> $user_id): void {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        $this-&gt;<span class="keywordtype">id</span> = $user_id;</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div><div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a30dd7fff4fec7a39f9be9d27d4b22a59">   73</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a30dd7fff4fec7a39f9be9d27d4b22a59">getID</a>(): int {</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">int</span>)$this-&gt;id;</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div><div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#aabea0284c1e83160723f51e7a34ad8c0">   80</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#aabea0284c1e83160723f51e7a34ad8c0">setIP</a>(<span class="keywordtype">string</span> $server_ip): void {</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        $server_ip = trim($server_ip);</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">if</span>(!filter_var($server_ip, FILTER_VALIDATE_IP)) {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            trigger_error(__CLASS__.<span class="stringliteral">&#39; =&gt; TSI_Instance::setIP(): No valid IP-Adress!&#39;</span>, E_USER_WARNING);</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">return</span>;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        $this-&gt;server_ip = $server_ip;</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div><div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a0b98151420fed0f00390a58ccc609240">   93</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a0b98151420fed0f00390a58ccc609240">getIP</a>(): string {</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> strval($this-&gt;server_ip);</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div><div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a192e5c125791a7c73cc52cec1ae736cd">  100</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a192e5c125791a7c73cc52cec1ae736cd">setQueryPort</a>(<span class="keywordtype">int</span> $query_port): void {</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        $this-&gt;query_port = $query_port;</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div><div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a4149813aa44634efebf88755d4f8b84f">  107</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a4149813aa44634efebf88755d4f8b84f">getQueryPort</a>(): int {</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">int</span>)$this-&gt;query_port;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div><div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a1baf0bff30ff83f1fbcb00b6b367eaa1">  114</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a1baf0bff30ff83f1fbcb00b6b367eaa1">setServerAdmin</a>(<span class="keywordtype">string</span> $serveradmin): void {</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        $this-&gt;serveradmin = trim($serveradmin);</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    }</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div><div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a331b03a7ed7f3857beb07b0791de37f7">  121</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a331b03a7ed7f3857beb07b0791de37f7">getServerAdmin</a>(): string {</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">return</span> strval($this-&gt;serveradmin);</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div><div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#aed55315d5c2c4c51ddaaa6c7a0459553">  128</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#aed55315d5c2c4c51ddaaa6c7a0459553">setLastPermImport</a>(<span class="keywordtype">string</span> $last_perm_import): void {</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        $this-&gt;last_perm_import = $last_perm_import;</div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div><div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a915454d4dc42a8e3c92ef23098e4b1a4">  135</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a915454d4dc42a8e3c92ef23098e4b1a4">getLastPermImport</a>() {</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">return</span> $this-&gt;last_perm_import;</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div><div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a0b98151420fed0f00390a58ccc609240"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a0b98151420fed0f00390a58ccc609240">TSI_Client\Models\TSI_Instance\getIP</a></div><div class="ttdeci">getIP()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00093">TSI_Instance.php:93</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a4149813aa44634efebf88755d4f8b84f"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a4149813aa44634efebf88755d4f8b84f">TSI_Client\Models\TSI_Instance\getQueryPort</a></div><div class="ttdeci">getQueryPort()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00107">TSI_Instance.php:107</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a30dd7fff4fec7a39f9be9d27d4b22a59"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a30dd7fff4fec7a39f9be9d27d4b22a59">TSI_Client\Models\TSI_Instance\getID</a></div><div class="ttdeci">getID()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00073">TSI_Instance.php:73</a></div></div>
+<div class="ttc" id="interface_t_s_i___client_1_1_models_1_1_t_s_i___instance___interface_html"><div class="ttname"><a href="../../d3/d7c/interface_t_s_i___client_1_1_models_1_1_t_s_i___instance___interface.html">TSI_Client\Models\TSI_Instance_Interface</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/d1b/_t_s_i___instance___interface_8php_source.html#l00032">TSI_Instance_Interface.php:32</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html">TSI_Client\Models\TSI_Instance</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00032">TSI_Instance.php:32</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a915454d4dc42a8e3c92ef23098e4b1a4"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a915454d4dc42a8e3c92ef23098e4b1a4">TSI_Client\Models\TSI_Instance\getLastPermImport</a></div><div class="ttdeci">getLastPermImport()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00135">TSI_Instance.php:135</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a1baf0bff30ff83f1fbcb00b6b367eaa1"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a1baf0bff30ff83f1fbcb00b6b367eaa1">TSI_Client\Models\TSI_Instance\setServerAdmin</a></div><div class="ttdeci">setServerAdmin(string $serveradmin)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00114">TSI_Instance.php:114</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a5622ba68428d3375e677ad9d1f37d59d"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a5622ba68428d3375e677ad9d1f37d59d">TSI_Client\Models\TSI_Instance\setID</a></div><div class="ttdeci">setID(int $user_id)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00066">TSI_Instance.php:66</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_aed55315d5c2c4c51ddaaa6c7a0459553"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#aed55315d5c2c4c51ddaaa6c7a0459553">TSI_Client\Models\TSI_Instance\setLastPermImport</a></div><div class="ttdeci">setLastPermImport(string $last_perm_import)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00128">TSI_Instance.php:128</a></div></div>
+<div class="ttc" id="namespace_t_s_i___client_1_1_models_html"><div class="ttname"><a href="../../db/dd7/namespace_t_s_i___client_1_1_models.html">TSI_Client\Models</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00026">TSI_Instance.php:26</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a192e5c125791a7c73cc52cec1ae736cd"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a192e5c125791a7c73cc52cec1ae736cd">TSI_Client\Models\TSI_Instance\setQueryPort</a></div><div class="ttdeci">setQueryPort(int $query_port)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00100">TSI_Instance.php:100</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_a331b03a7ed7f3857beb07b0791de37f7"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#a331b03a7ed7f3857beb07b0791de37f7">TSI_Client\Models\TSI_Instance\getServerAdmin</a></div><div class="ttdeci">getServerAdmin()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00121">TSI_Instance.php:121</a></div></div>
+<div class="ttc" id="class_t_s_i___client_1_1_models_1_1_t_s_i___instance_html_aabea0284c1e83160723f51e7a34ad8c0"><div class="ttname"><a href="../../d5/d1d/class_t_s_i___client_1_1_models_1_1_t_s_i___instance.html#aabea0284c1e83160723f51e7a34ad8c0">TSI_Client\Models\TSI_Instance\setIP</a></div><div class="ttdeci">setIP(string $server_ip)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d81/_t_s_i___instance_8php_source.html#l00080">TSI_Instance.php:80</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="../../dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="../../dir_bdeba5f06b852fec80257c0bf4c3c36e.html">models</a></li><li class="navelem"><b>TSI_Instance.php</b></li>
+    <li class="footer">Erzeugt von
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.14 </li>
+  </ul>
+</div>
+</body>
+</html>
