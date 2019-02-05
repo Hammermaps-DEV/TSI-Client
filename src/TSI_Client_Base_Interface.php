@@ -61,28 +61,35 @@ interface TSI_Client_Base_Interface {
     public function setSSLOptions(bool $ssl_verifyhost,bool $ssl_verifypeer);
     public function setCache(string $key,$var,int $ttl);
     public function setClientCache(bool $cache);
-    public function setCacheDir(string $dir);
+    public function setProxyServer(string $ip,int $port,string $username,string $password);
 
     //GETTER
     public function getKeys();
     public function getServerUrl();
     public function getGZIPSupport();
     public function getSSLOptions();
-    public function getResponse(string $call);
+    public function getResponse(string $call,string $hash);
+    public function getResponseGroup(string $call);
     public function getCache(string $key);
     public function getClientCache();
-    public function getCacheDir();
+    public function getProxyServer();
 
     //FUNCTIONS
     public function autoload(string $class);
-    public function responseProcessing(string $call);
+    public function responseProcessing(string $call,string $hash);
     public function checkAPI(bool $recache,int $cache);
     public function checkJSON(string $json);
-    public function insertCall(string $call,array $post);
-    public function Exec();
+    public function insertCall(string $call,array $post,string $url);
+    public function Exec(bool $responseProcessing);
+    public function apiIsActual(int $cache);
+    public function debugAllIndexes(bool $PrintOutput);
 
     //REGISTER
-    public function registerCacheWrite(string $class,string $method);
-    public function registerCacheRead(string $class,string $method);
-    public function registerCacheExist(string $class,string $method);
+    public function setRegisterCacheWrite(string $class,string $method);
+    public function setRegisterCacheRead(string $class,string $method);
+    public function setRegisterCacheExist(string $class,string $method);
+
+    public function getRegisterCacheWrite();
+    public function getRegisterCacheRead();
+    public function getRegisterCacheExist();
 }

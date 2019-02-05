@@ -1,0 +1,154 @@
+.TH "TSI_Client_Base_Interface" 3 "Die Okt 2 2018" "Version 1.0.4 Beta" "TeamSpeak Interface Client" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TSI_Client_Base_Interface
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Basisklasse für \fBTSI_Client_Base\fP und \fBTSI_Client_Interface\fP\&.
+.SS "Öffentliche Methoden"
+
+.in +1c
+.ti -1c
+.RI "\fBsetKeys\fP (string $client_key, string $secret_key)"
+.br
+.ti -1c
+.RI "\fBsetServerUrl\fP (string $url)"
+.br
+.ti -1c
+.RI "\fBsetGZIPSupport\fP (bool $gzip)"
+.br
+.ti -1c
+.RI "\fBsetSSLOptions\fP (bool $ssl_verifyhost, bool $ssl_verifypeer)"
+.br
+.ti -1c
+.RI "\fBsetCache\fP (string $key, $var, int $ttl)"
+.br
+.ti -1c
+.RI "\fBsetClientCache\fP (bool $cache)"
+.br
+.ti -1c
+.RI "\fBsetProxyServer\fP (string $ip, int $port, string $username, string $password)"
+.br
+.ti -1c
+.RI "\fBgetKeys\fP ()"
+.br
+.ti -1c
+.RI "\fBgetServerUrl\fP ()"
+.br
+.ti -1c
+.RI "\fBgetGZIPSupport\fP ()"
+.br
+.ti -1c
+.RI "\fBgetSSLOptions\fP ()"
+.br
+.ti -1c
+.RI "\fBgetResponse\fP (string $call, string $hash)"
+.br
+.ti -1c
+.RI "\fBgetResponseGroup\fP (string $call)"
+.br
+.ti -1c
+.RI "\fBgetCache\fP (string $key)"
+.br
+.ti -1c
+.RI "\fBgetClientCache\fP ()"
+.br
+.ti -1c
+.RI "\fBgetProxyServer\fP ()"
+.br
+.ti -1c
+.RI "\fBautoload\fP (string $class)"
+.br
+.ti -1c
+.RI "\fBresponseProcessing\fP (string $call, string $hash)"
+.br
+.ti -1c
+.RI "\fBcheckAPI\fP (bool $recache, int $cache)"
+.br
+.ti -1c
+.RI "\fBcheckJSON\fP (string $json)"
+.br
+.ti -1c
+.RI "\fBinsertCall\fP (string $call, array $post, string $url)"
+.br
+.ti -1c
+.RI "\fBExec\fP (bool $responseProcessing)"
+.br
+.ti -1c
+.RI "\fBapiIsActual\fP (int $cache)"
+.br
+.ti -1c
+.RI "\fBdebugAllIndexes\fP (bool $PrintOutput)"
+.br
+.ti -1c
+.RI "\fBsetRegisterCacheWrite\fP (string $class, string $method)"
+.br
+.ti -1c
+.RI "\fBsetRegisterCacheRead\fP (string $class, string $method)"
+.br
+.ti -1c
+.RI "\fBsetRegisterCacheExist\fP (string $class, string $method)"
+.br
+.ti -1c
+.RI "\fBgetRegisterCacheWrite\fP ()"
+.br
+.ti -1c
+.RI "\fBgetRegisterCacheRead\fP ()"
+.br
+.ti -1c
+.RI "\fBgetRegisterCacheExist\fP ()"
+.br
+.in -1c
+.SS "Datenfelder"
+
+.in +1c
+.ti -1c
+.RI "const \fBvirtualserver_modify\fP"
+.br
+.in -1c
+.SH "Ausführliche Beschreibung"
+.PP 
+Definiert in Zeile 32 der Datei TSI_Client_Base_Interface\&.php\&.
+.SH "Dokumentation der Felder"
+.PP 
+.SS "const virtualserver_modify"
+\fBInitialisierung:\fP
+.PP
+.nf
+= array(
+        "virtualserver_name",
+        "virtualserver_icon_id",
+        "virtualserver_port",
+        "virtualserver_welcomemessage",
+        "virtualserver_password",
+        "virtualserver_maxclients",
+        "virtualserver_reserved_slots",
+        "virtualserver_weblist_enabled",
+        "virtualserver_hostmessage",
+        "virtualserver_hostbanner_url",
+        "virtualserver_hostbanner_gfx_url",
+        "virtualserver_hostbanner_gfx_intervall",
+        "virtualserver_hostbutton_tooltip",
+        "virtualserver_hostbutton_gfx_url",
+        "virtualserver_hostbutton_url",
+        "virtualserver_max_download_total_bandwith",
+        "virtualserver_download_quota",
+        "virtualserver_max_upload_total_bandwith",
+        "virtualserver_upload_quota",
+        "virtualserver_anti_flood_options",
+        "virtualserver_security_options",
+        "virtualserver_standard_groups_options",
+        "virtualserver_compainment_options",
+        "virtualserver_other_options",
+        "virtualserver_protocol_options"
+    )
+.fi
+.PP
+Definiert in Zeile 33 der Datei TSI_Client_Base_Interface\&.php\&.
+
+.SH "Autor"
+.PP 
+Automatisch erzeugt von Doxygen für TeamSpeak Interface Client aus dem Quellcode\&.

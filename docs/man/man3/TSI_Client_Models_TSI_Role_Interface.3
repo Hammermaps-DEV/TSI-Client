@@ -1,0 +1,219 @@
+.TH "TSI_Role_Interface" 3 "Die Okt 2 2018" "Version 1.0.4 Beta" "TeamSpeak Interface Client" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+TSI_Role_Interface
+.SH SYNOPSIS
+.br
+.PP
+.PP
+Basisklasse für \fBTSI_Role\fP\&.
+.SS "Öffentliche Methoden"
+
+.in +1c
+.ti -1c
+.RI "\fBsetID\fP (int $id)"
+.br
+.ti -1c
+.RI "\fBsetName\fP (string $name)"
+.br
+.ti -1c
+.RI "\fBsetLevel\fP (int $level)"
+.br
+.ti -1c
+.RI "\fBsetIcon\fP (string $icon)"
+.br
+.ti -1c
+.RI "\fBsetPermission\fP (string $permission, bool $granted)"
+.br
+.ti -1c
+.RI "\fBsetPermissions\fP (array $permissions)"
+.br
+.ti -1c
+.RI "\fBsetModify\fP (string $permission, bool $granted)"
+.br
+.ti -1c
+.RI "\fBsetModifys\fP (array $modify)"
+.br
+.ti -1c
+.RI "\fBsetChannelModify\fP (string $permission, bool $granted)"
+.br
+.ti -1c
+.RI "\fBsetChannelModifys\fP (array $channel_modify)"
+.br
+.ti -1c
+.RI "\fBsetTSIPermission\fP (string $permission, bool $granted)"
+.br
+.ti -1c
+.RI "\fBsetTSIPermissions\fP (array $tsi_permissions)"
+.br
+.ti -1c
+.RI "\fBgetID\fP ()"
+.br
+.ti -1c
+.RI "\fBgetName\fP ()"
+.br
+.ti -1c
+.RI "\fBgetLevel\fP ()"
+.br
+.ti -1c
+.RI "\fBgetIcon\fP ()"
+.br
+.ti -1c
+.RI "\fBgetPermissions\fP ()"
+.br
+.ti -1c
+.RI "\fBgetPermission\fP (string $permission)"
+.br
+.ti -1c
+.RI "\fBgetPermissionsList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetModifys\fP ()"
+.br
+.ti -1c
+.RI "\fBgetModify\fP (string $permission)"
+.br
+.ti -1c
+.RI "\fBgetModifyList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetChannelModifys\fP ()"
+.br
+.ti -1c
+.RI "\fBgetChannelModify\fP (string $permission)"
+.br
+.ti -1c
+.RI "\fBgetChannelModifyList\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIPermissions\fP ()"
+.br
+.ti -1c
+.RI "\fBgetTSIPermission\fP (string $permission)"
+.br
+.ti -1c
+.RI "\fBgetTSIPermissionsList\fP ()"
+.br
+.in -1c
+.SS "Datenfelder"
+
+.in +1c
+.ti -1c
+.RI "const \fBtsi_permissions\fP"
+.br
+.ti -1c
+.RI "const \fBtsi_permissions_desc\fP"
+.br
+.ti -1c
+.RI "const \fBtsi_profile_icon_package_select\fP"
+.br
+.ti -1c
+.RI "const \fBvirtualserver_modify_desc\fP"
+.br
+.ti -1c
+.RI "const \fBvirtualserver_channel_modify\fP"
+.br
+.ti -1c
+.RI "const \fBvirtualserver_channel_modify_desc\fP"
+.br
+.ti -1c
+.RI "const \fBvirtualserver_permissions\fP"
+.br
+.in -1c
+.SH "Ausführliche Beschreibung"
+.PP 
+Definiert in Zeile 32 der Datei TSI_Role_Interface\&.php\&.
+.SH "Dokumentation der Felder"
+.PP 
+.SS "const tsi_permissions_desc"
+\fBInitialisierung:\fP
+.PP
+.nf
+= [
+        "tsi_profile_edit" => "The user can edit his profile"
+.fi
+.PP
+Definiert in Zeile 126 der Datei TSI_Role_Interface\&.php\&.
+.SS "const virtualserver_channel_modify"
+\fBInitialisierung:\fP
+.PP
+.nf
+= array(
+        "channel_name",
+        "channel_icon_id",
+        "channel_password",
+        "channel_topic",
+        "channel_description",
+        "channel_type_options",
+        "channel_moderation_options",
+        "channel_audio_options",
+        "channel_normal_needed_power_options",
+        "channel_filetransfer_needed_power_options",
+        "channel_other_options",
+        "channel_max_clients_options",
+        "channel_max_client_tree_options"
+    )
+.fi
+.PP
+Definiert in Zeile 247 der Datei TSI_Role_Interface\&.php\&.
+.SS "const virtualserver_channel_modify_desc"
+\fBInitialisierung:\fP
+.PP
+.nf
+= array(
+        "channel_name" => "User can edit the channel names of assigned servers",
+        "channel_icon_id" => "User can edit the channel icons of assigned servers",
+        "channel_password" => "User can edit the channel passwords of assigned servers",
+        "channel_topic" => "User can edit the channel topics of assigned servers",
+        "channel_description" => "User can edit the channel descriptions of assigned servers",
+        "channel_type_options" => "User can edit the channel types of assigned servers",
+        "channel_moderation_options" => "User can edit the channel moderation options of assigned servers",
+        "channel_audio_options" => "User can edit the channel audio options of assigned servers",
+        "channel_normal_needed_power_options" => "User can edit the channel normal needed power options of assigned servers",
+        "channel_filetransfer_needed_power_options" => "User can edit the channel filetransfer needed power options of assigned servers",
+        "channel_other_options" => "User can edit the other channel options of assigned servers",
+        "channel_max_clients_options" => "User can edit the channel max client options of assigned servers",
+        "channel_max_client_tree_options" => "User can edit the channel client tree options of assigned servers"
+    )
+.fi
+.PP
+Definiert in Zeile 263 der Datei TSI_Role_Interface\&.php\&.
+.SS "const virtualserver_modify_desc"
+\fBInitialisierung:\fP
+.PP
+.nf
+= array(
+        "virtualserver_name" => "User can edit the name of assigned servers",
+        "virtualserver_icon_id" => "User can edit the icon of assigned servers",
+        "virtualserver_port" => "User can edit the port number of assigned servers",
+        "virtualserver_welcomemessage" => "User can edit the welcomemessage of assigned server",
+        "virtualserver_password" => "User can edit the password of assigned servers",
+        "virtualserver_maxclients" => "User can change the number of max assigned server users",
+        "virtualserver_reserved_slots" => "User can reserve slots for assigned servers",
+        "virtualserver_weblist_enabled" => "User can enter assigned servers in the web list",
+        "virtualserver_hostmessage" => "User can edit the hostmessage of assigned servers",
+        "virtualserver_hostbanner_url" => "User can edit the hostbanner url of assigned servers",
+        "virtualserver_hostbanner_gfx_url" => "User can edit the banner graphic of the assigned servers",
+        "virtualserver_hostbanner_gfx_intervall" => "User can change the banner graphics interval on assigned servers",
+        "virtualserver_hostbutton_tooltip" => "User can edit the hostbutton tooltip of assigned servers",
+        "virtualserver_hostbutton_gfx_url" => "User can edit the hostbutton graphic of the assigned servers",
+        "virtualserver_hostbutton_url" => "User can edit the hostbutton url of assigned servers",
+        "virtualserver_max_download_total_bandwith" => "User can change the download bandwidth on assigned servers",
+        "virtualserver_download_quota" => "User can change the limit on downloads on assigned servers",
+        "virtualserver_max_upload_total_bandwith" => "User can change the upload bandwidth on assigned servers",
+        "virtualserver_upload_quota" => "User can change the limit on uploads on assigned servers",
+        "virtualserver_anti_flood_options" => "User modify edit the anti-flood options of assigned servers",
+        "virtualserver_security_options" => "User modify edit the security options of assigned servers",
+        "virtualserver_standard_groups_options" => "User can modify the standard groups of assigned servers",
+        "virtualserver_compainment_options" => "User can modify complainment options of assigned servers",
+        "virtualserver_other_options" => "User can modify other options of assigned servers",
+        "virtualserver_protocol_options" => "User can modify protocol options of assigned servers"
+    )
+.fi
+.PP
+Definiert in Zeile 219 der Datei TSI_Role_Interface\&.php\&.
+
+.SH "Autor"
+.PP 
+Automatisch erzeugt von Doxygen für TeamSpeak Interface Client aus dem Quellcode\&.

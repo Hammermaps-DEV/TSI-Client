@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -15,6 +15,8 @@ include_once ("../TSI_Client.php");
  * TSI_Role Objekt                      => Datei: TSI_Role_Interface.php
  * TSI_Properties Objekt                => Datei: TSI_Properties_Interface.php
  * TSI_User Objekt                      => Datei: TSI_User_Interface.php
+ * TSI_Resellers Objekt                 => Datei: TSI_Resellers_Interface.php
+ * TSI_MultiClient Objekt               => Datei: TSI_MultiClient_Interface.php
  */
 
 //Client erstellen
@@ -24,11 +26,15 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
+echo '<pre>';
+
 $instance_id = 1; //Instanz ID
 $vserver_id = 1; //Virtual Server ID
 
 //Alten Server abrufen und TSI_VServer Objekt erstellen
 $edit_server = $client->getTSVServer($instance_id,$vserver_id);
+
+var_dump($edit_server);
 
 //Holen des Properties Objekt für den V-Server
 $edit_server_properties = $edit_server->getProperties();
@@ -43,4 +49,6 @@ $edit_server_properties->setName('Umbenannter TestServer');
 $edit_server->setProperties($edit_server_properties);
 
 //Änderungen an Server senden
-$client->editTSVServer($edit_server);
+print_r($client->editTSVServer($edit_server));
+
+echo '</pre>';
