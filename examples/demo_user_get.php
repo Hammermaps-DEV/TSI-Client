@@ -26,26 +26,20 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
-$users = $client->getTSIUsers();
+//User ID
+$user_id = 1;
 
-echo '<pre><p>##################################################################</p>';
+echo '<pre>';
 
-//Jetzt eine Schleife der vorhandenen User
-foreach ($users as $user) {
-    //Die Server stehen als "TSI_User Objekt" zur verfügung:
-    if($user instanceof TSI_Client\Models\TSI_User) {
-        echo 'User-ID: '.$user->getUserID();
-        echo '<br>';
-        echo 'Username: '.$user->getUsername();
-        echo '<br>';
-        echo 'FirstName: '.$user->getFirstName();
-        echo '<br>';
-        echo 'LastName: '.$user->getLastName();
-        echo '<br>';
-        echo 'E-Mail: '.$user->getEmail();
-        echo '<br>';
-        echo '<p>##################################################################</p>';
-    }
-}
+//Hole das TSI_User Objekt
+$edit_tsi_user = $client->getTSIUser($user_id); //by ID
+print_r($edit_tsi_user);
+
+$edit_tsi_user = $client->getTSIUserByEMail('max@mustermann.de'); //by Email
+print_r($edit_tsi_user);
+
+$edit_tsi_user = $client->getTSIUserByUsername('mustermann'); //by Username
+print_r($edit_tsi_user);
 
 echo '</pre>';
+

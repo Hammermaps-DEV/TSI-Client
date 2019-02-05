@@ -95,7 +95,7 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      * @var bool
      * @internal
      */
-    private $server_gzip = true;
+    private $server_gzip = false;
 
     /**
      * @var bool
@@ -153,15 +153,15 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
      */
     const TSI_CLIENT_BRANCHES = [
         'final' => false,
-        'beta' => true,
-        'master' => false
+        'beta' => false,
+        'master' => true
     ];
 
     /**
      * PHP TSI-Client Version
      * @var string
      */
-    const TSI_CLIENT_VERSION = '1.0.6';
+    const TSI_CLIENT_VERSION = '1.1.0';
 
     /**
      * CURL Agent
@@ -237,18 +237,25 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
     /**
      * Autoloader for interfaces & classes
-     * @param $class
+     * @param string $class
+     * @param string $namespace
      */
-    public function autoload(string $class): void {
+    public function autoload(string $class,string $namespace = null): void {
         if(class_exists($class, false) || interface_exists($class, false)) {
             return;
         }
 
-        $class = str_replace([__NAMESPACE__,'\\'],'',$class);
-        if (file_exists("models/".$class.'.php') &&
-            file_exists("models/".$class."_Interface.php")) {
-            require_once("models/".$class."_Interface.php");
-            require_once("models/".$class.".php");
+		$basedir = '';
+		if(!empty($namespace)) {
+			$basedir = TSI_DIR.'/';
+		}
+
+		$namespace = !empty($namespace) ? $namespace : __NAMESPACE__;
+        $class = str_replace([$namespace,'\\'],'',$class);
+        if (file_exists($basedir."models/".$class.'.php') &&
+            file_exists($basedir."models/".$class."_Interface.php")) {
+            require_once($basedir."models/".$class."_Interface.php");
+            require_once($basedir."models/".$class.".php");
         }
     }
 
@@ -408,7 +415,6 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
         return false;
     }
-
 
     /**
      * Processing the response
@@ -618,9 +624,11 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
 
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_URL, $url);
-        curl_setopt($curl,CURLOPT_HEADER, ($this->server_gzip || $use_url));
+		if($this->server_gzip || $use_url) {
+		    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+		}
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 0);
+        curl_setopt($curl,CURLOPT_DNS_CACHE_TIMEOUT, 10);
         curl_setopt($curl,CURLOPT_TIMEOUT, 20);
         curl_setopt($curl,CURLOPT_USERAGENT,
             str_replace('{version}',self::TSI_CLIENT_VERSION,self::USER_AGENT));
@@ -699,15 +707,17 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
                     if ($this->server_data['http_status_code'][$call][$hash]['code'] == 200) {
                         if ($this->curl_config[$call][$hash]['gzip']) {
                             $sections = explode("\x0d\x0a\x0d\x0a", $this->server_data['json'][$call][$hash], 2);
-                            while (!strncmp($sections[1], 'HTTP/', 5)) {
-                                $sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
-                            }
+							if(count($sections) >= 2) {
+								while (!strncmp($sections[1], 'HTTP/', 5)) {
+									$sections = explode("\x0d\x0a\x0d\x0a", $sections[1], 2);
+								}
 
-                            if (count($sections) >= 2) {
-                                if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
-                                    $this->server_data['json'][$call][$hash] = $sections[1];
-                                }
-                            }
+								if (count($sections) >= 2) {
+									if (preg_match('/^Content-Encoding: gzip/mi', $sections[0])) {
+										$this->server_data['json'][$call][$hash] = $sections[1];
+									}
+								}
+							}
                         }
 
                         if ($responseProcessing) {
@@ -827,8 +837,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheWrite(): string {
-        return strval($this->cache_functions['write']);
+    public function getRegisterCacheWrite(): array {
+        return $this->cache_functions['write'];
     }
 
     /**
@@ -847,8 +857,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheRead(): string {
-        return strval($this->cache_functions['read']);
+    public function getRegisterCacheRead(): array {
+        return $this->cache_functions['read'];
     }
 
     /**
@@ -867,8 +877,8 @@ abstract class TSI_Client_Base implements TSI_Client_Base_Interface {
     /**
      * @return array
      */
-    public function getRegisterCacheExist(): string {
-        return strval($this->cache_functions['exist']);
+    public function getRegisterCacheExist(): array {
+        return $this->cache_functions['exist'];
     }
 
     /**

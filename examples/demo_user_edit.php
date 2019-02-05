@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -29,15 +29,23 @@ $client = new TSI_Client\TSI_Client(
 //User ID
 $user_id = 1;
 
+echo '<pre>';
+
 //Hole das TSI_User Objekt
 $edit_tsi_user = $client->getTSIUser($user_id); //by ID
-//$edit_tsi_user = $client->getTSIUserByEMail('xxx@domain.de'); //by Email
-//$edit_tsi_user = $client->getTSIUserByUsername('maxmuster'); //by Username
+print_r($edit_tsi_user);
 
+//$edit_tsi_user = $client->getTSIUserByEMail('xxx@domain.de'); //by Email
+print_r($edit_tsi_user);
+
+//$edit_tsi_user = $client->getTSIUserByUsername('maxmuster'); //by Username
+print_r($edit_tsi_user);
+
+//Ändere Namen
 $edit_tsi_user->setFirstName('Tom');
 $edit_tsi_user->setLastName('Hartmann');
 
-$client->editTSIUser($edit_tsi_user); //User ändern
+print_r($client->editTSIUser($edit_tsi_user)); //User ändern
 
-
+echo '</pre>';
 

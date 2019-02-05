@@ -110,6 +110,12 @@ class TSI_Resellers implements TSI_Resellers_Interface {
      * @internal
      */
     private $icon_pkg = '';
+	
+	    /**
+     * @var bool
+     * @internal
+     */
+	private $allowed_own_instances = false;
 
     /**
      * @var array

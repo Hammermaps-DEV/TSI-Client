@@ -291,7 +291,7 @@ class TSI_User implements TSI_User_Interface {
     public function setFixedVMs(array $servers): void {
         $this->servers = $servers;
 
-        if($this->multi) {
+        if($this->multi && count($servers) >= 2) {
             $this->readServerMulti();
         }
     }
@@ -437,7 +437,7 @@ class TSI_User implements TSI_User_Interface {
     private function readServerMulti(): void {
         if(!$this->multi)
             return;
-
+		
         //Get all Servers
         $vserver_ids = []; $i=0;
         if(count($this->servers >= 2)) {

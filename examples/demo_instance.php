@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -26,7 +26,7 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
-$instance = $client->getTSInstance(11); //ID der Instanz
+$instance = $client->getTSInstance(1); //ID der Instanz
 
 echo '<pre>';
 echo 'Server-IP: '.$instance->getIP();

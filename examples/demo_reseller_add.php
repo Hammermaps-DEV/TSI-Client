@@ -1,7 +1,8 @@
 <?php
 
+
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -26,6 +27,8 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
+echo '<pre>';
+
 //Erstelle neues TSI_User Objekt
 $new_tsi_reseller = new \TSI_Client\Models\TSI_Resellers();
 
@@ -38,6 +41,6 @@ $new_tsi_reseller->setServer(1, 1);
 //or
 $new_tsi_reseller->setFixedInstance(1);
 
-$client->addTSVReseller($new_tsi_reseller); //User Erstellen
+print_r($client->addTSVReseller($new_tsi_reseller)); //User Erstellen
 
-
+echo '</pre>';

@@ -1,7 +1,7 @@
 <?php
 
 //Include Client
-include_once ("../TSI_Client.php");
+include_once ("../src/TSI_Client.php");
 
 /**
  * ###################################################################################
@@ -26,12 +26,19 @@ $client = new TSI_Client\TSI_Client(
     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' //Dein Secret-Key sehe "API Zugänge"
 );
 
+echo '<pre>';
+
 //by ID
-$id = 1; //reseller id
+$id = 2; //reseller id
 
 $reseller = $client->getTSVReseller($id);
 
+//Namen ändern
 $reseller->setFirstName('Otto');
+
+//Neues Passwort setzen
 $reseller->setInitPassword('xyz1234');
 
-$client->editTSVReseller($reseller);
+print_r($client->editTSVReseller($reseller));
+
+echo '</pre>';
